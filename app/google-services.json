@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "967391265450",
+    "project_id": "rent-manager-116d8",
+    "storage_bucket": "rent-manager-116d8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967391265450:android:f1970f1e7fd94cba9046d3",
+        "android_client_info": {
+          "package_name": "com.maduka.rentmanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeTBVaFI-NaO5_zBzhuKdHZcF6UCX7Pfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "maduka-design-preview",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4173",
+        "--directory",
+        "C:/Users/DATIUS~1/AppData/Local/Temp/claude/D--AndroidStudio-Maduka/70297f6e-49c2-45b9-b06d-d8bedb7ca363/scratchpad/design"
+      ],
+      "port": 4173
+    }
+  ]
+}
