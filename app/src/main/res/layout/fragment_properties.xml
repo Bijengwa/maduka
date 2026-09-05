@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/md_bg">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerShops"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="@dimen/space_6"
+        android:paddingBottom="88dp"
+        android:visibility="gone"
+        tools:listitem="@layout/item_shop_card" />
+
     <TextView
+        android:id="@+id/tvEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/nav_properties"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/md_text" />
+        android:text="@string/properties_empty"
+        android:textAppearance="@style/TextAppearance.Maduka.Body"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnAddShop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/space_6"
+        android:background="@drawable/bg_button_primary"
+        android:paddingTop="@dimen/space_3"
+        android:paddingBottom="@dimen/space_3"
+        android:textAllCaps="false"
+        android:textColor="@color/md_bg"
+        android:textSize="16sp"
+        android:text="@string/properties_add_shop"
+        android:visibility="gone" />
+
 </FrameLayout>
