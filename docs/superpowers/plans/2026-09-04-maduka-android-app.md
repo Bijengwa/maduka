@@ -25,6 +25,7 @@
   - Status "Empty": fg/border `#9397ab` (neutral-500), transparent background, outline pill only (no fill) — do not reuse the bad/good/waiting fill styles for Empty.
   - Radius: sm 4dp, md 8dp, lg 14dp. Spacing scale (dp): 3, 6, 8, 11, 17, 22 (i.e. `space-1..8` at 2.8px≈1dp increments — round to whole dp: 3/6/8/11/17/22).
   - Font: Inter (400/500/600/700). Bundle static `.ttf` files under `res/font/` (download once from the `google/fonts` OFL repo during Task 2; do not use downloadable-fonts-via-Play-Services, this app must work offline-first).
+- **Brand mark assets (added after Task 1 shipped):** the user supplied real logo SVGs at `maduka-logo-svg/` (project root) — a steel-doorway + warm-keyhole mark. Colors: steel accent `#5980a6`, deep steel `#1d2d3d`, warm ochre `#da9258` (distinct from the UI's purple accent above — the app icon/brand mark intentionally uses its own palette, separate from in-app chrome, same as most real products). Already converted to Android resources: `app/src/main/res/drawable/ic_launcher_background.xml` (solid `#1d2d3d`) + `ic_launcher_foreground.xml` (the mark, scaled/centered per adaptive-icon safe-zone convention) replace the default Android Studio launcher icon — done, do not redo. `app/src/main/res/drawable/ic_maduka_mark.xml` (mono-white version, 48x48 viewport) is available for any future task needing the mark in-app (e.g. Task 7's login header) — use it instead of inventing a generic icon. `maduka-logo-svg/maduka-mark-color.svg` and `maduka-mark-mono-dark.svg` remain as source if a task needs a color or light-ground variant not yet converted.
 - **Shop naming:** exactly `A1`–`A10`. `A7` and `A10` are the two vacant (Empty) shops in seed/demo data.
 - **Legend / status vocabulary is shared across payments and tenant presence** — same 4-color system means two different things depending on context: green = Confirmed (payment) or Yupo (tenant present); amber = Pending (payment) or Inangoja (awaiting presence confirmation); red = Rejected (payment) or Hayupo (tenant gone); gray = Empty (shop only, never a payment state).
 - **Two-person rule:** a payment's `recordedByUid` may never equal the confirming/rejecting user's uid — an admin cannot confirm/reject their own recorded payment. Enforce in both UI (hide Confirm/Reject if `recordedByUid == currentUid`) and Realtime Database rules.
@@ -1747,11 +1748,10 @@ git commit -m "feat: add SharedPreferences and locale-switching helpers"
 **Files:**
 - Create: `app/src/main/java/com/maduka/rentmanager/ui/login/LoginActivity.java`
 - Create: `app/src/main/res/layout/activity_login.xml`
-- Create: `app/src/main/res/drawable/ic_lock_key.xml`, `ic_house.xml` (logo mark)
 - Modify: `app/src/main/res/values/strings.xml`
 
 **Layout spec** (captured verbatim from the canvas login screen, role = Admin/Super Admin variant shown; Tenant variant omits the verse block only):
-- App mark icon (lock/key glyph in a rounded accent-tinted square) + "Maduka" (24sp, bold) + "Property management" (14sp, neutral-400) — centered header block.
+- App mark: `@drawable/ic_maduka_mark` (real brand mark, already created — see Global Constraints) inside a rounded square badge (background `@color/md_accent_900` or similar dark tint, radius_lg) + "Maduka" (24sp, bold) + "Property management" (14sp, neutral-400) — centered header block. Do not create a new placeholder icon here.
 - "Sign in as" label (12sp, neutral-500, uppercase, letter-spaced) above a 3-segment `TabLayout`-style row: **Super Admin / Admin / Tenant** (pill buttons, selected = accent-700 fill + accent text, unselected = surface + neutral-300 text).
 - "Username, email or phone" — `TextInputLayout`/`EditText`, single line.
 - "Password" — `TextInputLayout`/`EditText`, `inputType="textPassword"`.
@@ -1907,7 +1907,7 @@ Expected: BUILD SUCCESSFUL. Cross-check `activity_login.xml`'s widget list and c
 - [ ] **Step 5: Commit**
 
 ```bash
-git add app/src/main/java/com/maduka/rentmanager/ui/login app/src/main/res/layout/activity_login.xml app/src/main/res/values/strings.xml app/src/main/res/drawable/ic_lock_key.xml app/src/main/res/drawable/ic_house.xml
+git add app/src/main/java/com/maduka/rentmanager/ui/login app/src/main/res/layout/activity_login.xml app/src/main/res/values/strings.xml
 git commit -m "feat: build the login screen (role tabs, identifier+password, rotating KJV verse)"
 ```
 
@@ -2382,7 +2382,7 @@ public final class NotificationHelper {
 
     public static void show(Context context, int notificationId, String title, String message) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_house)
+                .setSmallIcon(R.drawable.ic_maduka_mark)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true);
