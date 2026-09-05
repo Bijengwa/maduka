@@ -1,4 +1,4 @@
-package com.example.maduka;
+package com.maduka.rentmanager;
 
 import org.junit.Test;
 
