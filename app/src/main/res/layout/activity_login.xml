@@ -13,6 +13,30 @@
         android:gravity="center_horizontal"
         android:padding="@dimen/space_8">
 
+        <!-- Language toggle -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnLanguage"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:textAllCaps="false"
+                android:textColor="@color/md_text"
+                android:textSize="14sp"
+                android:text="EN" />
+        </LinearLayout>
+
         <!-- Header: brand badge + title + subtitle -->
         <FrameLayout
             android:layout_width="64dp"
@@ -41,81 +65,6 @@
             android:text="@string/login_subtitle"
             android:textSize="14sp"
             android:textColor="@color/md_neutral_400" />
-
-        <!-- Sign in as: role selector -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_8"
-            android:layout_marginBottom="@dimen/space_2"
-            android:text="@string/login_sign_in_as"
-            android:textAllCaps="true"
-            android:letterSpacing="0.1"
-            android:textSize="12sp"
-            android:textColor="@color/md_neutral_500" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnRoleSuperAdmin"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/space_2"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingTop="@dimen/space_3"
-                android:paddingBottom="@dimen/space_3"
-                android:paddingStart="@dimen/space_2"
-                android:paddingEnd="@dimen/space_2"
-                android:background="@drawable/bg_role_pill"
-                android:textColor="@color/role_pill_text"
-                android:textAllCaps="false"
-                android:textSize="12sp"
-                android:text="@string/role_super_admin" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnRoleAdmin"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/space_2"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingTop="@dimen/space_3"
-                android:paddingBottom="@dimen/space_3"
-                android:paddingStart="@dimen/space_2"
-                android:paddingEnd="@dimen/space_2"
-                android:background="@drawable/bg_role_pill"
-                android:textColor="@color/role_pill_text"
-                android:textAllCaps="false"
-                android:textSize="12sp"
-                android:text="@string/role_admin" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnRoleTenant"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingTop="@dimen/space_3"
-                android:paddingBottom="@dimen/space_3"
-                android:paddingStart="@dimen/space_2"
-                android:paddingEnd="@dimen/space_2"
-                android:background="@drawable/bg_role_pill"
-                android:textColor="@color/role_pill_text"
-                android:textAllCaps="false"
-                android:textSize="12sp"
-                android:text="@string/role_tenant" />
-        </LinearLayout>
 
         <!-- Identifier + password fields -->
         <com.google.android.material.textfield.TextInputLayout
@@ -183,15 +132,14 @@
             android:textSize="13sp"
             android:textColor="@color/md_neutral_400" />
 
-        <!-- KJV verse block: Admin/Super Admin only, hidden for Tenant -->
+        <!-- KJV verse block: always shown, rotates by sign-in count -->
         <LinearLayout
             android:id="@+id/verseContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_6"
             android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:visibility="gone">
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/tvVerseText"

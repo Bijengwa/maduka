@@ -22,12 +22,10 @@ public class LoginActivity extends AppCompatActivity {
     public static final String EXTRA_ROLE = "extra_role";
 
     private final AuthRepository authRepository = new AuthRepository();
-    private UserRole selectedRole = UserRole.ADMIN;
 
-    private Button btnSuperAdmin, btnAdmin, btnTenant, btnSignIn;
+    private Button btnLanguage, btnSignIn;
     private TextInputEditText etIdentifier, etPassword;
     private CheckBox cbRememberMe;
-    private View verseContainer;
     private TextView tvVerseText, tvVerseReference;
 
     @Override
@@ -40,44 +38,30 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        btnSuperAdmin = findViewById(R.id.btnRoleSuperAdmin);
-        btnAdmin = findViewById(R.id.btnRoleAdmin);
-        btnTenant = findViewById(R.id.btnRoleTenant);
+        btnLanguage = findViewById(R.id.btnLanguage);
         etIdentifier = findViewById(R.id.etIdentifier);
         etPassword = findViewById(R.id.etPassword);
         cbRememberMe = findViewById(R.id.cbRememberMe);
         btnSignIn = findViewById(R.id.btnSignIn);
-        verseContainer = findViewById(R.id.verseContainer);
         tvVerseText = findViewById(R.id.tvVerseText);
         tvVerseReference = findViewById(R.id.tvVerseReference);
 
-        btnSuperAdmin.setOnClickListener(v -> selectRole(UserRole.SUPER_ADMIN));
-        btnAdmin.setOnClickListener(v -> selectRole(UserRole.ADMIN));
-        btnTenant.setOnClickListener(v -> selectRole(UserRole.TENANT));
+        Prefs prefs = Prefs.get(this);
+        btnLanguage.setText(prefs.language().equals("sw") ? "SW" : "EN");
+        btnLanguage.setOnClickListener(v -> {
+            String next = prefs.language().equals("sw") ? "en" : "sw";
+            prefs.setLanguage(next);
+            recreate();
+        });
+
+        VerseProvider.Verse verse = VerseProvider.pickVerse(prefs.signInCount());
+        tvVerseText.setText("“" + verse.text + "”");
+        tvVerseReference.setText("— " + verse.reference);
+
         btnSignIn.setOnClickListener(v -> signIn());
 
-        Prefs prefs = Prefs.get(this);
         if (prefs.isRememberMe() && prefs.rememberedIdentifier() != null) {
             etIdentifier.setText(prefs.rememberedIdentifier());
-            selectRole(UserRole.valueOf(prefs.rememberedRole()));
-        } else {
-            selectRole(UserRole.ADMIN);
-        }
-    }
-
-    private void selectRole(UserRole role) {
-        selectedRole = role;
-        btnSuperAdmin.setSelected(role == UserRole.SUPER_ADMIN);
-        btnAdmin.setSelected(role == UserRole.ADMIN);
-        btnTenant.setSelected(role == UserRole.TENANT);
-
-        if (role == UserRole.TENANT) {
-            verseContainer.setVisibility(View.GONE);
-        } else {
-            VerseProvider.Verse verse = VerseProvider.pickVerse(Prefs.get(this).signInCount());
-            tvVerseText.setText("“" + verse.text + "”");
-            tvVerseReference.setText("— " + verse.reference);
-            verseContainer.setVisibility(View.VISIBLE);
         }
     }
 
@@ -86,11 +70,11 @@ public class LoginActivity extends AppCompatActivity {
         String password = String.valueOf(etPassword.getText());
         btnSignIn.setEnabled(false);
 
-        authRepository.signIn(selectedRole, identifier, password, new FirebaseManager.Callback<AuthRepository.AuthResult>() {
+        authRepository.signIn(identifier, password, new FirebaseManager.Callback<AuthRepository.AuthResult>() {
             @Override
             public void onSuccess(AuthRepository.AuthResult result) {
                 Prefs prefs = Prefs.get(LoginActivity.this);
-                prefs.setRememberMe(cbRememberMe.isChecked(), selectedRole.name(), identifier);
+                prefs.setRememberMe(cbRememberMe.isChecked(), result.role.name(), identifier);
                 prefs.bumpSignInCount();
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

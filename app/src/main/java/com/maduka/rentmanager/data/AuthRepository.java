@@ -21,17 +21,29 @@ public class AuthRepository {
     /**
      * Resolves the free-text identifier (username, email, or phone) against
      * the public login_index/{role} node to find the Firebase Auth email,
-     * then signs in with that email + the entered password.
+     * then signs in with that email + the entered password. The user no
+     * longer picks a role up front: this tries each role's login_index in
+     * turn (super_admins, admins, tenants) and signs in under whichever
+     * role actually has an entry for the sanitized identifier.
      */
-    public void signIn(UserRole role, String identifier, String password, FirebaseManager.Callback<AuthResult> cb) {
+    public void signIn(String identifier, String password, FirebaseManager.Callback<AuthResult> cb) {
         String key = LoginKeyUtil.sanitize(identifier);
+        tryRole(UserRole.values(), 0, key, password, cb);
+    }
+
+    private void tryRole(UserRole[] roles, int index, String key, String password, FirebaseManager.Callback<AuthResult> cb) {
+        if (index >= roles.length) {
+            cb.onError("No account found for that identifier.");
+            return;
+        }
+        UserRole role = roles[index];
         fb.root().child(FirebaseSchema.LOGIN_INDEX).child(role.node).child(key)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         String authEmail = snapshot.getValue(String.class);
                         if (authEmail == null) {
-                            cb.onError("No account found for that role and identifier.");
+                            tryRole(roles, index + 1, key, password, cb);
                             return;
                         }
                         auth.signInWithEmailAndPassword(authEmail, password)
