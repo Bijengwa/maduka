@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="space_1">3dp</dimen>
+    <dimen name="space_2">6dp</dimen>
+    <dimen name="space_3">8dp</dimen>
+    <dimen name="space_4">11dp</dimen>
+    <dimen name="space_6">17dp</dimen>
+    <dimen name="space_8">22dp</dimen>
+    <dimen name="radius_sm">4dp</dimen>
+    <dimen name="radius_md">8dp</dimen>
+    <dimen name="radius_lg">14dp</dimen>
+    <dimen name="radius_full">999dp</dimen>
+</resources>

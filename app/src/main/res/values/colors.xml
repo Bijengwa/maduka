@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="md_bg">#161826</color>
+    <color name="md_surface">#232532</color>
+    <color name="md_text">#E9E9ED</color>
+    <color name="md_divider">#29E9E9ED</color>
+
+    <color name="md_accent">#7BA3C7</color>
+    <color name="md_accent_2">#E8C99E</color>
+
+    <color name="md_accent_100">#EFF5FA</color>
+    <color name="md_accent_200">#D2E1ED</color>
+    <color name="md_accent_300">#B5CCE1</color>
+    <color name="md_accent_400">#98B8D4</color>
+    <color name="md_accent_500">#7BA3C7</color>
+    <color name="md_accent_600">#5980A6</color>
+    <color name="md_accent_700">#456483</color>
+    <color name="md_accent_800">#314960</color>
+    <color name="md_accent_900">#1D2D3D</color>
+
+    <color name="md_neutral_100">#F3F5FE</color>
+    <color name="md_neutral_200">#E4E7F5</color>
+    <color name="md_neutral_300">#CFD3E5</color>
+    <color name="md_neutral_400">#B2B6CA</color>
+    <color name="md_neutral_500">#9397AB</color>
+    <color name="md_neutral_600">#75798C</color>
+    <color name="md_neutral_700">#595D6C</color>
+    <color name="md_neutral_800">#3F424D</color>
+    <color name="md_neutral_900">#292B31</color>
+
+    <color name="md_status_good_fg">#6EE7B7</color>
+    <color name="md_status_good_bg">#20302A</color>
+    <color name="md_status_good_border">#2F6B52</color>
+
+    <color name="md_status_wait_fg">#FBD77A</color>
+    <color name="md_status_wait_bg">#3A3222</color>
+    <color name="md_status_wait_border">#7A5C14</color>
+
+    <color name="md_status_bad_fg">#FCA5A5</color>
+    <color name="md_status_bad_bg">#31232A</color>
+    <color name="md_status_bad_border">#7F3A3A</color>
+
+    <color name="md_status_empty_fg">#9397AB</color>
 </resources>
