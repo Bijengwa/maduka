@@ -16,8 +16,8 @@
 - **Design system is dark-only** — there is no light theme and no theme toggle in the canvas. Do not add one.
 - **Exact color tokens** (from the canvas's computed CSS custom properties — use verbatim, do not reinterpret):
   - Background `#161826`, Surface `#232532`, Text `#e9e9ed`, Divider `#e9e9ed` @ 16% alpha.
-  - Accent (brand purple) `#9184d9`, Accent-2 `#a7a1db`.
-  - Accent scale: 100 `#f5f4ff`, 200 `#e7e5fe`, 300 `#d2cefd`, 400 `#b5abfc`, 500 `#968ae0`, 600 `#796cbf`, 700 `#5d5294`, 800 `#423a6a`, 900 `#2b2741`.
+  - **Accent (revised 2026-09-05 — see decision note below): brand steel blue** `#7BA3C7`, **Accent-2 (brand warm tan)** `#E8C99E`. (Superseded: originally brand purple `#9184d9`/`#a7a1db` from the design canvas — replaced by explicit user decision to align in-app chrome with the real brand-mark colors instead.)
+  - Accent scale (steel-blue family, anchored on the brand-mark colors — 500/600/900 match `#7BA3C7`/`#5980a6`/`#1d2d3d` below): 100 `#EFF5FA`, 200 `#D2E1ED`, 300 `#B5CCE1`, 400 `#98B8D4`, 500 `#7BA3C7`, 600 `#5980A6`, 700 `#456483`, 800 `#314960`, 900 `#1D2D3D`.
   - Neutral scale: 100 `#f3f5fe`, 200 `#e4e7f5`, 300 `#cfd3e5`, 400 `#b2b6ca`, 500 `#9397ab`, 600 `#75798c`, 700 `#595d6c`, 800 `#3f424d`, 900 `#292b31`.
   - Status "good / Confirmed / Yupo": fg `#6ee7b7`, bg `#20302a`, border `#2f6b52`.
   - Status "waiting / Pending / Inangoja": fg `#fbd77a`, bg `#3a3222`, border `#7a5c14` (accent line `#fbbf24`).
@@ -25,7 +25,7 @@
   - Status "Empty": fg/border `#9397ab` (neutral-500), transparent background, outline pill only (no fill) — do not reuse the bad/good/waiting fill styles for Empty.
   - Radius: sm 4dp, md 8dp, lg 14dp. Spacing scale (dp): 3, 6, 8, 11, 17, 22 (i.e. `space-1..8` at 2.8px≈1dp increments — round to whole dp: 3/6/8/11/17/22).
   - Font: Inter (400/500/600/700). Bundle static `.ttf` files under `res/font/` (download once from the `google/fonts` OFL repo during Task 2; do not use downloadable-fonts-via-Play-Services, this app must work offline-first).
-- **Brand mark assets (added after Task 1 shipped):** the user supplied real logo SVGs at `maduka-logo-svg/` (project root) — a steel-doorway + warm-keyhole mark. Colors: steel accent `#5980a6`, deep steel `#1d2d3d`, warm ochre `#da9258` (distinct from the UI's purple accent above — the app icon/brand mark intentionally uses its own palette, separate from in-app chrome, same as most real products). Already converted to Android resources: `app/src/main/res/drawable/ic_launcher_background.xml` (solid `#1d2d3d`) + `ic_launcher_foreground.xml` (the mark, scaled/centered per adaptive-icon safe-zone convention) replace the default Android Studio launcher icon — done, do not redo. `app/src/main/res/drawable/ic_maduka_mark.xml` (mono-white version, 48x48 viewport) is available for any future task needing the mark in-app (e.g. Task 7's login header) — use it instead of inventing a generic icon. `maduka-logo-svg/maduka-mark-color.svg` and `maduka-mark-mono-dark.svg` remain as source if a task needs a color or light-ground variant not yet converted.
+- **Brand mark assets (added after Task 1 shipped):** the user supplied real logo SVGs at `maduka-logo-svg/` (project root) — a steel-doorway + warm-keyhole mark. Colors: steel accent `#5980a6`, deep steel `#1d2d3d`, warm ochre `#da9258`. **As of the 2026-09-05 design-tokens decision, the in-app UI accent now derives from this same palette** (see the revised Accent/Accent-2/Accent-scale bullet above — `#7BA3C7`/`#E8C99E` are dark-mode-legible tints of these exact brand colors, with `#5980a6`/`#1d2d3d` reused verbatim at accent-scale steps 600/900) rather than being a separate unrelated purple as originally planned. Already converted to Android resources: `app/src/main/res/drawable/ic_launcher_background.xml` (solid `#1d2d3d`) + `ic_launcher_foreground.xml` (the mark, scaled/centered per adaptive-icon safe-zone convention) replace the default Android Studio launcher icon — done, do not redo. `app/src/main/res/drawable/ic_maduka_mark.xml` (mono-white version, 48x48 viewport) is available for any future task needing the mark in-app (e.g. Task 7's login header) — use it instead of inventing a generic icon. `maduka-logo-svg/maduka-mark-color.svg` and `maduka-mark-mono-dark.svg` remain as source if a task needs a color or light-ground variant not yet converted.
 - **Shop naming:** exactly `A1`–`A10`. `A7` and `A10` are the two vacant (Empty) shops in seed/demo data.
 - **Legend / status vocabulary is shared across payments and tenant presence** — same 4-color system means two different things depending on context: green = Confirmed (payment) or Yupo (tenant present); amber = Pending (payment) or Inangoja (awaiting presence confirmation); red = Rejected (payment) or Hayupo (tenant gone); gray = Empty (shop only, never a payment state).
 - **Two-person rule:** a payment's `recordedByUid` may never equal the confirming/rejecting user's uid — an admin cannot confirm/reject their own recorded payment. Enforce in both UI (hide Confirm/Reject if `recordedByUid == currentUid`) and Realtime Database rules.
@@ -324,7 +324,7 @@ git commit -m "chore: rename package to com.maduka.rentmanager, wire Firebase de
 - Modify: `app/src/main/res/values/strings.xml` (`app_name` only for now; screen copy strings land in each screen's task)
 
 **Interfaces:**
-- Produces: color resource names `md_bg`, `md_surface`, `md_text`, `md_divider`, `md_accent`, `md_accent_2`, `md_accent_100..900`, `md_neutral_100..900`, `md_status_good_fg/bg/border`, `md_status_wait_fg/bg/border`, `md_status_bad_fg/bg/border`, `md_status_empty_fg`; dimen names `space_1..8`, `radius_sm/md/lg`. Every later layout task references these names — do not invent parallel ad-hoc colors.
+- Produces: color resource names `md_bg`, `md_surface`, `md_text`, `md_divider`, `md_accent`, `md_accent_2`, `md_accent_100..900`, `md_neutral_100..900`, `md_status_good_fg/bg/border`, `md_status_wait_fg/bg/border`, `md_status_bad_fg/bg/border`, `md_status_empty_fg`; dimen names `space_1..8`, `radius_sm/md/lg/full`; text-appearance style names `TextAppearance.Maduka.H1/H2/H3/Body/Small/Caption`. Every later layout task references these names — do not invent parallel ad-hoc colors.
 
 - [ ] **Step 1: Download Inter static fonts**
 
@@ -347,18 +347,18 @@ Expected: four non-empty `.ttf` files under `app/src/main/res/font/`.
     <color name="md_text">#E9E9ED</color>
     <color name="md_divider">#29E9E9ED</color>
 
-    <color name="md_accent">#9184D9</color>
-    <color name="md_accent_2">#A7A1DB</color>
+    <color name="md_accent">#7BA3C7</color>
+    <color name="md_accent_2">#E8C99E</color>
 
-    <color name="md_accent_100">#F5F4FF</color>
-    <color name="md_accent_200">#E7E5FE</color>
-    <color name="md_accent_300">#D2CEFD</color>
-    <color name="md_accent_400">#B5ABFC</color>
-    <color name="md_accent_500">#968AE0</color>
-    <color name="md_accent_600">#796CBF</color>
-    <color name="md_accent_700">#5D5294</color>
-    <color name="md_accent_800">#423A6A</color>
-    <color name="md_accent_900">#2B2741</color>
+    <color name="md_accent_100">#EFF5FA</color>
+    <color name="md_accent_200">#D2E1ED</color>
+    <color name="md_accent_300">#B5CCE1</color>
+    <color name="md_accent_400">#98B8D4</color>
+    <color name="md_accent_500">#7BA3C7</color>
+    <color name="md_accent_600">#5980A6</color>
+    <color name="md_accent_700">#456483</color>
+    <color name="md_accent_800">#314960</color>
+    <color name="md_accent_900">#1D2D3D</color>
 
     <color name="md_neutral_100">#F3F5FE</color>
     <color name="md_neutral_200">#E4E7F5</color>
@@ -400,6 +400,7 @@ Expected: four non-empty `.ttf` files under `app/src/main/res/font/`.
     <dimen name="radius_sm">4dp</dimen>
     <dimen name="radius_md">8dp</dimen>
     <dimen name="radius_lg">14dp</dimen>
+    <dimen name="radius_full">999dp</dimen>
 </resources>
 ```
 
@@ -434,6 +435,42 @@ Expected: four non-empty `.ttf` files under `app/src/main/res/font/`.
         <item name="android:navigationBarColor">@color/md_bg</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="fontFamily">@font/inter</item>
+    </style>
+
+    <!-- Type scale: sizes/weights from the design-tokens decision. Each style
+         points at the specific static Inter weight file directly (not the
+         combined font-family) since per-weight selection via fontWeight
+         needs API 28+ and minSdk here is 24. -->
+    <style name="TextAppearance.Maduka.H1" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/md_text</item>
+    </style>
+    <style name="TextAppearance.Maduka.H2" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/md_text</item>
+    </style>
+    <style name="TextAppearance.Maduka.H3" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/md_text</item>
+    </style>
+    <style name="TextAppearance.Maduka.Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/md_text</item>
+    </style>
+    <style name="TextAppearance.Maduka.Small" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/md_neutral_400</item>
+    </style>
+    <style name="TextAppearance.Maduka.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/md_neutral_400</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 </resources>
 ```
