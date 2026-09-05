@@ -4,7 +4,8 @@ public final class LoginKeyUtil {
     private LoginKeyUtil() {}
 
     /**
-     * Firebase RTDB keys forbid '.', '#', '$', '/', '[', ']'. Also used to
+     * Firebase RTDB keys forbid '.', '#', '$', '/', '[', ']'; '@' is also
+     * stripped for key readability even though it's RTDB-legal. Also used to
      * normalize phone numbers (strip spaces/dashes) and usernames/emails
      * (lowercase) so the same identifier always resolves to the same
      * login_index key regardless of how the user typed it.
