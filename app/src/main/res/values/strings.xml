@@ -13,4 +13,26 @@
     <string name="login_sign_in">Sign In</string>
     <string name="login_forgot_password">Forgot password? Contact admin</string>
     <string name="login_error_generic">Could not sign in — check your details and try again.</string>
+
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_properties">Properties</string>
+    <string name="nav_tenants">Tenants</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_notifications">Notifications</string>
+    <string name="nav_users">Users</string>
+    <string name="nav_payments">Payments</string>
+    <string name="nav_details">Details</string>
+    <string name="nav_history">History</string>
+
+    <string name="action_change_password">Change password</string>
+    <string name="action_sign_out">Sign out</string>
+
+    <string name="change_password_title">Change password</string>
+    <string name="change_password_current_hint">Current password</string>
+    <string name="change_password_new_hint">New password</string>
+    <string name="change_password_confirm_hint">Confirm new password</string>
+    <string name="change_password_save">Save</string>
+    <string name="change_password_error_length">Password must be at least 6 characters.</string>
+    <string name="change_password_error_mismatch">Passwords do not match.</string>
+    <string name="change_password_success">Password changed</string>
 </resources>
