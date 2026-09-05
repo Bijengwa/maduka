@@ -33,9 +33,18 @@ public final class VerseProvider {
 
     public static int poolSize() { return POOL.size(); }
 
-    /** Deterministic pick so the same seed (e.g. a sign-in counter) always yields the same verse. */
+    /** Deterministic index so the same seed (e.g. a sign-in counter) always yields the same verse.
+     * UI code should use this with the localized verse_texts/verse_references string-arrays
+     * (values/strings.xml, values-sw/strings.xml) instead of {@link #pickVerse}, so the verse
+     * actually changes with the app's language. */
+    public static int indexFor(long seed) {
+        return (int) (((seed % POOL.size()) + POOL.size()) % POOL.size());
+    }
+
+    /** Deterministic pick so the same seed (e.g. a sign-in counter) always yields the same verse.
+     * English-only (source pool); prefer {@link #indexFor} + the localized string-arrays for
+     * anything user-visible. */
     public static Verse pickVerse(long seed) {
-        int index = (int) (((seed % POOL.size()) + POOL.size()) % POOL.size());
-        return POOL.get(index);
+        return POOL.get(indexFor(seed));
     }
 }

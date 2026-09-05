@@ -54,9 +54,11 @@ public class LoginActivity extends AppCompatActivity {
             recreate();
         });
 
-        VerseProvider.Verse verse = VerseProvider.pickVerse(prefs.signInCount());
-        tvVerseText.setText("“" + verse.text + "”");
-        tvVerseReference.setText("— " + verse.reference);
+        int verseIndex = VerseProvider.indexFor(prefs.signInCount());
+        String[] verseTexts = getResources().getStringArray(R.array.verse_texts);
+        String[] verseReferences = getResources().getStringArray(R.array.verse_references);
+        tvVerseText.setText("“" + verseTexts[verseIndex] + "”");
+        tvVerseReference.setText("— " + verseReferences[verseIndex]);
 
         btnSignIn.setOnClickListener(v -> signIn());
 

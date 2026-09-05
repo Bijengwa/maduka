@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Maduka</string>
+
+    <string name="login_title">Maduka</string>
+    <string name="login_subtitle">Usimamizi wa Mali</string>
+    <string name="login_sign_in_as">Ingia kama</string>
+    <string name="role_super_admin">Msimamizi Mkuu</string>
+    <string name="role_admin">Msimamizi</string>
+    <string name="role_tenant">Mpangaji</string>
+    <string name="login_identifier_hint">Jina la mtumiaji, barua pepe au simu</string>
+    <string name="login_password_hint">Neno la siri</string>
+    <string name="login_remember_me">Nikumbuke</string>
+    <string name="login_sign_in">Ingia</string>
+    <string name="login_forgot_password">Umesahau neno la siri? Wasiliana na msimamizi</string>
+    <string name="login_error_generic">Imeshindikana kuingia — hakiki taarifa zako kisha jaribu tena.</string>
+
+    <string name="nav_dashboard">Dashibodi</string>
+    <string name="nav_properties">Mali</string>
+    <string name="nav_tenants">Wapangaji</string>
+    <string name="nav_reports">Ripoti</string>
+    <string name="nav_notifications">Arifa</string>
+    <string name="nav_users">Watumiaji</string>
+    <string name="nav_payments">Malipo</string>
+    <string name="nav_details">Maelezo</string>
+    <string name="nav_history">Historia</string>
+
+    <string name="action_change_password">Badilisha neno la siri</string>
+    <string name="action_sign_out">Toka</string>
+
+    <string name="change_password_title">Badilisha Neno la Siri</string>
+    <string name="change_password_current_hint">Neno la siri la sasa</string>
+    <string name="change_password_new_hint">Neno jipya la siri</string>
+    <string name="change_password_confirm_hint">Thibitisha neno jipya la siri</string>
+    <string name="change_password_save">Hifadhi</string>
+    <string name="change_password_error_length">Neno la siri lazima liwe na herufi 6 au zaidi.</string>
+    <string name="change_password_error_mismatch">Maneno ya siri hayalingani.</string>
+    <string name="change_password_success">Neno la siri limebadilishwa</string>
+
+    <string-array name="verse_texts">
+        <item>Mtu mwaminifu atafurika baraka; bali mwenye kuhimizwa kuwa tajiri hatakosa kuadhibiwa.</item>
+        <item>Aliye mwaminifu katika lililo dogo, huwa mwaminifu katika lililo kubwa pia; naye aliye dhalimu katika lililo dogo, huwa dhalimu katika lililo kubwa pia.</item>
+        <item>Zaidi ya hayo, inatakiwa kwa mawakili mtu one kuwa mwaminifu.</item>
+        <item>Vema, mtumwa mwema na mwaminifu; ulikuwa mwaminifu kwa machache, nitakuweka juu ya mengi; ingia katika furaha ya bwana wako.</item>
+        <item>Fadhili na kweli zisikuache; uzifunge shingoni mwako, uziandike katika kibao cha moyo wako.</item>
+    </string-array>
+
+    <string-array name="verse_references">
+        <item>Mithali 28:20</item>
+        <item>Luka 16:10</item>
+        <item>1 Wakorintho 4:2</item>
+        <item>Mathayo 25:21</item>
+        <item>Mithali 3:3</item>
+    </string-array>
+</resources>

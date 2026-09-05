@@ -35,4 +35,20 @@
     <string name="change_password_error_length">Password must be at least 6 characters.</string>
     <string name="change_password_error_mismatch">Passwords do not match.</string>
     <string name="change_password_success">Password changed</string>
+
+    <string-array name="verse_texts">
+        <item>A faithful man shall abound with blessings: but he that maketh haste to be rich shall not be innocent.</item>
+        <item>He that is faithful in that which is least is faithful also in much: and he that is unjust in the least is unjust also in much.</item>
+        <item>Moreover it is required in stewards, that a man be found faithful.</item>
+        <item>Well done, thou good and faithful servant: thou hast been faithful over a few things, I will make thee ruler over many things: enter thou into the joy of thy lord.</item>
+        <item>Let not mercy and truth forsake thee: bind them about thy neck; write them upon the table of thine heart.</item>
+    </string-array>
+
+    <string-array name="verse_references">
+        <item>Proverbs 28:20, KJV</item>
+        <item>Luke 16:10, KJV</item>
+        <item>1 Corinthians 4:2, KJV</item>
+        <item>Matthew 25:21, KJV</item>
+        <item>Proverbs 3:3, KJV</item>
+    </string-array>
 </resources>
