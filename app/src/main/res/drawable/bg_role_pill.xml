@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected role pill: accent fill. Reacts to android:state_selected,
+         set programmatically in LoginActivity#selectRole(). -->
+    <item android:state_selected="true" android:drawable="@drawable/shape_pill_selected" />
+    <item android:drawable="@drawable/shape_pill_unselected" />
+</selector>

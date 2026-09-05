@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Maduka</string>
+
+    <string name="login_title">Maduka</string>
+    <string name="login_subtitle">Property management</string>
+    <string name="login_sign_in_as">Sign in as</string>
+    <string name="role_super_admin">Super Admin</string>
+    <string name="role_admin">Admin</string>
+    <string name="role_tenant">Tenant</string>
+    <string name="login_identifier_hint">Username, email or phone</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_remember_me">Remember me</string>
+    <string name="login_sign_in">Sign In</string>
+    <string name="login_forgot_password">Forgot password? Contact admin</string>
+    <string name="login_error_generic">Could not sign in — check your details and try again.</string>
 </resources>
