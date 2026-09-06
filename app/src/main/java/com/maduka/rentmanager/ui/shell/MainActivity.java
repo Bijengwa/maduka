@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         if (itemId == R.id.nav_tenants) return TenantsFragment.newInstance(role);
         if (itemId == R.id.nav_reports) return new ReportsFragment();
         if (itemId == R.id.nav_notifications) return role == UserRole.TENANT ? new TenantNotificationsFragment() : new AdminNotificationsFragment();
-        if (itemId == R.id.nav_users) return new UsersFragment();
+        if (itemId == R.id.nav_users) return UsersFragment.newInstance(role);
         if (itemId == R.id.nav_payments) return new TenantPaymentsFragment();
         if (itemId == R.id.nav_details) return new TenantDetailsFragment();
         if (itemId == R.id.nav_history) return new TenantHistoryFragment();

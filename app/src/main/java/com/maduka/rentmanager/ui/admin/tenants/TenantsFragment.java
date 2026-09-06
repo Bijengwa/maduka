@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.ShopRepository;
 import com.maduka.rentmanager.data.TenantRepository;
@@ -45,6 +46,8 @@ public class TenantsFragment extends Fragment {
     private Button btnRegisterTenant;
     private TextView tvReadonlyNote;
     private TenantAdapter adapter;
+    private ValueEventListener shopsRegistration;
+    private ValueEventListener tenantsRegistration;
 
     public static TenantsFragment newInstance(UserRole role) {
         TenantsFragment fragment = new TenantsFragment();
@@ -97,10 +100,10 @@ public class TenantsFragment extends Fragment {
             tvReadonlyNote.setVisibility(View.VISIBLE);
         }
 
-        shopRepository.observeShops(new ShopRepository.ShopsListener() {
+        shopsRegistration = shopRepository.observeShops(new ShopRepository.ShopsListener() {
             @Override
             public void onShops(List<Shop> shops) {
-                if (!isAdded()) return;
+                if (!canTouchViews()) return;
                 Map<String, String> shopNames = new HashMap<>();
                 for (Shop shop : shops) {
                     shopNames.put(shop.getShopId(), shop.getName() != null ? shop.getName() : shop.getShopId());
@@ -110,15 +113,15 @@ public class TenantsFragment extends Fragment {
 
             @Override
             public void onError(String message) {
-                if (!isAdded()) return;
+                if (!canTouchViews()) return;
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
 
-        tenantRepository.observeTenants(new TenantRepository.TenantsListener() {
+        tenantsRegistration = tenantRepository.observeTenants(new TenantRepository.TenantsListener() {
             @Override
             public void onTenants(List<Tenant> tenants) {
-                if (!isAdded()) return;
+                if (!canTouchViews()) return;
                 adapter.submitList(tenants);
                 boolean empty = tenants.isEmpty();
                 recyclerTenants.setVisibility(empty ? View.GONE : View.VISIBLE);
@@ -134,9 +137,26 @@ public class TenantsFragment extends Fragment {
 
             @Override
             public void onError(String message) {
-                if (!isAdded()) return;
+                if (!canTouchViews()) return;
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (shopsRegistration != null) {
+            shopRepository.stopObservingShops(shopsRegistration);
+            shopsRegistration = null;
+        }
+        if (tenantsRegistration != null) {
+            tenantRepository.stopObservingTenants(tenantsRegistration);
+            tenantsRegistration = null;
+        }
+        super.onDestroyView();
+    }
+
+    private boolean canTouchViews() {
+        return isAdded() && getView() != null;
     }
 }

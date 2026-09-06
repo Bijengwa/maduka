@@ -1,8 +1,11 @@
 package com.maduka.rentmanager.data;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.data.model.AdminUser;
 import com.maduka.rentmanager.data.model.PresenceStatus;
@@ -15,18 +18,20 @@ import java.util.List;
 import java.util.Map;
 
 public class UserRepository {
+    private static final String TAG = "UserRepository";
     private final FirebaseManager fb = FirebaseManager.get();
 
     public interface AdminsListener { void onAdmins(List<AdminUser> admins); void onError(String message); }
 
-    /** All registered admin accounts, live-updating, sorted by name. */
-    public void observeAdmins(AdminsListener listener) {
-        fb.root().child(FirebaseSchema.ADMINS).addValueEventListener(new ValueEventListener() {
+    /** All registered admin accounts, live-updating, sorted by name. Returns the registration so
+     * the caller can detach it in onDestroyView via stopObservingAdmins. */
+    public ValueEventListener observeAdmins(AdminsListener listener) {
+        ValueEventListener registration = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 List<AdminUser> admins = new ArrayList<>();
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    AdminUser a = child.getValue(AdminUser.class);
+                    AdminUser a = readAdmin(child);
                     if (a != null) admins.add(a);
                 }
                 admins.sort((a, b) -> {
@@ -38,7 +43,32 @@ public class UserRepository {
             }
             @Override
             public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
-        });
+        };
+        fb.root().child(FirebaseSchema.ADMINS).addValueEventListener(registration);
+        return registration;
+    }
+
+    public void stopObservingAdmins(ValueEventListener registration) {
+        if (registration != null) {
+            fb.root().child(FirebaseSchema.ADMINS).removeEventListener(registration);
+        }
+    }
+
+    /** Malformed individual admin records (bad enum values, wrong field types) are skipped with
+     * a warning log rather than crashing the whole list, matching ShopRepository/TenantRepository. */
+    private AdminUser readAdmin(DataSnapshot child) {
+        AdminUser a;
+        try {
+            a = child.getValue(AdminUser.class);
+        } catch (DatabaseException e) {
+            Log.w(TAG, "Skipping malformed admin " + child.getKey(), e);
+            return null;
+        }
+        if (a == null) return null;
+        if (a.getUid() == null || a.getUid().isEmpty()) {
+            a.setUid(child.getKey());
+        }
+        return a;
     }
 
     /** Registers a new Admin account. Account creation happens on a SECONDARY FirebaseAuth
