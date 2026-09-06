@@ -137,6 +137,12 @@
     <string name="notif_tenant_rejected_title">Malipo yanahitaji ufafanuzi</string>
     <string name="notif_tenant_rejected_message">Malipo yako ya hivi karibuni yanahitaji ufafanuzi. Wasiliana na msimamizi.</string>
 
+    <string name="dashboard_subtitle_format">Maduka %1$d · %2$d yamepangwa</string>
+    <string name="dashboard_next_due_title">Malipo yajayo</string>
+    <string name="dashboard_next_due_overdue_format">%1$s · %2$s — imechelewa siku %3$d</string>
+    <string name="dashboard_next_due_upcoming_format">%1$s · %2$s — siku %3$d</string>
+    <string name="dashboard_no_upcoming">Hakuna malipo yanayokaribia au yaliyochelewa</string>
+
     <string name="users_add_admin">Ongeza Msimamizi</string>
     <string name="users_empty">Hakuna wasimamizi waliosajiliwa bado</string>
     <string name="users_name_hint">Jina kamili</string>

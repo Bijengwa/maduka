@@ -137,6 +137,12 @@
     <string name="notif_tenant_rejected_title">Payment needs attention</string>
     <string name="notif_tenant_rejected_message">Your recent payment requires attention. Contact your admin.</string>
 
+    <string name="dashboard_subtitle_format">%1$d units · %2$d occupied</string>
+    <string name="dashboard_next_due_title">Next due</string>
+    <string name="dashboard_next_due_overdue_format">%1$s · %2$s — %3$d days overdue</string>
+    <string name="dashboard_next_due_upcoming_format">%1$s · %2$s — %3$d days</string>
+    <string name="dashboard_no_upcoming">No upcoming or overdue payments</string>
+
     <string name="users_add_admin">Add Admin</string>
     <string name="users_empty">No admins registered yet</string>
     <string name="users_name_hint">Full name</string>
