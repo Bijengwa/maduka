@@ -25,6 +25,11 @@ import com.maduka.rentmanager.ui.tenant.payments.TenantPaymentsFragment;
 import com.maduka.rentmanager.util.EdgeToEdge;
 import com.maduka.rentmanager.util.LocaleHelper;
 import com.maduka.rentmanager.util.Prefs;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -44,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Required on API 33+ for NotificationHelper.show() (OverdueCheckReceiver) to actually
+        // display anything - the manifest declaration alone is not enough on modern Android.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
+        }
 
         String roleName = getIntent().getStringExtra(LoginActivity.EXTRA_ROLE);
         role = roleName != null ? UserRole.valueOf(roleName) : UserRole.ADMIN;

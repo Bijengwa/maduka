@@ -159,6 +159,15 @@
     <string name="reports_total_confirmed_amount">Jumla ya kiasi kilichothibitishwa</string>
     <string name="reports_no_payments">Hakuna rekodi za malipo bado</string>
 
+    <string name="notif_system_overdue_title">Kodi imechelewa</string>
+    <string name="notif_system_overdue_message_format">Kodi yako ya TSh %1$s imechelewa kwa siku %2$d.</string>
+    <string name="notif_system_due_today_title">Kodi inadaiwa leo</string>
+    <string name="notif_system_due_today_message_format">Kodi yako ya TSh %1$s inadaiwa leo.</string>
+    <string name="notif_system_due_soon_title">Kodi inakaribia kudaiwa</string>
+    <string name="notif_system_due_soon_message_format">Kodi yako ya TSh %1$s inadaiwa baada ya siku %2$d.</string>
+    <string name="notif_admin_summary_title">Wapangaji waliochelewa</string>
+    <string name="notif_admin_summary_message_format">Wapangaji %1$d wamechelewa kulipa kodi.</string>
+
     <string name="users_add_admin">Ongeza Msimamizi</string>
     <string name="users_empty">Hakuna wasimamizi waliosajiliwa bado</string>
     <string name="users_name_hint">Jina kamili</string>

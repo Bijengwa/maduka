@@ -159,6 +159,15 @@
     <string name="reports_total_confirmed_amount">Total confirmed amount</string>
     <string name="reports_no_payments">No payment records yet</string>
 
+    <string name="notif_system_overdue_title">Rent overdue</string>
+    <string name="notif_system_overdue_message_format">Your rent of TSh %1$s is %2$d days overdue.</string>
+    <string name="notif_system_due_today_title">Rent due today</string>
+    <string name="notif_system_due_today_message_format">Your rent of TSh %1$s is due today.</string>
+    <string name="notif_system_due_soon_title">Rent due soon</string>
+    <string name="notif_system_due_soon_message_format">Your rent of TSh %1$s is due in %2$d days.</string>
+    <string name="notif_admin_summary_title">Overdue tenants</string>
+    <string name="notif_admin_summary_message_format">%1$d tenant(s) overdue on rent.</string>
+
     <string name="users_add_admin">Add Admin</string>
     <string name="users_empty">No admins registered yet</string>
     <string name="users_name_hint">Full name</string>
