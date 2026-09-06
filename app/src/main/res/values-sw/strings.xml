@@ -45,11 +45,13 @@
     <string name="properties_add_shop">Ongeza Duka</string>
     <string name="properties_empty">Hakuna maduka yaliyosajiliwa bado</string>
     <string name="properties_shop_id_label">Duka</string>
+    <string name="properties_shop_name_hint">Jina la duka</string>
     <string name="properties_rent_hint">Kodi ya mwezi (TSh)</string>
     <string name="properties_per_month">/mwezi</string>
     <string name="properties_add_action">Ongeza</string>
     <string name="properties_all_shops_registered">Maduka yote 10 tayari yamesajiliwa.</string>
     <string name="properties_error_invalid_rent">Weka kiasi sahihi cha kodi.</string>
+    <string name="properties_error_duplicate_name">Duka lenye jina \"%1$s\" tayari lipo.</string>
     <string name="status_occupied">Amepangwa</string>
     <string name="status_vacant">Wazi</string>
     <string name="status_active">Anatumika</string>
@@ -64,6 +66,11 @@
     <string name="users_register_action">Sajili</string>
     <string name="users_error_required">Tafadhali jaza sehemu zote.</string>
     <string name="users_register_success">Msimamizi amesajiliwa</string>
+
+    <string name="tenants_register_tenant">Sajili Mpangaji</string>
+    <string name="tenants_empty">Hakuna wapangaji waliosajiliwa bado</string>
+    <string name="tenants_no_vacant_shops">Hakuna maduka wazi. Sajili duka kwanza au subiri moja liwe wazi.</string>
+    <string name="tenants_shop_label">Duka</string>
 
     <string-array name="verse_texts">
         <item>Mtu mwaminifu atafurika baraka; bali mwenye kuhimizwa kuwa tajiri hatakosa kuadhibiwa.</item>

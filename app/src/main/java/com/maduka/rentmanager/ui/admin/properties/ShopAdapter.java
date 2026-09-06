@@ -58,7 +58,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         }
 
         void bind(Shop shop) {
-            tvShopId.setText(shop.getShopId());
+            String name = shop.getName() != null ? shop.getName() : shop.getShopId();
+            tvShopId.setText(name);
             tvRent.setText(String.format(Locale.US, "TSh %,d", shop.getMonthlyRent()));
 
             boolean occupied = shop.isOccupied();

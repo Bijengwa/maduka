@@ -45,11 +45,13 @@
     <string name="properties_add_shop">Add Shop</string>
     <string name="properties_empty">No shops registered yet</string>
     <string name="properties_shop_id_label">Shop</string>
+    <string name="properties_shop_name_hint">Shop name</string>
     <string name="properties_rent_hint">Monthly rent (TSh)</string>
     <string name="properties_per_month">/month</string>
     <string name="properties_add_action">Add</string>
     <string name="properties_all_shops_registered">All 10 shops are already registered.</string>
     <string name="properties_error_invalid_rent">Enter a valid rent amount.</string>
+    <string name="properties_error_duplicate_name">A shop named \"%1$s\" already exists.</string>
     <string name="status_occupied">Occupied</string>
     <string name="status_vacant">Vacant</string>
     <string name="status_active">Active</string>
@@ -64,6 +66,11 @@
     <string name="users_register_action">Register</string>
     <string name="users_error_required">Please fill in all fields.</string>
     <string name="users_register_success">Admin registered</string>
+
+    <string name="tenants_register_tenant">Register Tenant</string>
+    <string name="tenants_empty">No tenants registered yet</string>
+    <string name="tenants_no_vacant_shops">No vacant shops available. Register a shop first or wait for one to become vacant.</string>
+    <string name="tenants_shop_label">Shop</string>
 
     <string-array name="verse_texts">
         <item>A faithful man shall abound with blessings: but he that maketh haste to be rich shall not be innocent.</item>

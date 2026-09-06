@@ -36,6 +36,18 @@
             android:name=".ui.settings.SettingsActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.admin.properties.AddShopActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.superadmin.users.RegisterAdminActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.admin.tenants.RegisterTenantActivity"
+            android:exported="false" />
+
         <receiver
             android:name=".notifications.OverdueCheckReceiver"
             android:exported="false" />

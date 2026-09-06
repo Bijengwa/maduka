@@ -1,5 +1,6 @@
 package com.maduka.rentmanager.ui.admin.properties;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,6 @@ import com.maduka.rentmanager.data.ShopRepository;
 import com.maduka.rentmanager.data.model.Shop;
 import com.maduka.rentmanager.data.model.UserRole;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PropertiesFragment extends Fragment {
@@ -27,7 +27,6 @@ public class PropertiesFragment extends Fragment {
 
     private final ShopRepository shopRepository = new ShopRepository();
     private UserRole role;
-    private List<Shop> currentShops = new ArrayList<>();
 
     private RecyclerView recyclerShops;
     private TextView tvEmpty;
@@ -72,11 +71,8 @@ public class PropertiesFragment extends Fragment {
 
         if (role == UserRole.SUPER_ADMIN) {
             btnAddShop.setVisibility(View.VISIBLE);
-            btnAddShop.setOnClickListener(v -> {
-                List<String> existingIds = new ArrayList<>();
-                for (Shop s : currentShops) existingIds.add(s.getShopId());
-                AddShopSheet.newInstance(existingIds).show(getChildFragmentManager(), "add_shop");
-            });
+            btnAddShop.setOnClickListener(v ->
+                    startActivity(new Intent(getContext(), AddShopActivity.class)));
         } else {
             btnAddShop.setVisibility(View.GONE);
         }
@@ -85,7 +81,6 @@ public class PropertiesFragment extends Fragment {
             @Override
             public void onShops(List<Shop> shops) {
                 if (!isAdded()) return;
-                currentShops = shops;
                 adapter.submitList(shops);
                 boolean empty = shops.isEmpty();
                 recyclerShops.setVisibility(empty ? View.GONE : View.VISIBLE);

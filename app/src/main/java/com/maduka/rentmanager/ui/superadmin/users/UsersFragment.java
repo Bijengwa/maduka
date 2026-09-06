@@ -1,5 +1,6 @@
 package com.maduka.rentmanager.ui.superadmin.users;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,7 @@ public class UsersFragment extends Fragment {
         recyclerAdmins.setAdapter(adapter);
 
         btnAddAdmin.setOnClickListener(v ->
-                new RegisterAdminSheet().show(getChildFragmentManager(), "register_admin"));
+                startActivity(new Intent(getContext(), RegisterAdminActivity.class)));
 
         userRepository.observeAdmins(new UserRepository.AdminsListener() {
             @Override
