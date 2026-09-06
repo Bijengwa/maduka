@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.ShopRepository;
 import com.maduka.rentmanager.data.TenantRepository;
@@ -53,6 +54,8 @@ public class PropertiesFragment extends Fragment {
     private TextView filterAll, filterOccupied, filterEmpty, filterOverdue;
     private Button btnAddShop;
     private ShopAdapter adapter;
+    private ValueEventListener shopsRegistration;
+    private ValueEventListener tenantsRegistration;
 
     public static PropertiesFragment newInstance(UserRole role) {
         PropertiesFragment fragment = new PropertiesFragment();
@@ -118,38 +121,57 @@ public class PropertiesFragment extends Fragment {
         filterOverdue.setOnClickListener(v -> setFilter(Filter.OVERDUE));
         updateFilterChipStyles();
 
-        tenantRepository.observeTenants(new TenantRepository.TenantsListener() {
+        tenantsRegistration = tenantRepository.observeTenants(new TenantRepository.TenantsListener() {
             @Override
             public void onTenants(List<Tenant> tenants) {
-                if (!isAdded()) return;
+                if (!canTouchViews()) return;
                 tenantByShopId = new HashMap<>();
                 for (Tenant t : tenants) {
-                    if (t.getShopId() != null) tenantByShopId.put(t.getShopId(), t);
+                    if (t != null && t.getShopId() != null && !t.getShopId().isEmpty()) {
+                        tenantByShopId.put(t.getShopId(), t);
+                    }
                 }
                 render();
             }
 
             @Override
             public void onError(String message) {
-                if (!isAdded()) return;
+                if (!canTouchViews()) return;
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
 
-        shopRepository.observeShops(new ShopRepository.ShopsListener() {
+        shopsRegistration = shopRepository.observeShops(new ShopRepository.ShopsListener() {
             @Override
             public void onShops(List<Shop> shops) {
-                if (!isAdded()) return;
-                allShops = shops;
+                if (!canTouchViews()) return;
+                allShops = shops != null ? shops : new ArrayList<>();
                 render();
             }
 
             @Override
             public void onError(String message) {
-                if (!isAdded()) return;
+                if (!canTouchViews()) return;
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (shopsRegistration != null) {
+            shopRepository.stopObservingShops(shopsRegistration);
+            shopsRegistration = null;
+        }
+        if (tenantsRegistration != null) {
+            tenantRepository.stopObservingTenants(tenantsRegistration);
+            tenantsRegistration = null;
+        }
+        super.onDestroyView();
+    }
+
+    private boolean canTouchViews() {
+        return isAdded() && getView() != null;
     }
 
     private void setFilter(Filter newFilter) {
@@ -176,13 +198,15 @@ public class PropertiesFragment extends Fragment {
      * feeds (shops, tenants) whenever either one changes. No stat here is hardcoded - every
      * number is derived from allShops/tenantByShopId at render time. */
     private void render() {
+        if (!canTouchViews()) return;
         long now = System.currentTimeMillis();
         int units = allShops.size();
         int occupied = 0;
         int overdueCount = 0;
         List<ShopAdapter.Row> allRows = new ArrayList<>();
         for (Shop shop : allShops) {
-            Tenant tenant = tenantByShopId.get(shop.getShopId());
+            if (shop == null) continue;
+            Tenant tenant = shop.getShopId() != null ? tenantByShopId.get(shop.getShopId()) : null;
             boolean isOccupied = shop.isOccupied() && tenant != null;
             if (isOccupied) {
                 occupied++;

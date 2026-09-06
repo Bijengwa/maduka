@@ -1,8 +1,11 @@
 package com.maduka.rentmanager.data;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.data.model.PaymentRecord;
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TenantRepository {
+    private static final String TAG = "TenantRepository";
     private final FirebaseManager fb = FirebaseManager.get();
 
     public interface TenantsListener { void onTenants(List<Tenant> tenants); void onError(String message); }
@@ -27,20 +31,47 @@ public class TenantRepository {
 
     /** All registered tenants, live-updating. Admin/Super Admin only - a Tenant's own screens
      * must use observeTenant(uid, ...) below instead, never filter this full list client-side. */
-    public void observeTenants(TenantsListener listener) {
-        fb.root().child(FirebaseSchema.TENANTS).addValueEventListener(new ValueEventListener() {
+    public ValueEventListener observeTenants(TenantsListener listener) {
+        ValueEventListener registration = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                List<Tenant> tenants = new ArrayList<>();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    Tenant t = child.getValue(Tenant.class);
-                    if (t != null) tenants.add(t);
-                }
-                listener.onTenants(tenants);
+                listener.onTenants(parseTenants(snapshot));
             }
             @Override
             public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
-        });
+        };
+        fb.root().child(FirebaseSchema.TENANTS).addValueEventListener(registration);
+        return registration;
+    }
+
+    public void stopObservingTenants(ValueEventListener registration) {
+        if (registration != null) {
+            fb.root().child(FirebaseSchema.TENANTS).removeEventListener(registration);
+        }
+    }
+
+    private List<Tenant> parseTenants(DataSnapshot snapshot) {
+        List<Tenant> tenants = new ArrayList<>();
+        for (DataSnapshot child : snapshot.getChildren()) {
+            Tenant t = readTenant(child);
+            if (t != null) tenants.add(t);
+        }
+        return tenants;
+    }
+
+    private Tenant readTenant(DataSnapshot child) {
+        Tenant t;
+        try {
+            t = child.getValue(Tenant.class);
+        } catch (DatabaseException e) {
+            Log.w(TAG, "Skipping malformed tenant " + child.getKey(), e);
+            return null;
+        }
+        if (t == null) return null;
+        if (t.getUid() == null || t.getUid().isEmpty()) {
+            t.setUid(child.getKey());
+        }
+        return t;
     }
 
     /** A single tenant's own record, live-updating - server-side scoped by uid, not a filter
