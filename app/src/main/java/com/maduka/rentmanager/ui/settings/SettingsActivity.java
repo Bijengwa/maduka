@@ -45,7 +45,9 @@ public class SettingsActivity extends AppCompatActivity {
         rowSignOut.setOnClickListener(v -> {
             new AuthRepository().signOut();
             Prefs.get(this).setRememberMe(false, null, null);
-            startActivity(new Intent(this, LoginActivity.class));
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             finish();
         });
     }
