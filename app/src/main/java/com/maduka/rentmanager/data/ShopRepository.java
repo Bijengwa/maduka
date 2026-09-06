@@ -22,6 +22,10 @@ public class ShopRepository {
     /** A single shop's own record, live-updating - used by a Tenant's own Details screen so it
      * never has to pull the full shops/ node just to find one row. */
     public void observeShop(String shopId, ShopListener listener) {
+        if (shopId == null || shopId.isEmpty()) {
+            listener.onError("Invalid shop id.");
+            return;
+        }
         fb.root().child(FirebaseSchema.SHOPS).child(shopId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) { listener.onShop(snapshot.getValue(Shop.class)); }

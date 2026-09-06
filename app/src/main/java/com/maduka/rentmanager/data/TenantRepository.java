@@ -46,6 +46,10 @@ public class TenantRepository {
     /** A single tenant's own record, live-updating - server-side scoped by uid, not a filter
      * over observeTenants(). This is what every Tenant-self screen must use. */
     public void observeTenant(String uid, TenantListener listener) {
+        if (uid == null || uid.isEmpty()) {
+            listener.onError("Invalid tenant uid.");
+            return;
+        }
         fb.root().child(FirebaseSchema.TENANTS).child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) { listener.onTenant(snapshot.getValue(Tenant.class)); }
