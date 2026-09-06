@@ -13,6 +13,8 @@
     <string name="login_sign_in">Ingia</string>
     <string name="login_forgot_password">Umesahau neno la siri? Wasiliana na msimamizi</string>
     <string name="login_error_generic">Imeshindikana kuingia — hakiki taarifa zako kisha jaribu tena.</string>
+    <string name="login_error_identifier_required">Ingiza jina la mtumiaji, barua pepe au simu.</string>
+    <string name="login_error_password_required">Ingiza neno la siri.</string>
 
     <string name="nav_dashboard">Dashibodi</string>
     <string name="nav_properties">Maduka</string>

@@ -13,6 +13,8 @@
     <string name="login_sign_in">Sign In</string>
     <string name="login_forgot_password">Forgot password? Contact admin</string>
     <string name="login_error_generic">Could not sign in — check your details and try again.</string>
+    <string name="login_error_identifier_required">Enter your username, email or phone.</string>
+    <string name="login_error_password_required">Enter your password.</string>
 
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_properties">Shops</string>
