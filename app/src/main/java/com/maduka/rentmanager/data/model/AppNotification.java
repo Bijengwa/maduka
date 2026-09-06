@@ -4,9 +4,7 @@ public class AppNotification {
     public static final String TYPE_OVERDUE = "overdue";
     public static final String TYPE_DUE_TODAY = "due_today";
     public static final String TYPE_DUE_SOON = "due_soon";
-    public static final String TYPE_PAYMENT_CONFIRMED = "payment_confirmed";
-    public static final String TYPE_PAYMENT_REJECTED = "payment_rejected";
-    public static final String TYPE_RECEIPT_AVAILABLE = "receipt_available";
+    public static final String TYPE_PAYMENT_RECORDED = "payment_recorded";
     public static final String TYPE_SYSTEM = "system";
 
     private String notificationId;

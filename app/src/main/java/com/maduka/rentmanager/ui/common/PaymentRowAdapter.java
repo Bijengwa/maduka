@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.model.PaymentRecord;
-import com.maduka.rentmanager.data.model.PaymentStatus;
 import com.maduka.rentmanager.util.DateCalculator;
-import com.maduka.rentmanager.util.StatusPresentation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,16 +82,7 @@ public class PaymentRowAdapter extends RecyclerView.Adapter<PaymentRowAdapter.Vi
             tvDetail.setText(detail.toString());
 
             tvAmount.setText(String.format(Locale.US, "TSh %,d", payment.getAmount()));
-
-            PaymentStatus status = payment.getStatus() != null ? payment.getStatus() : PaymentStatus.PENDING;
-            StatusPresentation.Tone tone = StatusPresentation.toneFor(status);
-            int labelRes;
-            switch (status) {
-                case CONFIRMED: labelRes = R.string.status_confirmed; break;
-                case REJECTED: labelRes = R.string.status_rejected; break;
-                default: labelRes = R.string.status_pending;
-            }
-            StatusPill.apply(tvStatus, tone, labelRes);
+            tvStatus.setVisibility(View.GONE);
         }
     }
 }

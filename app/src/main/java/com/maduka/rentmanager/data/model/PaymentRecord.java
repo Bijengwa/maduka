@@ -1,5 +1,8 @@
 package com.maduka.rentmanager.data.model;
 
+/** A rent payment recorded by the Super Admin. There is no approval workflow: once written, a
+ * payment is immediately a valid recorded payment - see the product-rules amendment that removed
+ * the old PENDING/CONFIRMED/REJECTED two-person confirm/reject flow. */
 public class PaymentRecord {
     private String paymentId;
     private String tenantUid;
@@ -12,15 +15,9 @@ public class PaymentRecord {
     private String notes;
     private String recordedByUid;
     private String recordedByName;
-    private PaymentStatus status = PaymentStatus.PENDING;
-    private RejectionReason rejectionReason;
-    private String rejectionNote;
-    private String confirmedByUid;
-    private String confirmedByName;
-    // snapshot taken at record time, used to roll back the tenant on reject
-    private long previousLastPaymentDate;
-    private long previousDueDate;
-    private int previousMonthsCovered;
+    // The phone number the payment was PAID TO (the receiving number) - never the tenant's own
+    // phone number, which lives on Tenant.phone.
+    private String paymentPhoneNumber;
     private long createdAt;
     private long updatedAt;
 
@@ -48,29 +45,10 @@ public class PaymentRecord {
     public void setRecordedByUid(String recordedByUid) { this.recordedByUid = recordedByUid; }
     public String getRecordedByName() { return recordedByName; }
     public void setRecordedByName(String recordedByName) { this.recordedByName = recordedByName; }
-    public PaymentStatus getStatus() { return status; }
-    public void setStatus(PaymentStatus status) { this.status = status; }
-    public RejectionReason getRejectionReason() { return rejectionReason; }
-    public void setRejectionReason(RejectionReason rejectionReason) { this.rejectionReason = rejectionReason; }
-    public String getRejectionNote() { return rejectionNote; }
-    public void setRejectionNote(String rejectionNote) { this.rejectionNote = rejectionNote; }
-    public String getConfirmedByUid() { return confirmedByUid; }
-    public void setConfirmedByUid(String confirmedByUid) { this.confirmedByUid = confirmedByUid; }
-    public String getConfirmedByName() { return confirmedByName; }
-    public void setConfirmedByName(String confirmedByName) { this.confirmedByName = confirmedByName; }
-    public long getPreviousLastPaymentDate() { return previousLastPaymentDate; }
-    public void setPreviousLastPaymentDate(long previousLastPaymentDate) { this.previousLastPaymentDate = previousLastPaymentDate; }
-    public long getPreviousDueDate() { return previousDueDate; }
-    public void setPreviousDueDate(long previousDueDate) { this.previousDueDate = previousDueDate; }
-    public int getPreviousMonthsCovered() { return previousMonthsCovered; }
-    public void setPreviousMonthsCovered(int previousMonthsCovered) { this.previousMonthsCovered = previousMonthsCovered; }
+    public String getPaymentPhoneNumber() { return paymentPhoneNumber; }
+    public void setPaymentPhoneNumber(String paymentPhoneNumber) { this.paymentPhoneNumber = paymentPhoneNumber; }
     public long getCreatedAt() { return createdAt; }
     public void setCreatedAt(long createdAt) { this.createdAt = createdAt; }
     public long getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(long updatedAt) { this.updatedAt = updatedAt; }
-
-    /** True only when a different user than the recorder is trying to act. Two-person rule. */
-    public boolean canBeActionedBy(String uid) {
-        return uid != null && !uid.equals(recordedByUid);
-    }
 }

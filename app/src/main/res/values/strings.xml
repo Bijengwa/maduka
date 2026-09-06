@@ -108,9 +108,6 @@
     <string name="tenant_history_empty">No payment history yet</string>
     <string name="months_covered_format">%1$d month(s)</string>
     <string name="recorded_by_format">Recorded by %1$s</string>
-    <string name="status_confirmed">Confirmed</string>
-    <string name="status_pending">Pending</string>
-    <string name="status_rejected">Rejected</string>
 
     <string name="notif_filter_all">All</string>
     <string name="notif_filter_overdue">Overdue</string>
@@ -135,8 +132,6 @@
     <string name="notif_tenant_due_soon_message_format">Your rent for %1$s is due in %2$d days.</string>
     <string name="notif_tenant_confirmed_title">Payment confirmed</string>
     <string name="notif_tenant_confirmed_message_format">TSh %1$s confirmed for %2$d month(s).</string>
-    <string name="notif_tenant_rejected_title">Payment needs attention</string>
-    <string name="notif_tenant_rejected_message">Your recent payment requires attention. Contact your admin.</string>
 
     <string name="dashboard_subtitle_format">%1$d units · %2$d occupied</string>
     <string name="dashboard_next_due_title">Next due</string>
@@ -154,10 +149,8 @@
     <string name="reports_active_tenants">Active tenants</string>
     <string name="reports_overdue_tenants">Overdue tenants</string>
     <string name="reports_total_records">Total records</string>
-    <string name="reports_confirmed">Confirmed</string>
-    <string name="reports_pending">Pending</string>
-    <string name="reports_rejected">Rejected</string>
-    <string name="reports_total_confirmed_amount">Total confirmed amount</string>
+    <string name="reports_total_amount">Total collected</string>
+    <string name="reports_average_amount">Average payment</string>
     <string name="reports_no_payments">No payment records yet</string>
 
     <string name="notif_system_overdue_title">Rent overdue</string>

@@ -9,7 +9,6 @@ import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.data.model.PaymentRecord;
-import com.maduka.rentmanager.data.model.PaymentStatus;
 import com.maduka.rentmanager.data.model.PresenceStatus;
 import com.maduka.rentmanager.data.model.Shop;
 import com.maduka.rentmanager.data.model.Tenant;
@@ -144,12 +143,8 @@ public class TenantRepository {
      * UserRepository.registerAdmin, so the currently signed-in Admin/Super Admin's own session
      * is never disturbed by creating this new Firebase Auth account. Marks the shop occupied.
      *
-     * The initial payment is recorded already CONFIRMED, not PENDING: the ongoing two-person
-     * confirm/reject rule (a second admin must confirm a payment someone else recorded) exists
-     * for later rent renewals, once there's a dashboard to actually review pending payments -
-     * that dashboard doesn't exist yet in this app, so leaving this first payment PENDING would
-     * create a record nobody could ever act on. recordedByUid is stamped as both recorder and
-     * confirmer for this one record, since registering the tenant is itself the confirming act. */
+     * There is no approval workflow: this first payment, like every payment recorded via
+     * {@link PaymentRepository#recordPayment}, is immediately a valid recorded payment. */
     public void registerTenant(String name, String phone, String email, String password, Shop shop,
                                 int monthsPaid, long paymentDateMillis, String recordedByUid,
                                 FirebaseManager.Callback<Void> cb) {
@@ -189,11 +184,6 @@ public class TenantRepository {
                     payment.setMonthsCovered(monthsPaid);
                     payment.setPaymentDate(paymentDateMillis);
                     payment.setRecordedByUid(recordedByUid);
-                    payment.setStatus(PaymentStatus.CONFIRMED);
-                    payment.setConfirmedByUid(recordedByUid);
-                    payment.setPreviousLastPaymentDate(0L);
-                    payment.setPreviousDueDate(0L);
-                    payment.setPreviousMonthsCovered(0);
                     payment.setCreatedAt(now);
                     payment.setUpdatedAt(now);
 

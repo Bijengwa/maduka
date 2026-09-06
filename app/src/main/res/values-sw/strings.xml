@@ -108,9 +108,6 @@
     <string name="tenant_history_empty">Hakuna historia ya malipo bado</string>
     <string name="months_covered_format">Miezi %1$d</string>
     <string name="recorded_by_format">Imerekodiwa na %1$s</string>
-    <string name="status_confirmed">Imethibitishwa</string>
-    <string name="status_pending">Inasubiri</string>
-    <string name="status_rejected">Imekataliwa</string>
 
     <string name="notif_filter_all">Yote</string>
     <string name="notif_filter_overdue">Yamechelewa</string>
@@ -135,8 +132,6 @@
     <string name="notif_tenant_due_soon_message_format">Kodi yako ya %1$s inadaiwa baada ya siku %2$d.</string>
     <string name="notif_tenant_confirmed_title">Malipo yamethibitishwa</string>
     <string name="notif_tenant_confirmed_message_format">TSh %1$s zimethibitishwa kwa miezi %2$d.</string>
-    <string name="notif_tenant_rejected_title">Malipo yanahitaji ufafanuzi</string>
-    <string name="notif_tenant_rejected_message">Malipo yako ya hivi karibuni yanahitaji ufafanuzi. Wasiliana na msimamizi.</string>
 
     <string name="dashboard_subtitle_format">Maduka %1$d · %2$d yamepangwa</string>
     <string name="dashboard_next_due_title">Malipo yajayo</string>
@@ -154,10 +149,8 @@
     <string name="reports_active_tenants">Wapangaji wanaotumika</string>
     <string name="reports_overdue_tenants">Wapangaji waliochelewa</string>
     <string name="reports_total_records">Jumla ya rekodi</string>
-    <string name="reports_confirmed">Zimethibitishwa</string>
-    <string name="reports_pending">Zinasubiri</string>
-    <string name="reports_rejected">Zimekataliwa</string>
-    <string name="reports_total_confirmed_amount">Jumla ya kiasi kilichothibitishwa</string>
+    <string name="reports_total_amount">Jumla iliyokusanywa</string>
+    <string name="reports_average_amount">Wastani wa malipo</string>
     <string name="reports_no_payments">Hakuna rekodi za malipo bado</string>
 
     <string name="notif_system_overdue_title">Kodi imechelewa</string>

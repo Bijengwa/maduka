@@ -19,7 +19,6 @@ import com.maduka.rentmanager.data.PaymentRepository;
 import com.maduka.rentmanager.data.ShopRepository;
 import com.maduka.rentmanager.data.TenantRepository;
 import com.maduka.rentmanager.data.model.PaymentRecord;
-import com.maduka.rentmanager.data.model.PaymentStatus;
 import com.maduka.rentmanager.data.model.Shop;
 import com.maduka.rentmanager.data.model.Tenant;
 import com.maduka.rentmanager.ui.common.NotifAdapter;
@@ -158,18 +157,11 @@ public class TenantNotificationsFragment extends Fragment {
         List<NotifItem> items = new ArrayList<>();
         for (PaymentRecord p : payments) {
             String date = DateCalculator.formatDdMmYyyy(p.getPaymentDate());
-            if (p.getStatus() == PaymentStatus.CONFIRMED) {
-                items.add(new NotifItem(NotifItem.Category.CONFIRMED,
-                        getString(R.string.notif_tenant_confirmed_title),
-                        getString(R.string.notif_tenant_confirmed_message_format,
-                                String.format(Locale.US, "%,d", p.getAmount()), p.getMonthsCovered()),
-                        date, StatusPresentation.Tone.GOOD, p.getPaymentDate()));
-            } else if (p.getStatus() == PaymentStatus.REJECTED) {
-                items.add(new NotifItem(NotifItem.Category.CONFIRMED,
-                        getString(R.string.notif_tenant_rejected_title),
-                        getString(R.string.notif_tenant_rejected_message),
-                        date, StatusPresentation.Tone.BAD, p.getPaymentDate()));
-            }
+            items.add(new NotifItem(NotifItem.Category.CONFIRMED,
+                    getString(R.string.notif_tenant_confirmed_title),
+                    getString(R.string.notif_tenant_confirmed_message_format,
+                            String.format(Locale.US, "%,d", p.getAmount()), p.getMonthsCovered()),
+                    date, StatusPresentation.Tone.GOOD, p.getPaymentDate()));
         }
         return items;
     }

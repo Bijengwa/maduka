@@ -70,13 +70,9 @@
 
             <include layout="@layout/row_label_value" android:id="@+id/rowTotalRecords" />
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
-            <include layout="@layout/row_label_value" android:id="@+id/rowConfirmed" />
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
-            <include layout="@layout/row_label_value" android:id="@+id/rowPending" />
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
-            <include layout="@layout/row_label_value" android:id="@+id/rowRejected" />
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
             <include layout="@layout/row_label_value" android:id="@+id/rowTotalAmount" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowAverageAmount" />
         </LinearLayout>
 
         <TextView

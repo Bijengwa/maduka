@@ -16,7 +16,6 @@ import com.maduka.rentmanager.data.PaymentRepository;
 import com.maduka.rentmanager.data.ShopRepository;
 import com.maduka.rentmanager.data.TenantRepository;
 import com.maduka.rentmanager.data.model.PaymentRecord;
-import com.maduka.rentmanager.data.model.PaymentStatus;
 import com.maduka.rentmanager.data.model.Shop;
 import com.maduka.rentmanager.data.model.Tenant;
 import com.maduka.rentmanager.util.DateCalculator;
@@ -40,7 +39,7 @@ public class ReportsFragment extends Fragment {
     private boolean shopsLoaded, tenantsLoaded, paymentsLoaded;
 
     private Row rowTotalShops, rowOccupied, rowVacant, rowOccupancy, rowActiveTenants, rowOverdueTenants;
-    private Row rowTotalRecords, rowConfirmed, rowPending, rowRejected, rowTotalAmount;
+    private Row rowTotalRecords, rowTotalAmount, rowAverageAmount;
     private TextView tvNoPayments;
 
     private ValueEventListener shopsRegistration, tenantsRegistration, paymentsRegistration;
@@ -73,10 +72,8 @@ public class ReportsFragment extends Fragment {
         rowActiveTenants = new Row(view.findViewById(R.id.rowActiveTenants));
         rowOverdueTenants = new Row(view.findViewById(R.id.rowOverdueTenants));
         rowTotalRecords = new Row(view.findViewById(R.id.rowTotalRecords));
-        rowConfirmed = new Row(view.findViewById(R.id.rowConfirmed));
-        rowPending = new Row(view.findViewById(R.id.rowPending));
-        rowRejected = new Row(view.findViewById(R.id.rowRejected));
         rowTotalAmount = new Row(view.findViewById(R.id.rowTotalAmount));
+        rowAverageAmount = new Row(view.findViewById(R.id.rowAverageAmount));
         tvNoPayments = view.findViewById(R.id.tvNoPayments);
 
         shopsRegistration = shopRepository.observeShops(new ShopRepository.ShopsListener() {
@@ -163,30 +160,18 @@ public class ReportsFragment extends Fragment {
     }
 
     private void renderPayments() {
-        int confirmed = 0, pending = 0, rejected = 0;
-        long totalConfirmedAmount = 0;
+        long totalAmount = 0;
         for (PaymentRecord p : allPayments) {
             if (p == null) continue;
-            PaymentStatus status = p.getStatus() != null ? p.getStatus() : PaymentStatus.PENDING;
-            switch (status) {
-                case CONFIRMED:
-                    confirmed++;
-                    totalConfirmedAmount += p.getAmount();
-                    break;
-                case REJECTED:
-                    rejected++;
-                    break;
-                default:
-                    pending++;
-            }
+            totalAmount += p.getAmount();
         }
+        long averageAmount = allPayments.isEmpty() ? 0 : totalAmount / allPayments.size();
 
         rowTotalRecords.set(getString(R.string.reports_total_records), String.valueOf(allPayments.size()));
-        rowConfirmed.set(getString(R.string.reports_confirmed), String.valueOf(confirmed));
-        rowPending.set(getString(R.string.reports_pending), String.valueOf(pending));
-        rowRejected.set(getString(R.string.reports_rejected), String.valueOf(rejected));
-        rowTotalAmount.set(getString(R.string.reports_total_confirmed_amount),
-                String.format(Locale.US, "TSh %,d", totalConfirmedAmount));
+        rowTotalAmount.set(getString(R.string.reports_total_amount),
+                String.format(Locale.US, "TSh %,d", totalAmount));
+        rowAverageAmount.set(getString(R.string.reports_average_amount),
+                String.format(Locale.US, "TSh %,d", averageAmount));
 
         tvNoPayments.setVisibility(allPayments.isEmpty() ? View.VISIBLE : View.GONE);
     }

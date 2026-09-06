@@ -1,20 +1,22 @@
 package com.maduka.rentmanager.util;
 
 import com.maduka.rentmanager.R;
-import com.maduka.rentmanager.data.model.PaymentStatus;
 import com.maduka.rentmanager.data.model.PresenceStatus;
 
-/** Maps the app's four business statuses onto the shared 4-color status system. */
+/** Maps the app's business statuses onto the shared 4-color status system. */
 public final class StatusPresentation {
     private StatusPresentation() {}
 
     public enum Tone { GOOD, WAIT, BAD, EMPTY }
 
-    public static Tone toneFor(PaymentStatus status) {
-        switch (status) {
-            case CONFIRMED: return Tone.GOOD;
-            case REJECTED: return Tone.BAD;
-            default: return Tone.WAIT;
+    /** ACTIVE/Hai -> green, NEXT_DUE/Inakaribia -> amber, OVERDUE/Imepita muda -> red,
+     * UNKNOWN (no dueDate on record) -> the same neutral tone as an empty/vacant shop. */
+    public static Tone toneFor(DateCalculator.DueBucket bucket) {
+        switch (bucket) {
+            case ACTIVE: return Tone.GOOD;
+            case NEXT_DUE: return Tone.WAIT;
+            case OVERDUE: return Tone.BAD;
+            default: return Tone.EMPTY;
         }
     }
 
