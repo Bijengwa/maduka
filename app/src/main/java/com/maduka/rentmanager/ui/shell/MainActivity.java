@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment fragmentFor(int itemId) {
         if (itemId == R.id.nav_dashboard) return role == UserRole.TENANT ? new TenantDashboardFragment() : new AdminDashboardFragment();
-        if (itemId == R.id.nav_properties) return new PropertiesFragment();
+        if (itemId == R.id.nav_properties) return PropertiesFragment.newInstance(role);
         if (itemId == R.id.nav_tenants) return new TenantsFragment();
         if (itemId == R.id.nav_reports) return new ReportsFragment();
         if (itemId == R.id.nav_notifications) return role == UserRole.TENANT ? new TenantNotificationsFragment() : new AdminNotificationsFragment();
