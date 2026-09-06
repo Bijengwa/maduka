@@ -30,8 +30,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String STATE_SELECTED_NAV_ID = "selected_nav_id";
+
     private UserRole role;
     private BottomNavigationView bottomNav;
+    private int selectedNavId;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -53,10 +56,21 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.applyBottomInset(bottomNav);
         bottomNav.inflateMenu(menuFor(role));
         bottomNav.setOnItemSelectedListener(item -> {
-            showFragment(fragmentFor(item.getItemId()));
+            selectedNavId = item.getItemId();
+            showFragment(fragmentFor(selectedNavId));
             return true;
         });
-        showFragment(fragmentFor(bottomNav.getMenu().getItem(0).getItemId()));
+
+        // recreate() (e.g. from the language toggle) passes the tab we were on back in
+        // savedInstanceState - restore it instead of always defaulting to the first tab, so
+        // BottomNavigationView's own auto-restored "selected" highlight (which Android does
+        // for any view with a stable id, independent of this code) stays in sync with which
+        // fragment is actually showing.
+        selectedNavId = savedInstanceState != null
+                ? savedInstanceState.getInt(STATE_SELECTED_NAV_ID, bottomNav.getMenu().getItem(0).getItemId())
+                : bottomNav.getMenu().getItem(0).getItemId();
+        bottomNav.setSelectedItemId(selectedNavId);
+        showFragment(fragmentFor(selectedNavId));
 
         Button btnLanguage = findViewById(R.id.btnLanguage);
         Prefs prefs = Prefs.get(this);
@@ -73,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton btnSettings = findViewById(R.id.btnSettings);
         btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_NAV_ID, selectedNavId);
     }
 
     private int menuFor(UserRole role) {
