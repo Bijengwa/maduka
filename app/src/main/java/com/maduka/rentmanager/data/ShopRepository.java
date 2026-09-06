@@ -23,18 +23,27 @@ public class ShopRepository {
     public interface ShopListener { void onShop(Shop shop); void onError(String message); }
 
     /** A single shop's own record, live-updating - used by a Tenant's own Details screen so it
-     * never has to pull the full shops/ node just to find one row. */
-    public void observeShop(String shopId, ShopListener listener) {
+     * never has to pull the full shops/ node just to find one row. Returns the registration so
+     * callers can detach it in onDestroyView via stopObservingShop. */
+    public ValueEventListener observeShop(String shopId, ShopListener listener) {
         if (shopId == null || shopId.isEmpty()) {
             listener.onError("Invalid shop id.");
-            return;
+            return null;
         }
-        fb.root().child(FirebaseSchema.SHOPS).child(shopId).addValueEventListener(new ValueEventListener() {
+        ValueEventListener registration = new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) { listener.onShop(snapshot.getValue(Shop.class)); }
+            public void onDataChange(DataSnapshot snapshot) { listener.onShop(readShop(snapshot)); }
             @Override
             public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
-        });
+        };
+        fb.root().child(FirebaseSchema.SHOPS).child(shopId).addValueEventListener(registration);
+        return registration;
+    }
+
+    public void stopObservingShop(String shopId, ValueEventListener registration) {
+        if (registration != null && shopId != null) {
+            fb.root().child(FirebaseSchema.SHOPS).child(shopId).removeEventListener(registration);
+        }
     }
 
     /** All registered shops, live-updating, sorted by shopId (a Firebase push key, which sorts

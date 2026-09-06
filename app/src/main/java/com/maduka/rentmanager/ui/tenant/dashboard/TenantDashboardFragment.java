@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.AuthRepository;
 import com.maduka.rentmanager.data.ShopRepository;
@@ -31,6 +32,8 @@ public class TenantDashboardFragment extends Fragment {
     private final ShopRepository shopRepository = new ShopRepository();
 
     private TextView tvSubtitle, tvWelcome, tvLastPayment, tvDueDate, tvStatus, tvDaysMessage;
+    private String tenantUid, tenantShopId;
+    private ValueEventListener tenantRegistration, shopRegistration;
 
     @Nullable
     @Override
@@ -53,9 +56,9 @@ public class TenantDashboardFragment extends Fragment {
         rowHistory.setOnClickListener(v -> navigateTo(new TenantHistoryFragment()));
         rowDetails.setOnClickListener(v -> navigateTo(new TenantDetailsFragment()));
 
-        String uid = new AuthRepository().currentUid();
-        if (uid == null) return;
-        tenantRepository.observeTenant(uid, new TenantRepository.TenantListener() {
+        tenantUid = new AuthRepository().currentUid();
+        if (tenantUid == null) return;
+        tenantRegistration = tenantRepository.observeTenant(tenantUid, new TenantRepository.TenantListener() {
             @Override
             public void onTenant(Tenant tenant) {
                 if (!isAdded() || tenant == null) return;
@@ -67,9 +70,19 @@ public class TenantDashboardFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        if (tenantRegistration != null) tenantRepository.stopObservingTenant(tenantUid, tenantRegistration);
+        if (shopRegistration != null) shopRepository.stopObservingShop(tenantShopId, shopRegistration);
+        tenantRegistration = null;
+        shopRegistration = null;
+        super.onDestroyView();
+    }
+
     private void bind(Tenant tenant) {
         tvWelcome.setText(getString(R.string.login_sign_in_as) + ", " + firstName(tenant.getName()));
-        shopRepository.observeShop(tenant.getShopId(), new ShopRepository.ShopListener() {
+        tenantShopId = tenant.getShopId();
+        shopRegistration = shopRepository.observeShop(tenant.getShopId(), new ShopRepository.ShopListener() {
             @Override
             public void onShop(Shop shop) {
                 if (!isAdded() || shop == null) return;

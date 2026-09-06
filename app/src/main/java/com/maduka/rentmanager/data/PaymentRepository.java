@@ -44,10 +44,12 @@ public class PaymentRepository {
     }
 
     /** A tenant's own payment records, live-updating - a real server-side query
-     * (orderByChild("tenantUid").equalTo(uid)), not a client-side filter of the full node. */
-    public void observePaymentsForTenant(String tenantUid, PaymentsListener listener) {
-        Query query = fb.root().child(FirebaseSchema.PAYMENTS).orderByChild("tenantUid").equalTo(tenantUid);
-        query.addValueEventListener(new ValueEventListener() {
+     * (orderByChild("tenantUid").equalTo(uid)), not a client-side filter of the full node.
+     * Returns the registration so callers can detach it in onDestroyView via
+     * stopObservingPaymentsForTenant(tenantUid, registration) - the same tenantUid reconstructs
+     * an equal Query, which is what removeEventListener needs to match. */
+    public ValueEventListener observePaymentsForTenant(String tenantUid, PaymentsListener listener) {
+        ValueEventListener registration = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 List<PaymentRecord> payments = parsePayments(snapshot);
@@ -56,7 +58,19 @@ public class PaymentRepository {
             }
             @Override
             public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
-        });
+        };
+        paymentsForTenantQuery(tenantUid).addValueEventListener(registration);
+        return registration;
+    }
+
+    public void stopObservingPaymentsForTenant(String tenantUid, ValueEventListener registration) {
+        if (registration != null && tenantUid != null) {
+            paymentsForTenantQuery(tenantUid).removeEventListener(registration);
+        }
+    }
+
+    private Query paymentsForTenantQuery(String tenantUid) {
+        return fb.root().child(FirebaseSchema.PAYMENTS).orderByChild("tenantUid").equalTo(tenantUid);
     }
 
     private List<PaymentRecord> parsePayments(DataSnapshot snapshot) {

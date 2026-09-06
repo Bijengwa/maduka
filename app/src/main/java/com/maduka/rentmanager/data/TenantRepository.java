@@ -75,15 +75,50 @@ public class TenantRepository {
     }
 
     /** A single tenant's own record, live-updating - server-side scoped by uid, not a filter
-     * over observeTenants(). This is what every Tenant-self screen must use. */
-    public void observeTenant(String uid, TenantListener listener) {
+     * over observeTenants(). This is what every Tenant-self screen must use. Returns the
+     * registration so callers can detach it in onDestroyView via stopObservingTenant. */
+    public ValueEventListener observeTenant(String uid, TenantListener listener) {
+        if (uid == null || uid.isEmpty()) {
+            listener.onError("Invalid tenant uid.");
+            return null;
+        }
+        ValueEventListener registration = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) { listener.onTenant(readTenant(snapshot)); }
+            @Override
+            public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
+        };
+        fb.root().child(FirebaseSchema.TENANTS).child(uid).addValueEventListener(registration);
+        return registration;
+    }
+
+    public void stopObservingTenant(String uid, ValueEventListener registration) {
+        if (registration != null && uid != null) {
+            fb.root().child(FirebaseSchema.TENANTS).child(uid).removeEventListener(registration);
+        }
+    }
+
+    /** One-shot read of a single tenant by uid - for background/receiver code (e.g.
+     * OverdueCheckReceiver) that must not leave a live listener running after it returns. */
+    public void observeTenantOnce(String uid, TenantListener listener) {
         if (uid == null || uid.isEmpty()) {
             listener.onError("Invalid tenant uid.");
             return;
         }
-        fb.root().child(FirebaseSchema.TENANTS).child(uid).addValueEventListener(new ValueEventListener() {
+        fb.root().child(FirebaseSchema.TENANTS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) { listener.onTenant(snapshot.getValue(Tenant.class)); }
+            public void onDataChange(DataSnapshot snapshot) { listener.onTenant(readTenant(snapshot)); }
+            @Override
+            public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
+        });
+    }
+
+    /** One-shot read of all tenants - for background/receiver code only (Admin/Super Admin
+     * overdue summary). UI screens must keep using the live observeTenants() above. */
+    public void observeTenantsOnce(TenantsListener listener) {
+        fb.root().child(FirebaseSchema.TENANTS).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) { listener.onTenants(parseTenants(snapshot)); }
             @Override
             public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
         });

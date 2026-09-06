@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.AuthRepository;
 import com.maduka.rentmanager.data.PaymentRepository;
@@ -35,6 +36,8 @@ public class TenantPaymentsFragment extends Fragment {
     private TextView tvSubtitle, tvEmpty;
     private RecyclerView recyclerPayments;
     private PaymentRowAdapter adapter;
+    private String tenantUid, tenantShopId;
+    private ValueEventListener tenantRegistration, shopRegistration, paymentsRegistration;
 
     @Nullable
     @Override
@@ -52,14 +55,15 @@ public class TenantPaymentsFragment extends Fragment {
         recyclerPayments.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerPayments.setAdapter(adapter);
 
-        String uid = new AuthRepository().currentUid();
-        if (uid == null) return;
+        tenantUid = new AuthRepository().currentUid();
+        if (tenantUid == null) return;
 
-        tenantRepository.observeTenant(uid, new TenantRepository.TenantListener() {
+        tenantRegistration = tenantRepository.observeTenant(tenantUid, new TenantRepository.TenantListener() {
             @Override
             public void onTenant(Tenant tenant) {
                 if (!isAdded() || tenant == null) return;
-                shopRepository.observeShop(tenant.getShopId(), new ShopRepository.ShopListener() {
+                tenantShopId = tenant.getShopId();
+                shopRegistration = shopRepository.observeShop(tenant.getShopId(), new ShopRepository.ShopListener() {
                     @Override
                     public void onShop(Shop shop) {
                         if (!isAdded()) return;
@@ -77,7 +81,7 @@ public class TenantPaymentsFragment extends Fragment {
             public void onError(String message) { }
         });
 
-        paymentRepository.observePaymentsForTenant(uid, new PaymentRepository.PaymentsListener() {
+        paymentsRegistration = paymentRepository.observePaymentsForTenant(tenantUid, new PaymentRepository.PaymentsListener() {
             @Override
             public void onPayments(List<PaymentRecord> payments) {
                 if (!isAdded()) return;
@@ -90,5 +94,16 @@ public class TenantPaymentsFragment extends Fragment {
             @Override
             public void onError(String message) { }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (tenantRegistration != null) tenantRepository.stopObservingTenant(tenantUid, tenantRegistration);
+        if (shopRegistration != null) shopRepository.stopObservingShop(tenantShopId, shopRegistration);
+        if (paymentsRegistration != null) paymentRepository.stopObservingPaymentsForTenant(tenantUid, paymentsRegistration);
+        tenantRegistration = null;
+        shopRegistration = null;
+        paymentsRegistration = null;
+        super.onDestroyView();
     }
 }
