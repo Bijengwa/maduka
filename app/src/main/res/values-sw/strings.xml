@@ -15,11 +15,11 @@
     <string name="login_error_generic">Imeshindikana kuingia — hakiki taarifa zako kisha jaribu tena.</string>
 
     <string name="nav_dashboard">Dashibodi</string>
-    <string name="nav_properties">Mali</string>
+    <string name="nav_properties">Maduka</string>
     <string name="nav_tenants">Wapangaji</string>
     <string name="nav_reports">Ripoti</string>
     <string name="nav_notifications">Arifa</string>
-    <string name="nav_users">Watumiaji</string>
+    <string name="nav_users">Wasimamizi</string>
     <string name="nav_payments">Malipo</string>
     <string name="nav_details">Maelezo</string>
     <string name="nav_history">Historia</string>
@@ -35,6 +35,28 @@
     <string name="change_password_error_length">Neno la siri lazima liwe na herufi 6 au zaidi.</string>
     <string name="change_password_error_mismatch">Maneno ya siri hayalingani.</string>
     <string name="change_password_success">Neno la siri limebadilishwa</string>
+
+    <string name="properties_add_shop">Ongeza Duka</string>
+    <string name="properties_empty">Hakuna maduka yaliyosajiliwa bado</string>
+    <string name="properties_shop_id_label">Duka</string>
+    <string name="properties_rent_hint">Kodi ya mwezi (TSh)</string>
+    <string name="properties_add_action">Ongeza</string>
+    <string name="properties_all_shops_registered">Maduka yote 10 tayari yamesajiliwa.</string>
+    <string name="properties_error_invalid_rent">Weka kiasi sahihi cha kodi.</string>
+    <string name="status_occupied">Amepangwa</string>
+    <string name="status_vacant">Wazi</string>
+    <string name="status_active">Anatumika</string>
+    <string name="status_disabled">Amezimwa</string>
+
+    <string name="users_add_admin">Ongeza Msimamizi</string>
+    <string name="users_empty">Hakuna wasimamizi waliosajiliwa bado</string>
+    <string name="users_name_hint">Jina kamili</string>
+    <string name="users_phone_hint">Namba ya simu</string>
+    <string name="users_email_hint">Barua pepe</string>
+    <string name="users_password_hint">Neno la siri (herufi 6 au zaidi)</string>
+    <string name="users_register_action">Sajili</string>
+    <string name="users_error_required">Tafadhali jaza sehemu zote.</string>
+    <string name="users_register_success">Msimamizi amesajiliwa</string>
 
     <string-array name="verse_texts">
         <item>Mtu mwaminifu atafurika baraka; bali mwenye kuhimizwa kuwa tajiri hatakosa kuadhibiwa.</item>
