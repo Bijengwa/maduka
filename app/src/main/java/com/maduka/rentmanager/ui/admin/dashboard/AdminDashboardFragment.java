@@ -126,7 +126,10 @@ public class AdminDashboardFragment extends Fragment {
             if (shop.isOccupied() && tenant != null) {
                 occupied++;
                 if (DateCalculator.isOverdue(tenant.getDueDate(), now)) overdueCount++;
-                if (next == null || tenant.getDueDate() < next.getDueDate()) next = tenant;
+                if (DateCalculator.hasValidDueDate(tenant.getDueDate())
+                        && (next == null || tenant.getDueDate() < next.getDueDate())) {
+                    next = tenant;
+                }
             }
         }
         int empty = units - occupied;

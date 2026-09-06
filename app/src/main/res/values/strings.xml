@@ -65,6 +65,7 @@
     <string name="label_days_left_format">%1$d days left</string>
     <string name="label_days_overdue_format">%1$d days overdue</string>
     <string name="label_no_tenant">No tenant assigned</string>
+    <string name="label_date_not_set">Not set</string>
     <string name="label_rent_not_set">Rent not set</string>
     <string name="label_days">Days</string>
 

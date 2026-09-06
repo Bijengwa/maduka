@@ -110,12 +110,17 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
             StatusPill.apply(tvStatus, tone, labelRes);
             StatusPill.accent(accentBar, tone);
 
-            tvLastPayment.setText(DateCalculator.formatDdMmYyyy(tenant.getLastPaymentDate()));
-            tvDueDate.setText(DateCalculator.formatDdMmYyyy(tenant.getDueDate()));
-            int days = DateCalculator.daysBetween(now, tenant.getDueDate());
-            tvDaysRemaining.setText(overdue
-                    ? itemView.getContext().getString(R.string.label_days_overdue_format, Math.abs(days))
-                    : itemView.getContext().getString(R.string.label_days_left_format, days));
+            String notSet = itemView.getContext().getString(R.string.label_date_not_set);
+            tvLastPayment.setText(DateCalculator.formatDueDateOrUnknown(tenant.getLastPaymentDate(), notSet));
+            tvDueDate.setText(DateCalculator.formatDueDateOrUnknown(tenant.getDueDate(), notSet));
+            if (!DateCalculator.hasValidDueDate(tenant.getDueDate())) {
+                tvDaysRemaining.setText(notSet);
+            } else {
+                int days = DateCalculator.daysBetween(now, tenant.getDueDate());
+                tvDaysRemaining.setText(overdue
+                        ? itemView.getContext().getString(R.string.label_days_overdue_format, Math.abs(days))
+                        : itemView.getContext().getString(R.string.label_days_left_format, days));
+            }
         }
     }
 }

@@ -65,6 +65,7 @@
     <string name="label_days_left_format">Siku %1$d zilizobaki</string>
     <string name="label_days_overdue_format">Siku %1$d za kuchelewa</string>
     <string name="label_no_tenant">Hakuna mpangaji</string>
+    <string name="label_date_not_set">Haijawekwa</string>
     <string name="label_rent_not_set">Kodi haijawekwa</string>
     <string name="label_days">Siku</string>
 

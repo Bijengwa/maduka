@@ -78,6 +78,7 @@ public class OverdueCheckReceiver extends BroadcastReceiver {
     }
 
     private void notifyTenant(Context context, Tenant tenant) {
+        if (!DateCalculator.hasValidDueDate(tenant.getDueDate())) return;
         long now = System.currentTimeMillis();
         int days = DateCalculator.daysBetween(now, tenant.getDueDate());
         String rent = String.format(Locale.US, "%,d", tenant.getMonthlyRent());

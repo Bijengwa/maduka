@@ -131,6 +131,7 @@ public class TenantNotificationsFragment extends Fragment {
     }
 
     private NotifItem buildDueItem(Tenant tenant) {
+        if (!DateCalculator.hasValidDueDate(tenant.getDueDate())) return null;
         long now = System.currentTimeMillis();
         int days = DateCalculator.daysBetween(now, tenant.getDueDate());
         if (days < 0) {
