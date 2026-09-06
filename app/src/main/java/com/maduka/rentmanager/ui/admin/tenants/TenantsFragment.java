@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.R;
+import com.maduka.rentmanager.data.FirebaseManager;
 import com.maduka.rentmanager.data.ShopRepository;
 import com.maduka.rentmanager.data.TenantRepository;
 import com.maduka.rentmanager.data.model.Shop;
@@ -24,6 +25,7 @@ import com.maduka.rentmanager.data.model.Tenant;
 import com.maduka.rentmanager.data.model.UserRole;
 import com.maduka.rentmanager.util.DateCalculator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +86,8 @@ public class TenantsFragment extends Fragment {
         adapter = new TenantAdapter();
         recyclerTenants.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerTenants.setAdapter(adapter);
+        adapter.setShowEndTenancyAction(role == UserRole.SUPER_ADMIN);
+        adapter.setOnEndTenancyListener(this::confirmEndTenancy);
 
         // Register Tenant is Super-Admin-only: Admin never gets the click listener wired,
         // not merely a hidden button - it sees the read-only note instead.
@@ -120,8 +124,15 @@ public class TenantsFragment extends Fragment {
 
         tenantsRegistration = tenantRepository.observeTenants(new TenantRepository.TenantsListener() {
             @Override
-            public void onTenants(List<Tenant> tenants) {
+            public void onTenants(List<Tenant> allTenants) {
                 if (!canTouchViews()) return;
+                // A tenant whose tenancy has ended has shopId cleared (TenantRepository.endTenancy)
+                // - they keep their historical record but no longer show as an active tenant here.
+                List<Tenant> tenants = new ArrayList<>();
+                for (Tenant t : allTenants) {
+                    if (t != null && t.getShopId() != null && !t.getShopId().isEmpty()) tenants.add(t);
+                }
+
                 adapter.submitList(tenants);
                 boolean empty = tenants.isEmpty();
                 recyclerTenants.setVisibility(empty ? View.GONE : View.VISIBLE);
@@ -158,5 +169,32 @@ public class TenantsFragment extends Fragment {
 
     private boolean canTouchViews() {
         return isAdded() && getView() != null;
+    }
+
+    private void confirmEndTenancy(Tenant tenant) {
+        if (!canTouchViews() || tenant.getShopId() == null) return;
+        String shopName = adapter.shopNameFor(tenant.getShopId());
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(R.string.tenants_end_tenancy_confirm_title)
+                .setMessage(getString(R.string.tenants_end_tenancy_confirm_message, tenant.getName(), shopName))
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.tenants_end_tenancy_action, (dialog, which) ->
+                        tenantRepository.endTenancy(tenant.getUid(), tenant.getShopId(), System.currentTimeMillis(),
+                                new FirebaseManager.Callback<Void>() {
+                                    @Override
+                                    public void onSuccess(Void result) {
+                                        if (!canTouchViews()) return;
+                                        Toast.makeText(getContext(),
+                                                getString(R.string.tenants_end_tenancy_success, tenant.getName(), shopName),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onError(String message) {
+                                        if (!canTouchViews()) return;
+                                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                    }
+                                }))
+                .show();
     }
 }

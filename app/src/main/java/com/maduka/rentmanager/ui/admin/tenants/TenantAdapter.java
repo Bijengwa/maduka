@@ -22,13 +22,33 @@ import java.util.Locale;
 import java.util.Map;
 
 public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder> {
+
+    public interface OnEndTenancyListener { void onEndTenancy(Tenant tenant); }
+
     private final List<Tenant> tenants = new ArrayList<>();
     private Map<String, String> shopNamesById = new HashMap<>();
+    private boolean showEndTenancyAction;
+    private OnEndTenancyListener endTenancyListener;
 
     public void submitList(List<Tenant> newTenants) {
         tenants.clear();
         tenants.addAll(newTenants);
         notifyDataSetChanged();
+    }
+
+    /** Ending a tenancy is Super-Admin-only - TenantsFragment passes true only for that role. */
+    public void setShowEndTenancyAction(boolean show) {
+        this.showEndTenancyAction = show;
+        notifyDataSetChanged();
+    }
+
+    public void setOnEndTenancyListener(OnEndTenancyListener listener) {
+        this.endTenancyListener = listener;
+    }
+
+    public String shopNameFor(String shopId) {
+        String name = shopNamesById.get(shopId);
+        return name != null ? name : shopId;
     }
 
     /** Maps shopId -> display name, so the card can show the tenant's shop by name rather than
@@ -48,7 +68,7 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(tenants.get(position), shopNamesById);
+        holder.bind(tenants.get(position), shopNamesById, showEndTenancyAction, endTenancyListener);
     }
 
     @Override
@@ -63,6 +83,7 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
         private final TextView tvLastPayment;
         private final TextView tvDueDate;
         private final TextView tvDaysRemaining;
+        private final TextView tvEndTenancy;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,9 +95,11 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
             tvLastPayment = itemView.findViewById(R.id.tvLastPayment);
             tvDueDate = itemView.findViewById(R.id.tvDueDate);
             tvDaysRemaining = itemView.findViewById(R.id.tvDaysRemaining);
+            tvEndTenancy = itemView.findViewById(R.id.tvEndTenancy);
         }
 
-        void bind(Tenant tenant, Map<String, String> shopNamesById) {
+        void bind(Tenant tenant, Map<String, String> shopNamesById, boolean showEndTenancyAction,
+                  OnEndTenancyListener endTenancyListener) {
             tvName.setText(tenant.getName());
 
             String phone = tenant.getPhone() != null ? tenant.getPhone() : "";
@@ -121,6 +144,11 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
                         ? itemView.getContext().getString(R.string.label_days_overdue_format, Math.abs(days))
                         : itemView.getContext().getString(R.string.label_days_left_format, days));
             }
+
+            tvEndTenancy.setVisibility(showEndTenancyAction ? View.VISIBLE : View.GONE);
+            tvEndTenancy.setOnClickListener(v -> {
+                if (endTenancyListener != null) endTenancyListener.onEndTenancy(tenant);
+            });
         }
     }
 }

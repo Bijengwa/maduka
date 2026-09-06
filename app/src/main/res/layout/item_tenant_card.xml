@@ -126,6 +126,19 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvEndTenancy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/space_4"
+            android:background="?attr/selectableItemBackground"
+            android:padding="@dimen/space_2"
+            android:text="@string/tenants_end_tenancy_action"
+            android:textAppearance="@style/TextAppearance.Maduka.Small"
+            android:textColor="@color/md_status_bad_fg"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </LinearLayout>

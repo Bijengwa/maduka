@@ -83,6 +83,10 @@
 
     <string name="tenants_subtitle_format">%1$d tenants · %2$d overdue</string>
     <string name="tenants_readonly_note">Only the Super Admin can register new tenants.</string>
+    <string name="tenants_end_tenancy_action">Tenant Ameondoka</string>
+    <string name="tenants_end_tenancy_confirm_title">Mark tenant as left?</string>
+    <string name="tenants_end_tenancy_confirm_message">%1$s will be removed from %2$s and the shop will become vacant. Their payment history is kept.</string>
+    <string name="tenants_end_tenancy_success">%1$s marked as left · %2$s is now vacant</string>
 
     <string name="tenant_dashboard_view_history">View payment history</string>
     <string name="tenant_dashboard_view_details">View shop details</string>

@@ -136,6 +136,24 @@ public class TenantRepository {
                 .addOnFailureListener(e -> cb.onError(e.getMessage()));
     }
 
+    /** The distinct, explicit "tenant left" action setPresence() above deliberately does not
+     * perform: frees the shop (occupied=false, tenantUid cleared) and unassigns the tenant
+     * (shopId cleared) in one atomic multi-path write. The Tenant node and every historical
+     * PaymentRecord are left untouched - an unassigned shopId is what makes a tenant "former"
+     * (excluded from the active tenant/shop join everywhere else already reads), the simplest
+     * model that satisfies this without a separate archived/former flag or table. */
+    public void endTenancy(String tenantUid, String shopId, long nowMillis, FirebaseManager.Callback<Void> cb) {
+        Map<String, Object> writes = new HashMap<>();
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenantUid + "/shopId", null);
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenantUid + "/updatedAt", nowMillis);
+        writes.put("/" + FirebaseSchema.SHOPS + "/" + shopId + "/occupied", false);
+        writes.put("/" + FirebaseSchema.SHOPS + "/" + shopId + "/tenantUid", null);
+        writes.put("/" + FirebaseSchema.SHOPS + "/" + shopId + "/updatedAt", nowMillis);
+        fb.root().updateChildren(writes)
+                .addOnSuccessListener(v -> cb.onSuccess(null))
+                .addOnFailureListener(e -> cb.onError(e.getMessage()));
+    }
+
     /** Registers a tenant into a specific (must be currently vacant) shop, recording their
      * first rent payment at the same time (months paid for, starting from paymentDateMillis -
      * the due date is derived via DateCalculator.addMonths from that start date, calendar-month

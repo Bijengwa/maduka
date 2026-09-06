@@ -83,6 +83,10 @@
 
     <string name="tenants_subtitle_format">Wapangaji %1$d · %2$d wamechelewa</string>
     <string name="tenants_readonly_note">Msimamizi Mkuu pekee ndiye anaweza kusajili wapangaji wapya.</string>
+    <string name="tenants_end_tenancy_action">Tenant Ameondoka</string>
+    <string name="tenants_end_tenancy_confirm_title">Weka mpangaji kama ameondoka?</string>
+    <string name="tenants_end_tenancy_confirm_message">%1$s ataondolewa kutoka %2$s na duka litakuwa wazi. Historia yake ya malipo itabaki.</string>
+    <string name="tenants_end_tenancy_success">%1$s ameondoka · %2$s sasa ni wazi</string>
 
     <string name="tenant_dashboard_view_history">Angalia historia ya malipo</string>
     <string name="tenant_dashboard_view_details">Angalia maelezo ya duka</string>
