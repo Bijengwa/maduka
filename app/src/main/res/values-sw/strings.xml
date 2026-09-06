@@ -81,6 +81,60 @@
     <string name="tenants_subtitle_format">Wapangaji %1$d · %2$d wamechelewa</string>
     <string name="tenants_readonly_note">Msimamizi Mkuu pekee ndiye anaweza kusajili wapangaji wapya.</string>
 
+    <string name="tenant_dashboard_view_history">Angalia historia ya malipo</string>
+    <string name="tenant_dashboard_view_details">Angalia maelezo ya duka</string>
+    <string name="tenant_days_left_message">Siku %1$d kabla kodi yako haijalipwa.</string>
+    <string name="tenant_days_overdue_message">Kodi yako imechelewa kwa siku %1$d.</string>
+    <string name="tenant_details_title">Maelezo</string>
+    <string name="tenant_details_shop_section">Duka</string>
+    <string name="tenant_details_lease_section">Mkataba</string>
+    <string name="tenant_details_shop_label">Duka</string>
+    <string name="tenant_details_monthly_rent">Kodi ya mwezi</string>
+    <string name="tenant_details_move_in_date">Tarehe ya kuingia</string>
+    <string name="tenant_details_status">Hali</string>
+    <string name="tenant_details_phone">Namba ya simu</string>
+    <string name="tenant_details_email">Barua pepe</string>
+    <string name="tenant_payments_title">Malipo yangu</string>
+    <string name="tenant_payments_subtitle_format">%1$s · TSh %2$s kwa mwezi</string>
+    <string name="tenant_payments_empty">Hakuna malipo yaliyorekodiwa bado</string>
+    <string name="tenant_history_title">Historia</string>
+    <string name="tenant_history_subtitle">Miamala yote</string>
+    <string name="tenant_history_stat_transactions">Miamala</string>
+    <string name="tenant_history_stat_total">Jumla iliyolipwa</string>
+    <string name="tenant_history_stat_average">Wastani</string>
+    <string name="tenant_history_empty">Hakuna historia ya malipo bado</string>
+    <string name="months_covered_format">Miezi %1$d</string>
+    <string name="recorded_by_format">Imerekodiwa na %1$s</string>
+    <string name="status_confirmed">Imethibitishwa</string>
+    <string name="status_pending">Inasubiri</string>
+    <string name="status_rejected">Imekataliwa</string>
+
+    <string name="notif_filter_all">Yote</string>
+    <string name="notif_filter_overdue">Yamechelewa</string>
+    <string name="notif_filter_due_today">Yanadaiwa leo</string>
+    <string name="notif_filter_due_soon">Yanakaribia</string>
+    <string name="notif_filter_confirmed">Yamethibitishwa</string>
+    <string name="notifications_empty">Hakuna arifa kwa sasa</string>
+    <string name="notifications_subtitle_format">%1$d za kuangalia</string>
+
+    <string name="notif_admin_overdue_title_format">%1$s — Malipo yamechelewa</string>
+    <string name="notif_admin_overdue_message_format">Kodi ya mwezi TSh %1$s ilidaiwa %2$s — imechelewa siku %3$d.</string>
+    <string name="notif_admin_due_today_title_format">%1$s — Kodi inadaiwa leo</string>
+    <string name="notif_admin_due_today_message_format">Kodi ya TSh %1$s inadaiwa leo.</string>
+    <string name="notif_admin_due_soon_title_format">%1$s — Kodi inadaiwa baada ya siku %2$d</string>
+    <string name="notif_admin_due_soon_message_format">TSh %1$s inadaiwa tarehe %2$s.</string>
+
+    <string name="notif_tenant_overdue_title">Imechelewa</string>
+    <string name="notif_tenant_overdue_message_format">Kodi yako ya %1$s imechelewa kwa siku %2$d.</string>
+    <string name="notif_tenant_due_today_title">Kodi inadaiwa leo</string>
+    <string name="notif_tenant_due_today_message_format">Kodi yako ya TSh %1$s inadaiwa leo.</string>
+    <string name="notif_tenant_due_soon_title">Kodi inakaribia kudaiwa</string>
+    <string name="notif_tenant_due_soon_message_format">Kodi yako ya %1$s inadaiwa baada ya siku %2$d.</string>
+    <string name="notif_tenant_confirmed_title">Malipo yamethibitishwa</string>
+    <string name="notif_tenant_confirmed_message_format">TSh %1$s zimethibitishwa kwa miezi %2$d.</string>
+    <string name="notif_tenant_rejected_title">Malipo yanahitaji ufafanuzi</string>
+    <string name="notif_tenant_rejected_message">Malipo yako ya hivi karibuni yanahitaji ufafanuzi. Wasiliana na msimamizi.</string>
+
     <string name="users_add_admin">Ongeza Msimamizi</string>
     <string name="users_empty">Hakuna wasimamizi waliosajiliwa bado</string>
     <string name="users_name_hint">Jina kamili</string>

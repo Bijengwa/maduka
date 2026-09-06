@@ -1,15 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/md_bg">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/nav_history"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/md_text" />
-</FrameLayout>
+        android:orientation="vertical"
+        android:padding="@dimen/space_6">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tenant_history_title"
+            android:textAppearance="@style/TextAppearance.Maduka.H1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/tenant_history_subtitle"
+            android:textAppearance="@style/TextAppearance.Maduka.Small" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/space_2"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_3">
+                <TextView android:text="@string/tenant_history_stat_transactions" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatTransactions" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/space_2"
+                android:layout_marginEnd="@dimen/space_2"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_3">
+                <TextView android:text="@string/tenant_history_stat_total" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatTotal" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/space_2"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_3">
+                <TextView android:text="@string/tenant_history_stat_average" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatAverage" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/space_6"
+            android:paddingEnd="@dimen/space_6"
+            android:visibility="gone"
+            tools:listitem="@layout/item_payment_row" />
+
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/tenant_history_empty"
+            android:textAppearance="@style/TextAppearance.Maduka.Body"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>
