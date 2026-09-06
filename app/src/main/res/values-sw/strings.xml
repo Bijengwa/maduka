@@ -71,6 +71,10 @@
     <string name="tenants_empty">Hakuna wapangaji waliosajiliwa bado</string>
     <string name="tenants_no_vacant_shops">Hakuna maduka wazi. Sajili duka kwanza au subiri moja liwe wazi.</string>
     <string name="tenants_shop_label">Duka</string>
+    <string name="tenants_months_paid_hint">Miezi iliyolipwa</string>
+    <string name="tenants_payment_date_label">Tarehe ya malipo</string>
+    <string name="tenants_error_invalid_months">Weka idadi ya miezi iliyolipwa.</string>
+    <string name="properties_per_month_amount_format">Jumla: TSh %1$s</string>
 
     <string-array name="verse_texts">
         <item>Mtu mwaminifu atafurika baraka; bali mwenye kuhimizwa kuwa tajiri hatakosa kuadhibiwa.</item>

@@ -3,11 +3,15 @@ package com.maduka.rentmanager.data;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.maduka.rentmanager.data.model.PaymentRecord;
+import com.maduka.rentmanager.data.model.PaymentStatus;
 import com.maduka.rentmanager.data.model.PresenceStatus;
 import com.maduka.rentmanager.data.model.Shop;
 import com.maduka.rentmanager.data.model.Tenant;
 import com.maduka.rentmanager.data.model.UserRole;
+import com.maduka.rentmanager.util.DateCalculator;
 import com.maduka.rentmanager.util.LoginKeyUtil;
 
 import java.util.ArrayList;
@@ -37,12 +41,21 @@ public class TenantRepository {
         });
     }
 
-    /** Registers a tenant into a specific (must be currently vacant) shop. Uses the same
-     * secondary-FirebaseApp pattern as UserRepository.registerAdmin, so the currently signed-in
-     * Admin/Super Admin's own session is never disturbed by creating this new Firebase Auth
-     * account. Marks the shop occupied and stamps the tenant's monthlyRent from the shop's
-     * current rent. */
+    /** Registers a tenant into a specific (must be currently vacant) shop, recording their
+     * first rent payment at the same time (months paid for, starting from paymentDateMillis -
+     * the due date is derived via DateCalculator.addMonths from that start date, calendar-month
+     * accurate, not a fixed 30-day block). Uses the same secondary-FirebaseApp pattern as
+     * UserRepository.registerAdmin, so the currently signed-in Admin/Super Admin's own session
+     * is never disturbed by creating this new Firebase Auth account. Marks the shop occupied.
+     *
+     * The initial payment is recorded already CONFIRMED, not PENDING: the ongoing two-person
+     * confirm/reject rule (a second admin must confirm a payment someone else recorded) exists
+     * for later rent renewals, once there's a dashboard to actually review pending payments -
+     * that dashboard doesn't exist yet in this app, so leaving this first payment PENDING would
+     * create a record nobody could ever act on. recordedByUid is stamped as both recorder and
+     * confirmer for this one record, since registering the tenant is itself the confirming act. */
     public void registerTenant(String name, String phone, String email, String password, Shop shop,
+                                int monthsPaid, long paymentDateMillis, String recordedByUid,
                                 FirebaseManager.Callback<Void> cb) {
         FirebaseAuth secondaryAuth = SecondaryAuthProvider.get();
         secondaryAuth.createUserWithEmailAndPassword(email, password)
@@ -51,6 +64,9 @@ public class TenantRepository {
                     secondaryAuth.signOut();
 
                     long now = System.currentTimeMillis();
+                    long dueDate = DateCalculator.addMonths(paymentDateMillis, monthsPaid);
+                    long amount = monthsPaid * shop.getMonthlyRent();
+
                     Tenant tenant = new Tenant();
                     tenant.setUid(uid);
                     tenant.setName(name);
@@ -59,11 +75,31 @@ public class TenantRepository {
                     tenant.setAuthEmail(email);
                     tenant.setShopId(shop.getShopId());
                     tenant.setMonthlyRent(shop.getMonthlyRent());
-                    tenant.setMoveInDate(now);
+                    tenant.setMoveInDate(paymentDateMillis);
+                    tenant.setLastPaymentDate(paymentDateMillis);
+                    tenant.setDueDate(dueDate);
+                    tenant.setMonthsCovered(monthsPaid);
                     tenant.setPresenceStatus(PresenceStatus.YUPO);
                     tenant.setLastPresenceCheckAt(now);
                     tenant.setCreatedAt(now);
                     tenant.setUpdatedAt(now);
+
+                    DatabaseReference paymentRef = fb.root().child(FirebaseSchema.PAYMENTS).push();
+                    PaymentRecord payment = new PaymentRecord();
+                    payment.setPaymentId(paymentRef.getKey());
+                    payment.setTenantUid(uid);
+                    payment.setShopId(shop.getShopId());
+                    payment.setAmount(amount);
+                    payment.setMonthsCovered(monthsPaid);
+                    payment.setPaymentDate(paymentDateMillis);
+                    payment.setRecordedByUid(recordedByUid);
+                    payment.setStatus(PaymentStatus.CONFIRMED);
+                    payment.setConfirmedByUid(recordedByUid);
+                    payment.setPreviousLastPaymentDate(0L);
+                    payment.setPreviousDueDate(0L);
+                    payment.setPreviousMonthsCovered(0);
+                    payment.setCreatedAt(now);
+                    payment.setUpdatedAt(now);
 
                     String loginKey = LoginKeyUtil.sanitize(email);
 
@@ -73,6 +109,7 @@ public class TenantRepository {
                     writes.put("/" + FirebaseSchema.SHOPS + "/" + shop.getShopId() + "/occupied", true);
                     writes.put("/" + FirebaseSchema.SHOPS + "/" + shop.getShopId() + "/tenantUid", uid);
                     writes.put("/" + FirebaseSchema.SHOPS + "/" + shop.getShopId() + "/updatedAt", now);
+                    writes.put("/" + FirebaseSchema.PAYMENTS + "/" + paymentRef.getKey(), payment);
 
                     fb.root().updateChildren(writes)
                             .addOnSuccessListener(v -> cb.onSuccess(null))

@@ -130,6 +130,55 @@
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_3" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMonthsPaid"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:hint="@string/tenants_months_paid_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMonthsPaid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:text="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:text="@string/tenants_payment_date_label"
+                android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPaymentDate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPaymentDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvComputedAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_3"
+                android:textAppearance="@style/TextAppearance.Maduka.Body"
+                android:textColor="@color/md_neutral_400" />
+
             <TextView
                 android:id="@+id/tvNoVacantShops"
                 android:layout_width="match_parent"

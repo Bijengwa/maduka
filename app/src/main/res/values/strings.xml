@@ -71,6 +71,10 @@
     <string name="tenants_empty">No tenants registered yet</string>
     <string name="tenants_no_vacant_shops">No vacant shops available. Register a shop first or wait for one to become vacant.</string>
     <string name="tenants_shop_label">Shop</string>
+    <string name="tenants_months_paid_hint">Months paid for</string>
+    <string name="tenants_payment_date_label">Payment date</string>
+    <string name="tenants_error_invalid_months">Enter how many months were paid for.</string>
+    <string name="properties_per_month_amount_format">Total: TSh %1$s</string>
 
     <string-array name="verse_texts">
         <item>A faithful man shall abound with blessings: but he that maketh haste to be rich shall not be innocent.</item>
