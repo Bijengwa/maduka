@@ -61,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         int verseIndex = VerseProvider.indexFor(prefs.signInCount());
         String[] verseTexts = getResources().getStringArray(R.array.verse_texts);
         String[] verseReferences = getResources().getStringArray(R.array.verse_references);
-        tvVerseText.setText("“" + verseTexts[verseIndex] + "”");
-        tvVerseReference.setText("— " + verseReferences[verseIndex]);
+        tvVerseText.setText("\u201c" + verseTexts[verseIndex] + "\u201d");
+        tvVerseReference.setText("\u2014 " + verseReferences[verseIndex]);
 
         btnSignIn.setOnClickListener(v -> signIn());
 
@@ -72,8 +72,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        String identifier = String.valueOf(etIdentifier.getText());
-        String password = String.valueOf(etPassword.getText());
+        CharSequence identifierRaw = etIdentifier.getText();
+        CharSequence passwordRaw = etPassword.getText();
+        String identifier = identifierRaw == null ? "" : identifierRaw.toString().trim();
+        String password = passwordRaw == null ? "" : passwordRaw.toString();
+
+        etIdentifier.setError(null);
+        etPassword.setError(null);
+
+        if (identifier.isEmpty()) {
+            btnSignIn.setEnabled(true);
+            etIdentifier.setError(getString(R.string.login_error_identifier_required));
+            return;
+        }
+        if (password.isEmpty()) {
+            btnSignIn.setEnabled(true);
+            etPassword.setError(getString(R.string.login_error_password_required));
+            return;
+        }
+
         btnSignIn.setEnabled(false);
 
         authRepository.signIn(identifier, password, new FirebaseManager.Callback<AuthRepository.AuthResult>() {

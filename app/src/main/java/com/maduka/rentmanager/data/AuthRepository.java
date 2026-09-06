@@ -32,6 +32,10 @@ public class AuthRepository {
     }
 
     private void tryRole(UserRole[] roles, int index, String key, String password, FirebaseManager.Callback<AuthResult> cb) {
+        if (key == null || key.isEmpty()) {
+            cb.onError("No account found for that identifier.");
+            return;
+        }
         if (index >= roles.length) {
             cb.onError("No account found for that identifier.");
             return;
