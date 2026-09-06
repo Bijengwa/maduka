@@ -54,7 +54,7 @@
 
     <!-- Reusable filter-chip look (Shops/Tenants filter rows): unselected by default via
          shape_pill_unselected; toggled to shape_pill_selected + accent text color in code. -->
-    <style name="Widget.Maduka.FilterChip">
+    <style name="MadukaFilterChip">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/shape_pill_unselected</item>
@@ -68,3 +68,4 @@
         <item name="android:focusable">true</item>
     </style>
 </resources>
+

@@ -38,10 +38,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView android:id="@+id/filterAll" style="@style/Widget.Maduka.FilterChip" android:text="@string/notif_filter_all" />
-                <TextView android:id="@+id/filterOverdue" style="@style/Widget.Maduka.FilterChip" android:layout_marginStart="@dimen/space_2" android:text="@string/notif_filter_overdue" />
-                <TextView android:id="@+id/filterDueToday" style="@style/Widget.Maduka.FilterChip" android:layout_marginStart="@dimen/space_2" android:text="@string/notif_filter_due_today" />
-                <TextView android:id="@+id/filterDueSoon" style="@style/Widget.Maduka.FilterChip" android:layout_marginStart="@dimen/space_2" android:text="@string/notif_filter_due_soon" />
+                <TextView android:id="@+id/filterAll" style="@style/MadukaFilterChip" android:text="@string/notif_filter_all" />
+                <TextView android:id="@+id/filterOverdue" style="@style/MadukaFilterChip" android:layout_marginStart="@dimen/space_2" android:text="@string/notif_filter_overdue" />
+                <TextView android:id="@+id/filterDueToday" style="@style/MadukaFilterChip" android:layout_marginStart="@dimen/space_2" android:text="@string/notif_filter_due_today" />
+                <TextView android:id="@+id/filterDueSoon" style="@style/MadukaFilterChip" android:layout_marginStart="@dimen/space_2" android:text="@string/notif_filter_due_soon" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
@@ -73,3 +73,4 @@
     </FrameLayout>
 
 </LinearLayout>
+

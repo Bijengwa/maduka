@@ -111,24 +111,24 @@
 
                 <TextView
                     android:id="@+id/filterAll"
-                    style="@style/Widget.Maduka.FilterChip"
+                    style="@style/MadukaFilterChip"
                     android:text="@string/shops_filter_all" />
 
                 <TextView
                     android:id="@+id/filterOccupied"
-                    style="@style/Widget.Maduka.FilterChip"
+                    style="@style/MadukaFilterChip"
                     android:layout_marginStart="@dimen/space_2"
                     android:text="@string/shops_filter_occupied" />
 
                 <TextView
                     android:id="@+id/filterEmpty"
-                    style="@style/Widget.Maduka.FilterChip"
+                    style="@style/MadukaFilterChip"
                     android:layout_marginStart="@dimen/space_2"
                     android:text="@string/shops_filter_empty" />
 
                 <TextView
                     android:id="@+id/filterOverdue"
-                    style="@style/Widget.Maduka.FilterChip"
+                    style="@style/MadukaFilterChip"
                     android:layout_marginStart="@dimen/space_2"
                     android:text="@string/shops_filter_overdue" />
             </LinearLayout>
@@ -179,3 +179,4 @@
     </FrameLayout>
 
 </LinearLayout>
+
