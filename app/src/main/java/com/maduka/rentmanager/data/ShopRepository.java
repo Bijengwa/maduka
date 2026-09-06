@@ -1,10 +1,12 @@
 package com.maduka.rentmanager.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.R;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShopRepository {
+    private static final String TAG = "ShopRepository";
     private final FirebaseManager fb = FirebaseManager.get();
 
     public interface ShopsListener { void onShops(List<Shop> shops); void onError(String message); }
@@ -36,15 +39,23 @@ public class ShopRepository {
 
     /** All registered shops, live-updating, sorted by shopId (a Firebase push key, which sorts
      * chronologically by creation time). */
-    public void observeShops(ShopsListener listener) {
-        fb.root().child(FirebaseSchema.SHOPS).addValueEventListener(new ValueEventListener() {
+    public ValueEventListener observeShops(ShopsListener listener) {
+        ValueEventListener registration = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 listener.onShops(parseShops(snapshot));
             }
             @Override
             public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
-        });
+        };
+        fb.root().child(FirebaseSchema.SHOPS).addValueEventListener(registration);
+        return registration;
+    }
+
+    public void stopObservingShops(ValueEventListener registration) {
+        if (registration != null) {
+            fb.root().child(FirebaseSchema.SHOPS).removeEventListener(registration);
+        }
     }
 
     /** Single-read variant of observeShops: fires exactly once with the current shop list, then
@@ -66,11 +77,31 @@ public class ShopRepository {
     private List<Shop> parseShops(DataSnapshot snapshot) {
         List<Shop> shops = new ArrayList<>();
         for (DataSnapshot child : snapshot.getChildren()) {
-            Shop s = child.getValue(Shop.class);
+            Shop s = readShop(child);
             if (s != null) shops.add(s);
         }
-        shops.sort((a, b) -> a.getShopId().compareTo(b.getShopId()));
+        shops.sort((a, b) -> shopSortKey(a).compareTo(shopSortKey(b)));
         return shops;
+    }
+
+    private Shop readShop(DataSnapshot child) {
+        Shop s;
+        try {
+            s = child.getValue(Shop.class);
+        } catch (DatabaseException e) {
+            Log.w(TAG, "Skipping malformed shop " + child.getKey(), e);
+            return null;
+        }
+        if (s == null) return null;
+        if (s.getShopId() == null || s.getShopId().isEmpty()) {
+            s.setShopId(child.getKey());
+        }
+        return s;
+    }
+
+    private static String shopSortKey(Shop shop) {
+        String id = shop != null ? shop.getShopId() : null;
+        return id != null ? id : "";
     }
 
     /** Registers a new shop under a fresh push key, with a Super-Admin-chosen name and a

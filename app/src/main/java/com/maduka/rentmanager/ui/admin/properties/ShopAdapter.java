@@ -79,9 +79,12 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         }
 
         void bind(Row row) {
+            if (row == null || row.shop == null) return;
             Shop shop = row.shop;
             Tenant tenant = row.tenant;
-            String name = shop.getName() != null ? shop.getName() : shop.getShopId();
+            String name = shop.getName() != null && !shop.getName().isEmpty()
+                    ? shop.getName()
+                    : (shop.getShopId() != null ? shop.getShopId() : "");
             tvShopId.setText(name);
 
             if (!shop.isOccupied() || tenant == null) {
@@ -95,7 +98,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 
             tvRent.setText(String.format(Locale.US, "TSh %,d", tenant.getMonthlyRent()));
             String phone = tenant.getPhone() != null ? tenant.getPhone() : "";
-            tvTenantLine.setText(phone.isEmpty() ? tenant.getName() : tenant.getName() + "  ·  " + phone);
+            String tenantName = tenant.getName() != null ? tenant.getName() : "";
+            tvTenantLine.setText(phone.isEmpty() ? tenantName : tenantName + "  ·  " + phone);
 
             long now = System.currentTimeMillis();
             boolean overdue = DateCalculator.isOverdue(tenant.getDueDate(), now);
