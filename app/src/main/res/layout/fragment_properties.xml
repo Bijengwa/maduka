@@ -44,9 +44,9 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_4">
-                <TextView android:text="@string/shops_stat_units" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatUnits" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" />
-                <TextView android:id="@+id/tvStatUnitsSub" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Small" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_units" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatUnits" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" />
+                <TextView android:id="@+id/tvStatUnitsSub" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Small" />
             </LinearLayout>
 
             <LinearLayout
@@ -58,9 +58,9 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_4">
-                <TextView android:text="@string/shops_stat_occupied" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatOccupied" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_good_fg" />
-                <TextView android:id="@+id/tvStatOccupiedSub" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Small" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_occupied" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatOccupied" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_good_fg" />
+                <TextView android:id="@+id/tvStatOccupiedSub" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Small" />
             </LinearLayout>
         </LinearLayout>
 
@@ -79,8 +79,8 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_4">
-                <TextView android:text="@string/shops_stat_empty" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatEmpty" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_neutral_400" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_empty" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatEmpty" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_neutral_400" />
             </LinearLayout>
 
             <LinearLayout
@@ -92,8 +92,8 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_4">
-                <TextView android:text="@string/shops_stat_overdue" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatOverdue" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_bad_fg" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_overdue" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatOverdue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_bad_fg" />
             </LinearLayout>
         </LinearLayout>
 

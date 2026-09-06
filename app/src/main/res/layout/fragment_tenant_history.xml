@@ -39,8 +39,8 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_3">
-                <TextView android:text="@string/tenant_history_stat_transactions" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatTransactions" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/tenant_history_stat_transactions" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatTransactions" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
             </LinearLayout>
 
             <LinearLayout
@@ -52,8 +52,8 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_3">
-                <TextView android:text="@string/tenant_history_stat_total" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatTotal" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/tenant_history_stat_total" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
             </LinearLayout>
 
             <LinearLayout
@@ -64,8 +64,8 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_3">
-                <TextView android:text="@string/tenant_history_stat_average" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatAverage" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/tenant_history_stat_average" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvStatAverage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

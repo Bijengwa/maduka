@@ -46,8 +46,8 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_4">
-                <TextView android:text="@string/label_last_payment" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvLastPayment" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_last_payment" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvLastPayment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
             </LinearLayout>
 
             <LinearLayout
@@ -58,8 +58,8 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_4">
-                <TextView android:text="@string/label_due_date" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvDueDate" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_due_date" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvDueDate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
             </LinearLayout>
         </LinearLayout>
 
