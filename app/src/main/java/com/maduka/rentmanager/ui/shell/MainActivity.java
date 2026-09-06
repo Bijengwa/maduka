@@ -27,7 +27,6 @@ import com.maduka.rentmanager.util.LocaleHelper;
 import com.maduka.rentmanager.util.Prefs;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private static final String STATE_SELECTED_NAV_ID = "selected_nav_id";
@@ -82,8 +81,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ImageButton btnNotifications = findViewById(R.id.btnNotifications);
-        btnNotifications.setOnClickListener(v ->
-                Toast.makeText(this, R.string.notifications_coming_soon, Toast.LENGTH_SHORT).show());
+        btnNotifications.setOnClickListener(v -> {
+            if (role == UserRole.SUPER_ADMIN) {
+                // Super Admin's 5 tabs (Dashboard/Properties/Tenants/Reports/Users) have no
+                // Notifications destination - the bell opens the same content full-screen.
+                startActivity(new Intent(this, com.maduka.rentmanager.ui.admin.notifications.NotificationsActivity.class));
+            } else {
+                bottomNav.setSelectedItemId(R.id.nav_notifications);
+            }
+        });
 
         ImageButton btnSettings = findViewById(R.id.btnSettings);
         btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
