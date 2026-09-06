@@ -1,0 +1,50 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "super_admins": {
+      ".read": "root.child('super_admins').child(auth.uid).exists()",
+      ".write": false
+    },
+
+    "admins": {
+      ".read": "root.child('admins').child(auth.uid).exists() || root.child('super_admins').child(auth.uid).exists()",
+      ".write": "root.child('super_admins').child(auth.uid).exists()"
+    },
+
+    "tenants": {
+      ".read": "root.child('admins').child(auth.uid).exists() || root.child('super_admins').child(auth.uid).exists()",
+      ".write": "root.child('super_admins').child(auth.uid).exists()",
+      "$tenantUid": {
+        ".read": "auth.uid === $tenantUid"
+      }
+    },
+
+    "shops": {
+      ".read": "root.child('admins').child(auth.uid).exists() || root.child('super_admins').child(auth.uid).exists()",
+      ".write": "root.child('super_admins').child(auth.uid).exists()",
+      "$shopId": {
+        ".read": "data.child('tenantUid').val() === auth.uid"
+      }
+    },
+
+    "payments": {
+      ".read": "root.child('admins').child(auth.uid).exists() || root.child('super_admins').child(auth.uid).exists() || (query.orderByChild == 'tenantUid' && query.equalTo == auth.uid)",
+      ".write": "root.child('super_admins').child(auth.uid).exists()",
+      ".indexOn": ["tenantUid"]
+    },
+
+    "notifications": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid || root.child('admins').child(auth.uid).exists() || root.child('super_admins').child(auth.uid).exists()"
+      }
+    },
+
+    "login_index": {
+      ".read": true,
+      ".write": "root.child('super_admins').child(auth.uid).exists()"
+    }
+  }
+}
