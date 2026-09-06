@@ -1,24 +1,24 @@
 package com.maduka.rentmanager.ui.admin.tenants;
 
-import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.model.PresenceStatus;
 import com.maduka.rentmanager.data.model.Tenant;
+import com.maduka.rentmanager.ui.common.StatusPill;
+import com.maduka.rentmanager.util.DateCalculator;
 import com.maduka.rentmanager.util.StatusPresentation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder> {
@@ -59,6 +59,10 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
         private final TextView tvName;
         private final TextView tvContact;
         private final TextView tvStatus;
+        private final TextView tvRent;
+        private final TextView tvLastPayment;
+        private final TextView tvDueDate;
+        private final TextView tvDaysRemaining;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,47 +70,52 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
             tvName = itemView.findViewById(R.id.tvName);
             tvContact = itemView.findViewById(R.id.tvContact);
             tvStatus = itemView.findViewById(R.id.tvStatus);
+            tvRent = itemView.findViewById(R.id.tvRent);
+            tvLastPayment = itemView.findViewById(R.id.tvLastPayment);
+            tvDueDate = itemView.findViewById(R.id.tvDueDate);
+            tvDaysRemaining = itemView.findViewById(R.id.tvDaysRemaining);
         }
 
         void bind(Tenant tenant, Map<String, String> shopNamesById) {
             tvName.setText(tenant.getName());
 
             String phone = tenant.getPhone() != null ? tenant.getPhone() : "";
-            String email = tenant.getEmail() != null ? tenant.getEmail() : "";
             String shopName = shopNamesById.get(tenant.getShopId());
             if (shopName == null) shopName = tenant.getShopId();
 
             StringBuilder detail = new StringBuilder();
             if (!phone.isEmpty()) detail.append(phone);
-            if (!email.isEmpty()) {
-                if (detail.length() > 0) detail.append("  ·  ");
-                detail.append(email);
-            }
             if (detail.length() > 0) detail.append("  ·  ");
             detail.append(shopName);
             tvContact.setText(detail.toString());
 
-            PresenceStatus status = tenant.getPresenceStatus() != null ? tenant.getPresenceStatus() : PresenceStatus.YUPO;
-            StatusPresentation.Tone tone = StatusPresentation.toneFor(status);
-            tvStatus.setText(status == PresenceStatus.YUPO ? R.string.status_active : R.string.status_disabled);
-            applyPill(tvStatus, tone);
-            applyAccent(accentBar, tone);
-        }
+            tvRent.setText(String.format(Locale.US, "TSh %,d /month", tenant.getMonthlyRent()));
 
-        private void applyPill(TextView view, StatusPresentation.Tone tone) {
-            Context context = view.getContext();
-            GradientDrawable bg = new GradientDrawable();
-            bg.setShape(GradientDrawable.RECTANGLE);
-            bg.setCornerRadius(context.getResources().getDimension(R.dimen.radius_full));
-            bg.setColor(ContextCompat.getColor(context, StatusPresentation.bgColorRes(tone)));
-            int strokeWidth = Math.round(context.getResources().getDisplayMetrics().density);
-            bg.setStroke(strokeWidth, ContextCompat.getColor(context, StatusPresentation.borderColorRes(tone)));
-            view.setBackground(bg);
-            view.setTextColor(ContextCompat.getColor(context, StatusPresentation.fgColorRes(tone)));
-        }
+            long now = System.currentTimeMillis();
+            boolean overdue = DateCalculator.isOverdue(tenant.getDueDate(), now);
+            PresenceStatus presence = tenant.getPresenceStatus() != null ? tenant.getPresenceStatus() : PresenceStatus.YUPO;
 
-        private void applyAccent(View view, StatusPresentation.Tone tone) {
-            view.setBackgroundColor(ContextCompat.getColor(view.getContext(), StatusPresentation.borderColorRes(tone)));
+            StatusPresentation.Tone tone;
+            int labelRes;
+            if (overdue) {
+                tone = StatusPresentation.Tone.BAD;
+                labelRes = R.string.status_overdue;
+            } else if (presence == PresenceStatus.YUPO) {
+                tone = StatusPresentation.Tone.GOOD;
+                labelRes = R.string.status_active;
+            } else {
+                tone = StatusPresentation.Tone.BAD;
+                labelRes = R.string.status_disabled;
+            }
+            StatusPill.apply(tvStatus, tone, labelRes);
+            StatusPill.accent(accentBar, tone);
+
+            tvLastPayment.setText(DateCalculator.formatDdMmYyyy(tenant.getLastPaymentDate()));
+            tvDueDate.setText(DateCalculator.formatDdMmYyyy(tenant.getDueDate()));
+            int days = DateCalculator.daysBetween(now, tenant.getDueDate());
+            tvDaysRemaining.setText(overdue
+                    ? itemView.getContext().getString(R.string.label_days_overdue_format, Math.abs(days))
+                    : itemView.getContext().getString(R.string.label_days_left_format, days));
         }
     }
 }

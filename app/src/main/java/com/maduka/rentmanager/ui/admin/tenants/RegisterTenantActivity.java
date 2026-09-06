@@ -23,6 +23,7 @@ import com.maduka.rentmanager.data.FirebaseManager;
 import com.maduka.rentmanager.data.ShopRepository;
 import com.maduka.rentmanager.data.TenantRepository;
 import com.maduka.rentmanager.data.model.Shop;
+import com.maduka.rentmanager.data.model.UserRole;
 import com.maduka.rentmanager.util.DateCalculator;
 import com.maduka.rentmanager.util.EdgeToEdge;
 import com.maduka.rentmanager.util.LocaleHelper;
@@ -38,8 +39,14 @@ import java.util.Locale;
  * tenant relationship ends and it goes back to vacant. Account creation goes through
  * TenantRepository.registerTenant, which uses the same secondary-FirebaseAuth pattern as
  * UserRepository.registerAdmin, so the currently signed-in Admin/Super Admin's own session is
- * never disturbed. */
+ * never disturbed.
+ *
+ * Super-Admin-only: TenantsFragment only wires the launching click listener for that role;
+ * this Activity also refuses to open for any other role passed via EXTRA_ROLE, so the
+ * restriction lives in the code path itself, not just a hidden button. */
 public class RegisterTenantActivity extends AppCompatActivity {
+    public static final String EXTRA_ROLE = "extra_role";
+
     private final ShopRepository shopRepository = new ShopRepository();
     private final TenantRepository tenantRepository = new TenantRepository();
 
@@ -65,6 +72,14 @@ public class RegisterTenantActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String roleName = getIntent().getStringExtra(EXTRA_ROLE);
+        UserRole role = roleName != null ? UserRole.valueOf(roleName) : null;
+        if (role != UserRole.SUPER_ADMIN) {
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_register_tenant);
 
         View root = findViewById(R.id.registerTenantRoot);
