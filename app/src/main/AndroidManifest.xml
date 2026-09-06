@@ -49,6 +49,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.admin.payments.RecordPaymentActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.admin.notifications.NotificationsActivity"
             android:exported="false" />
 

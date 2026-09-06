@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recordPaymentRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/md_bg">
+
+    <LinearLayout
+        android:id="@+id/recordPaymentTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/md_bg"
+        android:paddingStart="@dimen/space_3"
+        android:paddingEnd="@dimen/space_3">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/space_3"
+            android:src="@drawable/ic_back"
+            android:tint="@color/md_text"
+            android:contentDescription="@string/action_back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/space_3"
+            android:text="@string/payments_record_title"
+            android:textAppearance="@style/TextAppearance.Maduka.H3" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/md_divider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/space_8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payments_tenant_label"
+                android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+
+            <Spinner
+                android:id="@+id/spinnerTenant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_3" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMonthsPaid"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:hint="@string/tenants_months_paid_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMonthsPaid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:text="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:text="@string/tenants_payment_date_label"
+                android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPaymentDate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPaymentDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilAmount"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:hint="@string/payments_amount_label">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:text="@string/payments_method_label"
+                android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+
+            <Spinner
+                android:id="@+id/spinnerMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_3" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPaymentPhone"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:hint="@string/payments_phone_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPaymentPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilReceipt"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:hint="@string/payments_receipt_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etReceipt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilNotes"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:hint="@string/payments_notes_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:minLines="2" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvNoActiveTenants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:text="@string/payments_no_active_tenants"
+                android:textAppearance="@style/TextAppearance.Maduka.Body"
+                android:textColor="@color/md_status_bad_fg"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnSavePayment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_8"
+                android:background="@drawable/bg_button_primary"
+                android:paddingTop="@dimen/space_4"
+                android:paddingBottom="@dimen/space_4"
+                android:textAllCaps="false"
+                android:textColor="@color/md_bg"
+                android:textSize="16sp"
+                android:text="@string/change_password_save" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -185,6 +185,24 @@
     <string name="tenants_error_invalid_months">Enter how many months were paid for.</string>
     <string name="properties_per_month_amount_format">Total: TSh %1$s</string>
 
+    <string name="payments_record_title">Record Payment</string>
+    <string name="payments_action_record">+ Record Payment</string>
+    <string name="payments_tenant_label">Tenant</string>
+    <string name="payments_amount_label">Amount (TZS)</string>
+    <string name="payments_method_label">Payment method</string>
+    <string name="payments_method_mpesa">M-Pesa</string>
+    <string name="payments_method_bank">Bank transfer</string>
+    <string name="payments_method_cash">Cash</string>
+    <string name="payments_method_cheque">Cheque</string>
+    <string name="payments_phone_hint">Number paid to</string>
+    <string name="payments_receipt_hint">Receipt reference (optional)</string>
+    <string name="payments_notes_hint">Notes (optional)</string>
+    <string name="payments_no_active_tenants">No active tenants to record a payment for.</string>
+    <string name="payments_error_phone_required">Enter the number the payment was paid to.</string>
+    <string name="payments_error_invalid_amount">Enter a valid amount.</string>
+    <string name="payments_success">Payment recorded</string>
+    <string name="payment_phone_label">Paid to</string>
+
     <string-array name="verse_texts">
         <item>A faithful man shall abound with blessings: but he that maketh haste to be rich shall not be innocent.</item>
         <item>He that is faithful in that which is least is faithful also in much: and he that is unjust in the least is unjust also in much.</item>

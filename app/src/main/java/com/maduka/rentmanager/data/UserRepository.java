@@ -22,6 +22,22 @@ public class UserRepository {
     private final FirebaseManager fb = FirebaseManager.get();
 
     public interface AdminsListener { void onAdmins(List<AdminUser> admins); void onError(String message); }
+    public interface NameListener { void onName(String name); }
+
+    /** One-shot lookup of the signed-in Admin/Super Admin's own display name, for greetings like
+     * the dashboard's "Karibu, {name}" and for stamping PaymentRecord.recordedByName. Falls back
+     * to onName(null) rather than an error - callers should show a generic greeting instead of
+     * failing the whole screen over a display name. */
+    public void observeCurrentUserName(UserRole role, String uid, NameListener listener) {
+        if (uid == null || uid.isEmpty()) { listener.onName(null); return; }
+        String node = role == UserRole.SUPER_ADMIN ? FirebaseSchema.SUPER_ADMINS : FirebaseSchema.ADMINS;
+        fb.root().child(node).child(uid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) { listener.onName(snapshot.getValue(String.class)); }
+            @Override
+            public void onCancelled(DatabaseError error) { listener.onName(null); }
+        });
+    }
 
     /** All registered admin accounts, live-updating, sorted by name. Returns the registration so
      * the caller can detach it in onDestroyView via stopObservingAdmins. */

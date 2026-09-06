@@ -185,6 +185,24 @@
     <string name="tenants_error_invalid_months">Weka idadi ya miezi iliyolipwa.</string>
     <string name="properties_per_month_amount_format">Jumla: TSh %1$s</string>
 
+    <string name="payments_record_title">Rekodi Malipo</string>
+    <string name="payments_action_record">+ Rekodi Malipo</string>
+    <string name="payments_tenant_label">Mpangaji</string>
+    <string name="payments_amount_label">Kiasi (TZS)</string>
+    <string name="payments_method_label">Njia ya malipo</string>
+    <string name="payments_method_mpesa">M-Pesa</string>
+    <string name="payments_method_bank">Uhamisho wa benki</string>
+    <string name="payments_method_cash">Taslimu</string>
+    <string name="payments_method_cheque">Hundi</string>
+    <string name="payments_phone_hint">Namba iliyolipiwa</string>
+    <string name="payments_receipt_hint">Nambari ya risiti (hiari)</string>
+    <string name="payments_notes_hint">Maelezo (hiari)</string>
+    <string name="payments_no_active_tenants">Hakuna wapangaji wanaotumika kuwarekodia malipo.</string>
+    <string name="payments_error_phone_required">Weka namba iliyolipiwa.</string>
+    <string name="payments_error_invalid_amount">Weka kiasi sahihi.</string>
+    <string name="payments_success">Malipo yamerekodiwa</string>
+    <string name="payment_phone_label">Imelipiwa</string>
+
     <string-array name="verse_texts">
         <item>Mtu mwaminifu atafurika baraka; bali mwenye kuhimizwa kuwa tajiri hatakosa kuadhibiwa.</item>
         <item>Aliye mwaminifu katika lililo dogo, huwa mwaminifu katika lililo kubwa pia; naye aliye dhalimu katika lililo dogo, huwa dhalimu katika lililo kubwa pia.</item>

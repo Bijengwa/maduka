@@ -5,17 +5,22 @@ import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.data.model.PaymentRecord;
+import com.maduka.rentmanager.data.model.Tenant;
+import com.maduka.rentmanager.util.DateCalculator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Read-only for this build: the payments/ node is already written to by
- * TenantRepository.registerTenant (one PaymentRecord per tenant registration/renewal). This
- * repository deliberately does NOT add record/confirm/reject methods, since Admin has no
- * payment-recording UI in this build and nothing here should pretend otherwise. */
+/** The payments/ node is written to by TenantRepository.registerTenant (a tenant's first
+ * payment, at registration) and by recordPayment() below (every later rent renewal) -
+ * Super-Admin-only per the Firebase rules, enforced there, not just in the UI. There is no
+ * approval workflow: a payment recorded here is immediately valid. */
 public class PaymentRepository {
     private static final String TAG = "PaymentRepository";
     private final FirebaseManager fb = FirebaseManager.get();
@@ -85,6 +90,48 @@ public class PaymentRepository {
     /** Malformed individual payment records (bad enum values, wrong field types) are skipped
      * with a warning log rather than crashing the whole list, matching ShopRepository/
      * TenantRepository. */
+    /** Records a rent renewal payment for an already-active tenant and rolls their dueDate
+     * forward by monthsPaid. Extends from the tenant's current dueDate (not from paymentDate)
+     * when that dueDate is valid, so paying early doesn't shorten the next cycle; falls back to
+     * paymentDate only when the tenant has no usable dueDate on record. Super-Admin-only, enforced
+     * by the Firebase rules (payments/tenants .write), not just by which screens show the button. */
+    public void recordPayment(Tenant tenant, int monthsPaid, long paymentDateMillis, long amount,
+                               String paymentMethod, String receiptReference, String notes,
+                               String paymentPhoneNumber, String recordedByUid, String recordedByName,
+                               FirebaseManager.Callback<Void> cb) {
+        long now = System.currentTimeMillis();
+        long baseDate = DateCalculator.hasValidDueDate(tenant.getDueDate()) ? tenant.getDueDate() : paymentDateMillis;
+        long newDueDate = DateCalculator.addMonths(baseDate, monthsPaid);
+
+        DatabaseReference paymentRef = fb.root().child(FirebaseSchema.PAYMENTS).push();
+        PaymentRecord payment = new PaymentRecord();
+        payment.setPaymentId(paymentRef.getKey());
+        payment.setTenantUid(tenant.getUid());
+        payment.setShopId(tenant.getShopId());
+        payment.setAmount(amount);
+        payment.setMonthsCovered(monthsPaid);
+        payment.setPaymentDate(paymentDateMillis);
+        payment.setPaymentMethod(paymentMethod);
+        payment.setReceiptReference(receiptReference);
+        payment.setNotes(notes);
+        payment.setPaymentPhoneNumber(paymentPhoneNumber);
+        payment.setRecordedByUid(recordedByUid);
+        payment.setRecordedByName(recordedByName);
+        payment.setCreatedAt(now);
+        payment.setUpdatedAt(now);
+
+        Map<String, Object> writes = new HashMap<>();
+        writes.put("/" + FirebaseSchema.PAYMENTS + "/" + paymentRef.getKey(), payment);
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid() + "/lastPaymentDate", paymentDateMillis);
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid() + "/dueDate", newDueDate);
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid() + "/monthsCovered", monthsPaid);
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid() + "/updatedAt", now);
+
+        fb.root().updateChildren(writes)
+                .addOnSuccessListener(v -> cb.onSuccess(null))
+                .addOnFailureListener(e -> cb.onError(e.getMessage()));
+    }
+
     private PaymentRecord readPayment(DataSnapshot child) {
         PaymentRecord p;
         try {
