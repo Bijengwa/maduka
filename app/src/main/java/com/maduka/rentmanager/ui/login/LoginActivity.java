@@ -11,6 +11,7 @@ import com.maduka.rentmanager.data.AuthRepository;
 import com.maduka.rentmanager.data.FirebaseManager;
 import com.maduka.rentmanager.data.model.UserRole;
 import com.maduka.rentmanager.ui.shell.MainActivity;
+import com.maduka.rentmanager.util.EdgeToEdge;
 import com.maduka.rentmanager.util.LocaleHelper;
 import com.maduka.rentmanager.util.Prefs;
 import com.maduka.rentmanager.util.VerseProvider;
@@ -37,6 +38,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        View root = findViewById(R.id.loginRoot);
+        EdgeToEdge.applyTopInset(root);
 
         btnLanguage = findViewById(R.id.btnLanguage);
         etIdentifier = findViewById(R.id.etIdentifier);

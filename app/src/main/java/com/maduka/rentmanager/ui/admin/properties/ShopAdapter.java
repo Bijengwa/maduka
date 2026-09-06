@@ -17,6 +17,7 @@ import com.maduka.rentmanager.util.StatusPresentation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     private final List<Shop> shops = new ArrayList<>();
@@ -43,12 +44,14 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     public int getItemCount() { return shops.size(); }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        private final View accentBar;
         private final TextView tvShopId;
         private final TextView tvRent;
         private final TextView tvStatus;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            accentBar = itemView.findViewById(R.id.accentBar);
             tvShopId = itemView.findViewById(R.id.tvShopId);
             tvRent = itemView.findViewById(R.id.tvRent);
             tvStatus = itemView.findViewById(R.id.tvStatus);
@@ -56,12 +59,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 
         void bind(Shop shop) {
             tvShopId.setText(shop.getShopId());
-            tvRent.setText("TSh " + shop.getMonthlyRent());
+            tvRent.setText(String.format(Locale.US, "TSh %,d", shop.getMonthlyRent()));
 
             boolean occupied = shop.isOccupied();
             StatusPresentation.Tone tone = occupied ? StatusPresentation.Tone.GOOD : StatusPresentation.Tone.EMPTY;
             tvStatus.setText(occupied ? R.string.status_occupied : R.string.status_vacant);
             applyPill(tvStatus, tone);
+            applyAccent(accentBar, tone);
         }
 
         private void applyPill(TextView view, StatusPresentation.Tone tone) {
@@ -74,6 +78,10 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             bg.setStroke(strokeWidth, ContextCompat.getColor(context, StatusPresentation.borderColorRes(tone)));
             view.setBackground(bg);
             view.setTextColor(ContextCompat.getColor(context, StatusPresentation.fgColorRes(tone)));
+        }
+
+        private void applyAccent(View view, StatusPresentation.Tone tone) {
+            view.setBackgroundColor(ContextCompat.getColor(view.getContext(), StatusPresentation.borderColorRes(tone)));
         }
     }
 }

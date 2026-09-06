@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/md_bg">
 
-    <!-- Top bar: language toggle, change-password, sign-out -->
+    <!-- Top bar: notifications, language toggle, settings -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -22,6 +22,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
+        <ImageButton
+            android:id="@+id/btnNotifications"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/space_3"
+            android:src="@drawable/ic_notifications"
+            android:tint="@color/md_text"
+            android:contentDescription="@string/nav_notifications" />
+
         <Button
             android:id="@+id/btnLanguage"
             style="@style/Widget.AppCompat.Button.Borderless"
@@ -35,24 +45,14 @@
             android:text="EN" />
 
         <ImageButton
-            android:id="@+id/btnChangePassword"
+            android:id="@+id/btnSettings"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/space_3"
-            android:src="@drawable/ic_language"
+            android:src="@drawable/ic_settings"
             android:tint="@color/md_text"
-            android:contentDescription="@string/action_change_password" />
-
-        <ImageButton
-            android:id="@+id/btnSignOut"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="@dimen/space_3"
-            android:src="@drawable/ic_sign_out"
-            android:tint="@color/md_text"
-            android:contentDescription="@string/action_sign_out" />
+            android:contentDescription="@string/settings_title" />
     </LinearLayout>
 
     <View

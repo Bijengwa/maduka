@@ -26,6 +26,12 @@
 
     <string name="action_change_password">Change password</string>
     <string name="action_sign_out">Sign out</string>
+    <string name="action_back">Back</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_change_password">Change password</string>
+    <string name="settings_sign_out">Sign out</string>
+    <string name="notifications_coming_soon">Notifications coming soon</string>
 
     <string name="change_password_title">Change password</string>
     <string name="change_password_current_hint">Current password</string>
@@ -40,6 +46,7 @@
     <string name="properties_empty">No shops registered yet</string>
     <string name="properties_shop_id_label">Shop</string>
     <string name="properties_rent_hint">Monthly rent (TSh)</string>
+    <string name="properties_per_month">/month</string>
     <string name="properties_add_action">Add</string>
     <string name="properties_all_shops_registered">All 10 shops are already registered.</string>
     <string name="properties_error_invalid_rent">Enter a valid rent amount.</string>

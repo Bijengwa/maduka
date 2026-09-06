@@ -44,12 +44,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public int getItemCount() { return admins.size(); }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        private final View accentBar;
         private final TextView tvName;
         private final TextView tvContact;
         private final TextView tvStatus;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            accentBar = itemView.findViewById(R.id.accentBar);
             tvName = itemView.findViewById(R.id.tvName);
             tvContact = itemView.findViewById(R.id.tvContact);
             tvStatus = itemView.findViewById(R.id.tvStatus);
@@ -65,6 +67,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             StatusPresentation.Tone tone = StatusPresentation.toneFor(status);
             tvStatus.setText(status == PresenceStatus.YUPO ? R.string.status_active : R.string.status_disabled);
             applyPill(tvStatus, tone);
+            applyAccent(accentBar, tone);
         }
 
         private void applyPill(TextView view, StatusPresentation.Tone tone) {
@@ -77,6 +80,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             bg.setStroke(strokeWidth, ContextCompat.getColor(context, StatusPresentation.borderColorRes(tone)));
             view.setBackground(bg);
             view.setTextColor(ContextCompat.getColor(context, StatusPresentation.fgColorRes(tone)));
+        }
+
+        private void applyAccent(View view, StatusPresentation.Tone tone) {
+            view.setBackgroundColor(ContextCompat.getColor(view.getContext(), StatusPresentation.borderColorRes(tone)));
         }
     }
 }

@@ -3,39 +3,69 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:gravity="center_vertical"
     android:background="@drawable/bg_card"
-    android:padding="@dimen/space_6"
+    android:clipToOutline="true"
     android:layout_marginBottom="@dimen/space_3">
+
+    <View
+        android:id="@+id/accentBar"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:background="@color/md_status_good_border" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/space_6">
 
-        <TextView
-            android:id="@+id/tvShopId"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Maduka.H3" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/tvRent"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tvShopId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.Maduka.H3" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/space_4"
+                android:paddingEnd="@dimen/space_4"
+                android:paddingTop="@dimen/space_1"
+                android:paddingBottom="@dimen/space_1"
+                android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_1"
-            android:textAppearance="@style/TextAppearance.Maduka.Body" />
+            android:layout_marginTop="@dimen/space_3"
+            android:orientation="horizontal"
+            android:gravity="bottom">
+
+            <TextView
+                android:id="@+id/tvRent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Maduka.H2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_2"
+                android:layout_marginBottom="2dp"
+                android:text="@string/properties_per_month"
+                android:textAppearance="@style/TextAppearance.Maduka.Small" />
+        </LinearLayout>
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/space_4"
-        android:paddingEnd="@dimen/space_4"
-        android:paddingTop="@dimen/space_1"
-        android:paddingBottom="@dimen/space_1"
-        android:textAppearance="@style/TextAppearance.Maduka.Caption" />
 
 </LinearLayout>

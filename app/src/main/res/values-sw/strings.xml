@@ -26,6 +26,12 @@
 
     <string name="action_change_password">Badilisha neno la siri</string>
     <string name="action_sign_out">Toka</string>
+    <string name="action_back">Rudi nyuma</string>
+
+    <string name="settings_title">Mipangilio</string>
+    <string name="settings_change_password">Badilisha neno la siri</string>
+    <string name="settings_sign_out">Toka</string>
+    <string name="notifications_coming_soon">Arifa zinakuja hivi karibuni</string>
 
     <string name="change_password_title">Badilisha Neno la Siri</string>
     <string name="change_password_current_hint">Neno la siri la sasa</string>
@@ -40,6 +46,7 @@
     <string name="properties_empty">Hakuna maduka yaliyosajiliwa bado</string>
     <string name="properties_shop_id_label">Duka</string>
     <string name="properties_rent_hint">Kodi ya mwezi (TSh)</string>
+    <string name="properties_per_month">/mwezi</string>
     <string name="properties_add_action">Ongeza</string>
     <string name="properties_all_shops_registered">Maduka yote 10 tayari yamesajiliwa.</string>
     <string name="properties_error_invalid_rent">Weka kiasi sahihi cha kodi.</string>

@@ -3,29 +3,31 @@ package com.maduka.rentmanager.ui.shell;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.maduka.rentmanager.R;
-import com.maduka.rentmanager.data.AuthRepository;
 import com.maduka.rentmanager.data.model.UserRole;
 import com.maduka.rentmanager.ui.admin.dashboard.AdminDashboardFragment;
 import com.maduka.rentmanager.ui.admin.notifications.AdminNotificationsFragment;
 import com.maduka.rentmanager.ui.admin.properties.PropertiesFragment;
 import com.maduka.rentmanager.ui.admin.reports.ReportsFragment;
 import com.maduka.rentmanager.ui.admin.tenants.TenantsFragment;
-import com.maduka.rentmanager.ui.common.ChangePasswordDialog;
 import com.maduka.rentmanager.ui.login.LoginActivity;
+import com.maduka.rentmanager.ui.settings.SettingsActivity;
 import com.maduka.rentmanager.ui.superadmin.users.UsersFragment;
 import com.maduka.rentmanager.ui.tenant.dashboard.TenantDashboardFragment;
 import com.maduka.rentmanager.ui.tenant.details.TenantDetailsFragment;
 import com.maduka.rentmanager.ui.tenant.history.TenantHistoryFragment;
 import com.maduka.rentmanager.ui.tenant.notifications.TenantNotificationsFragment;
 import com.maduka.rentmanager.ui.tenant.payments.TenantPaymentsFragment;
+import com.maduka.rentmanager.util.EdgeToEdge;
 import com.maduka.rentmanager.util.LocaleHelper;
 import com.maduka.rentmanager.util.Prefs;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private UserRole role;
@@ -44,7 +46,11 @@ public class MainActivity extends AppCompatActivity {
         String roleName = getIntent().getStringExtra(LoginActivity.EXTRA_ROLE);
         role = roleName != null ? UserRole.valueOf(roleName) : UserRole.ADMIN;
 
+        View topBar = findViewById(R.id.topBar);
+        EdgeToEdge.applyTopInset(topBar);
+
         bottomNav = findViewById(R.id.bottomNav);
+        EdgeToEdge.applyBottomInset(bottomNav);
         bottomNav.inflateMenu(menuFor(role));
         bottomNav.setOnItemSelectedListener(item -> {
             showFragment(fragmentFor(item.getItemId()));
@@ -61,16 +67,12 @@ public class MainActivity extends AppCompatActivity {
             recreate();
         });
 
-        ImageButton btnChangePassword = findViewById(R.id.btnChangePassword);
-        btnChangePassword.setOnClickListener(v -> new ChangePasswordDialog().show(getSupportFragmentManager(), "change_password"));
+        ImageButton btnNotifications = findViewById(R.id.btnNotifications);
+        btnNotifications.setOnClickListener(v ->
+                Toast.makeText(this, R.string.notifications_coming_soon, Toast.LENGTH_SHORT).show());
 
-        ImageButton btnSignOut = findViewById(R.id.btnSignOut);
-        btnSignOut.setOnClickListener(v -> {
-            new AuthRepository().signOut();
-            Prefs.get(this).setRememberMe(false, null, null);
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        });
+        ImageButton btnSettings = findViewById(R.id.btnSettings);
+        btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
     }
 
     private int menuFor(UserRole role) {
