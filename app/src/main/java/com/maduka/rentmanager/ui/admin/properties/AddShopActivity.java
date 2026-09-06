@@ -14,6 +14,7 @@ import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.FirebaseManager;
 import com.maduka.rentmanager.data.ShopRepository;
 import com.maduka.rentmanager.data.model.Shop;
+import com.maduka.rentmanager.data.model.UserRole;
 import com.maduka.rentmanager.util.EdgeToEdge;
 import com.maduka.rentmanager.util.LocaleHelper;
 import com.maduka.rentmanager.util.Prefs;
@@ -23,8 +24,15 @@ import java.util.List;
 /** Full-screen replacement for the old AddShopSheet dialog. Super Admin now names a new shop
  * freely (uniqueness enforced case-insensitively, trimmed, by ShopRepository.addShop against a
  * fresh observeShopsOnce read) instead of picking from a fixed A1..A10 slot list - shopId is
- * now an internal Firebase push key. */
+ * now an internal Firebase push key.
+ *
+ * Super-Admin-only: PropertiesFragment only wires the launching click listener for that role,
+ * but since this is still a normal in-app Activity (not itself aware of who launched it), it
+ * also refuses to open for any other role passed via EXTRA_ROLE - a role guard in the code
+ * path itself, not just a hidden button. */
 public class AddShopActivity extends AppCompatActivity {
+    public static final String EXTRA_ROLE = "extra_role";
+
     private final ShopRepository shopRepository = new ShopRepository();
 
     private TextInputLayout tilName;
@@ -41,6 +49,14 @@ public class AddShopActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String roleName = getIntent().getStringExtra(EXTRA_ROLE);
+        UserRole role = roleName != null ? UserRole.valueOf(roleName) : null;
+        if (role != UserRole.SUPER_ADMIN) {
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_add_shop);
 
         View root = findViewById(R.id.addShopRoot);

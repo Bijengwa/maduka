@@ -44,6 +44,13 @@
                 android:textAppearance="@style/TextAppearance.Maduka.Caption" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvTenantLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2"
+            android:textAppearance="@style/TextAppearance.Maduka.Small" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,12 +65,71 @@
                 android:textAppearance="@style/TextAppearance.Maduka.H2" />
 
             <TextView
+                android:id="@+id/tvRentSuffix"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_2"
                 android:layout_marginBottom="2dp"
                 android:text="@string/properties_per_month"
                 android:textAppearance="@style/TextAppearance.Maduka.Small" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rowPaymentInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="@string/label_last_payment"
+                    android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+
+                <TextView
+                    android:id="@+id/tvLastPayment"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.Maduka.Body" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="@string/label_due_date"
+                    android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+
+                <TextView
+                    android:id="@+id/tvDueDate"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.Maduka.Body" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="@string/label_days"
+                    android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+
+                <TextView
+                    android:id="@+id/tvDaysRemaining"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.Maduka.Body" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

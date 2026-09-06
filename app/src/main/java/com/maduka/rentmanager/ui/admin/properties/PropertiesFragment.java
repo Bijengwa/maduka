@@ -17,24 +17,43 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.ShopRepository;
+import com.maduka.rentmanager.data.TenantRepository;
 import com.maduka.rentmanager.data.model.Shop;
+import com.maduka.rentmanager.data.model.Tenant;
 import com.maduka.rentmanager.data.model.UserRole;
+import com.maduka.rentmanager.util.DateCalculator;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/** The Shops/Maduka screen: a live-computed portfolio summary (units/occupied/empty/overdue),
+ * All/Occupied/Empty/Overdue filters, and per-shop cards joined against their occupying tenant.
+ * Shown to both Admin and Super Admin (bottom_nav_admin.xml and bottom_nav_super_admin.xml both
+ * carry nav_properties) - the data itself is identical for both roles, only the "Add Shop"
+ * mutation control is Super-Admin-only. */
 public class PropertiesFragment extends Fragment {
     private static final String ARG_ROLE = "arg_role";
 
+    private enum Filter { ALL, OCCUPIED, EMPTY, OVERDUE }
+
     private final ShopRepository shopRepository = new ShopRepository();
+    private final TenantRepository tenantRepository = new TenantRepository();
     private UserRole role;
+    private Filter filter = Filter.ALL;
+
+    private List<Shop> allShops = new ArrayList<>();
+    private Map<String, Tenant> tenantByShopId = new HashMap<>();
 
     private RecyclerView recyclerShops;
     private TextView tvEmpty;
+    private TextView tvSubtitle;
+    private TextView tvStatUnits, tvStatUnitsSub, tvStatOccupied, tvStatOccupiedSub, tvStatEmpty, tvStatOverdue;
+    private TextView filterAll, filterOccupied, filterEmpty, filterOverdue;
     private Button btnAddShop;
     private ShopAdapter adapter;
 
-    /** Passes the signed-in user's role into the fragment so it knows whether to show
-     * the "Add Shop" action (Super Admin only) or a read-only list (Admin). */
     public static PropertiesFragment newInstance(UserRole role) {
         PropertiesFragment fragment = new PropertiesFragment();
         Bundle args = new Bundle();
@@ -63,28 +82,51 @@ public class PropertiesFragment extends Fragment {
 
         recyclerShops = view.findViewById(R.id.recyclerShops);
         tvEmpty = view.findViewById(R.id.tvEmpty);
+        tvSubtitle = view.findViewById(R.id.tvSubtitle);
+        tvStatUnits = view.findViewById(R.id.tvStatUnits);
+        tvStatUnitsSub = view.findViewById(R.id.tvStatUnitsSub);
+        tvStatOccupied = view.findViewById(R.id.tvStatOccupied);
+        tvStatOccupiedSub = view.findViewById(R.id.tvStatOccupiedSub);
+        tvStatEmpty = view.findViewById(R.id.tvStatEmpty);
+        tvStatOverdue = view.findViewById(R.id.tvStatOverdue);
+        filterAll = view.findViewById(R.id.filterAll);
+        filterOccupied = view.findViewById(R.id.filterOccupied);
+        filterEmpty = view.findViewById(R.id.filterEmpty);
+        filterOverdue = view.findViewById(R.id.filterOverdue);
         btnAddShop = view.findViewById(R.id.btnAddShop);
 
         adapter = new ShopAdapter();
         recyclerShops.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerShops.setAdapter(adapter);
 
+        // Register Shop is Super-Admin-only: not just hidden, Admin never even wires the
+        // click listener that would launch AddShopActivity.
         if (role == UserRole.SUPER_ADMIN) {
             btnAddShop.setVisibility(View.VISIBLE);
-            btnAddShop.setOnClickListener(v ->
-                    startActivity(new Intent(getContext(), AddShopActivity.class)));
+            btnAddShop.setOnClickListener(v -> {
+                Intent intent = new Intent(getContext(), AddShopActivity.class);
+                intent.putExtra(AddShopActivity.EXTRA_ROLE, role.name());
+                startActivity(intent);
+            });
         } else {
             btnAddShop.setVisibility(View.GONE);
         }
 
-        shopRepository.observeShops(new ShopRepository.ShopsListener() {
+        filterAll.setOnClickListener(v -> setFilter(Filter.ALL));
+        filterOccupied.setOnClickListener(v -> setFilter(Filter.OCCUPIED));
+        filterEmpty.setOnClickListener(v -> setFilter(Filter.EMPTY));
+        filterOverdue.setOnClickListener(v -> setFilter(Filter.OVERDUE));
+        updateFilterChipStyles();
+
+        tenantRepository.observeTenants(new TenantRepository.TenantsListener() {
             @Override
-            public void onShops(List<Shop> shops) {
+            public void onTenants(List<Tenant> tenants) {
                 if (!isAdded()) return;
-                adapter.submitList(shops);
-                boolean empty = shops.isEmpty();
-                recyclerShops.setVisibility(empty ? View.GONE : View.VISIBLE);
-                tvEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
+                tenantByShopId = new HashMap<>();
+                for (Tenant t : tenants) {
+                    if (t.getShopId() != null) tenantByShopId.put(t.getShopId(), t);
+                }
+                render();
             }
 
             @Override
@@ -93,5 +135,97 @@ public class PropertiesFragment extends Fragment {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
+
+        shopRepository.observeShops(new ShopRepository.ShopsListener() {
+            @Override
+            public void onShops(List<Shop> shops) {
+                if (!isAdded()) return;
+                allShops = shops;
+                render();
+            }
+
+            @Override
+            public void onError(String message) {
+                if (!isAdded()) return;
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setFilter(Filter newFilter) {
+        filter = newFilter;
+        updateFilterChipStyles();
+        render();
+    }
+
+    private void updateFilterChipStyles() {
+        style(filterAll, filter == Filter.ALL);
+        style(filterOccupied, filter == Filter.OCCUPIED);
+        style(filterEmpty, filter == Filter.EMPTY);
+        style(filterOverdue, filter == Filter.OVERDUE);
+    }
+
+    private void style(TextView chip, boolean selected) {
+        chip.setBackgroundResource(selected ? R.drawable.shape_pill_selected : R.drawable.shape_pill_unselected);
+        chip.setTextColor(selected
+                ? androidx.core.content.ContextCompat.getColor(requireContext(), R.color.md_bg)
+                : androidx.core.content.ContextCompat.getColor(requireContext(), R.color.md_text));
+    }
+
+    /** Recomputes the summary stats and the filtered, tenant-joined row list from the two live
+     * feeds (shops, tenants) whenever either one changes. No stat here is hardcoded - every
+     * number is derived from allShops/tenantByShopId at render time. */
+    private void render() {
+        long now = System.currentTimeMillis();
+        int units = allShops.size();
+        int occupied = 0;
+        int overdueCount = 0;
+        List<ShopAdapter.Row> allRows = new ArrayList<>();
+        for (Shop shop : allShops) {
+            Tenant tenant = tenantByShopId.get(shop.getShopId());
+            boolean isOccupied = shop.isOccupied() && tenant != null;
+            if (isOccupied) {
+                occupied++;
+                if (DateCalculator.isOverdue(tenant.getDueDate(), now)) overdueCount++;
+            }
+            allRows.add(new ShopAdapter.Row(shop, tenant));
+        }
+        int empty = units - occupied;
+
+        tvSubtitle.setText(getString(R.string.shops_subtitle_format, units));
+        tvStatUnits.setText(String.valueOf(units));
+        tvStatUnitsSub.setText("");
+        tvStatOccupied.setText(String.valueOf(occupied));
+        tvStatOccupiedSub.setText(units > 0
+                ? Math.round(occupied * 100f / units) + "%"
+                : "");
+        tvStatEmpty.setText(String.valueOf(empty));
+        tvStatOverdue.setText(String.valueOf(overdueCount));
+
+        List<ShopAdapter.Row> filtered = new ArrayList<>();
+        for (ShopAdapter.Row row : allRows) {
+            boolean isOccupied = row.shop.isOccupied() && row.tenant != null;
+            boolean isOverdue = isOccupied && DateCalculator.isOverdue(row.tenant.getDueDate(), now);
+            switch (filter) {
+                case OCCUPIED:
+                    if (isOccupied) filtered.add(row);
+                    break;
+                case EMPTY:
+                    if (!isOccupied) filtered.add(row);
+                    break;
+                case OVERDUE:
+                    if (isOverdue) filtered.add(row);
+                    break;
+                default:
+                    filtered.add(row);
+            }
+        }
+
+        adapter.submitList(filtered);
+        boolean noShopsAtAll = allShops.isEmpty();
+        boolean noResultsForFilter = !noShopsAtAll && filtered.isEmpty();
+        recyclerShops.setVisibility(filtered.isEmpty() ? View.GONE : View.VISIBLE);
+        tvEmpty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+        tvEmpty.setText(noResultsForFilter ? R.string.shops_no_results : R.string.properties_empty);
     }
 }

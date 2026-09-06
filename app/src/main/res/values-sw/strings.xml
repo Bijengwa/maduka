@@ -56,6 +56,30 @@
     <string name="status_vacant">Wazi</string>
     <string name="status_active">Anatumika</string>
     <string name="status_disabled">Amezimwa</string>
+    <string name="status_overdue">Amechelewa</string>
+
+    <string name="label_last_payment">Malipo ya mwisho</string>
+    <string name="label_due_date">Tarehe ya malipo</string>
+    <string name="label_days_left_format">Siku %1$d zilizobaki</string>
+    <string name="label_days_overdue_format">Siku %1$d za kuchelewa</string>
+    <string name="label_no_tenant">Hakuna mpangaji</string>
+    <string name="label_rent_not_set">Kodi haijawekwa</string>
+    <string name="label_days">Siku</string>
+
+    <string name="shops_stat_units">Maduka</string>
+    <string name="shops_stat_occupied">Yamepangwa</string>
+    <string name="shops_stat_empty">Wazi</string>
+    <string name="shops_stat_overdue">Yamechelewa</string>
+    <string name="shops_filter_all">Yote</string>
+    <string name="shops_filter_occupied">Yamepangwa</string>
+    <string name="shops_filter_empty">Wazi</string>
+    <string name="shops_filter_overdue">Yamechelewa</string>
+    <string name="shops_subtitle_format">Maduka %1$d yamesajiliwa</string>
+    <string name="shops_no_results">Hakuna duka linalolingana na kichujio hiki</string>
+    <string name="shops_title">Maduka</string>
+
+    <string name="tenants_subtitle_format">Wapangaji %1$d · %2$d wamechelewa</string>
+    <string name="tenants_readonly_note">Msimamizi Mkuu pekee ndiye anaweza kusajili wapangaji wapya.</string>
 
     <string name="users_add_admin">Ongeza Msimamizi</string>
     <string name="users_empty">Hakuna wasimamizi waliosajiliwa bado</string>
