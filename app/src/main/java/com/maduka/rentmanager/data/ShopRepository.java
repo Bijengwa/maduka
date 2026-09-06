@@ -17,6 +17,18 @@ public class ShopRepository {
     private final FirebaseManager fb = FirebaseManager.get();
 
     public interface ShopsListener { void onShops(List<Shop> shops); void onError(String message); }
+    public interface ShopListener { void onShop(Shop shop); void onError(String message); }
+
+    /** A single shop's own record, live-updating - used by a Tenant's own Details screen so it
+     * never has to pull the full shops/ node just to find one row. */
+    public void observeShop(String shopId, ShopListener listener) {
+        fb.root().child(FirebaseSchema.SHOPS).child(shopId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) { listener.onShop(snapshot.getValue(Shop.class)); }
+            @Override
+            public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
+        });
+    }
 
     /** All registered shops, live-updating, sorted by shopId (a Firebase push key, which sorts
      * chronologically by creation time). */

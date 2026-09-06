@@ -51,4 +51,20 @@
         <item name="android:textColor">@color/md_neutral_400</item>
         <item name="android:textAllCaps">true</item>
     </style>
+
+    <!-- Reusable filter-chip look (Shops/Tenants filter rows): unselected by default via
+         shape_pill_unselected; toggled to shape_pill_selected + accent text color in code. -->
+    <style name="Widget.Maduka.FilterChip">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/shape_pill_unselected</item>
+        <item name="android:paddingStart">@dimen/space_4</item>
+        <item name="android:paddingEnd">@dimen/space_4</item>
+        <item name="android:paddingTop">@dimen/space_2</item>
+        <item name="android:paddingBottom">@dimen/space_2</item>
+        <item name="android:textAppearance">@style/TextAppearance.Maduka.Small</item>
+        <item name="android:textColor">@color/md_text</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
 </resources>

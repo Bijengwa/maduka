@@ -23,8 +23,10 @@ public class TenantRepository {
     private final FirebaseManager fb = FirebaseManager.get();
 
     public interface TenantsListener { void onTenants(List<Tenant> tenants); void onError(String message); }
+    public interface TenantListener { void onTenant(Tenant tenant); void onError(String message); }
 
-    /** All registered tenants, live-updating. */
+    /** All registered tenants, live-updating. Admin/Super Admin only - a Tenant's own screens
+     * must use observeTenant(uid, ...) below instead, never filter this full list client-side. */
     public void observeTenants(TenantsListener listener) {
         fb.root().child(FirebaseSchema.TENANTS).addValueEventListener(new ValueEventListener() {
             @Override
@@ -39,6 +41,30 @@ public class TenantRepository {
             @Override
             public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
         });
+    }
+
+    /** A single tenant's own record, live-updating - server-side scoped by uid, not a filter
+     * over observeTenants(). This is what every Tenant-self screen must use. */
+    public void observeTenant(String uid, TenantListener listener) {
+        fb.root().child(FirebaseSchema.TENANTS).child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) { listener.onTenant(snapshot.getValue(Tenant.class)); }
+            @Override
+            public void onCancelled(DatabaseError error) { listener.onError(error.getMessage()); }
+        });
+    }
+
+    /** Yupo/Hayupo presence-check button handler: records whether an overdue tenant is still
+     * occupying their shop. Hayupo does not by itself vacate the shop - that stays a distinct,
+     * explicit Super Admin action - it only flags the tenant for management follow-up. */
+    public void setPresence(String tenantUid, PresenceStatus status, long nowMillis, FirebaseManager.Callback<Void> cb) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("presenceStatus", status.name());
+        updates.put("lastPresenceCheckAt", nowMillis);
+        updates.put("updatedAt", nowMillis);
+        fb.root().child(FirebaseSchema.TENANTS).child(tenantUid).updateChildren(updates)
+                .addOnSuccessListener(v -> cb.onSuccess(null))
+                .addOnFailureListener(e -> cb.onError(e.getMessage()));
     }
 
     /** Registers a tenant into a specific (must be currently vacant) shop, recording their
