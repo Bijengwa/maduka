@@ -1,15 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_bg">
+    android:background="@color/md_bg"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/space_8">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/nav_reports"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/md_text" />
-</FrameLayout>
+        android:orientation="vertical"
+        android:padding="@dimen/space_6">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_reports"
+            android:textAppearance="@style/TextAppearance.Maduka.H1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/reports_subtitle"
+            android:textAppearance="@style/TextAppearance.Maduka.Small" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_6"
+            android:text="@string/reports_section_portfolio"
+            android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card"
+            android:padding="@dimen/space_4">
+
+            <include layout="@layout/row_label_value" android:id="@+id/rowTotalShops" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowOccupied" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowVacant" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowOccupancy" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowActiveTenants" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowOverdueTenants" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_6"
+            android:text="@string/reports_section_payments"
+            android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card"
+            android:padding="@dimen/space_4">
+
+            <include layout="@layout/row_label_value" android:id="@+id/rowTotalRecords" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowConfirmed" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowPending" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowRejected" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowTotalAmount" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvNoPayments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_3"
+            android:text="@string/reports_no_payments"
+            android:textAppearance="@style/TextAppearance.Maduka.Small"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

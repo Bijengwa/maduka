@@ -143,6 +143,22 @@
     <string name="dashboard_next_due_upcoming_format">%1$s · %2$s — siku %3$d</string>
     <string name="dashboard_no_upcoming">Hakuna malipo yanayokaribia au yaliyochelewa</string>
 
+    <string name="reports_subtitle">Muhtasari wa moja kwa moja · kuangalia tu</string>
+    <string name="reports_section_portfolio">Maduka na Wapangaji</string>
+    <string name="reports_section_payments">Malipo</string>
+    <string name="reports_total_shops">Jumla ya maduka</string>
+    <string name="reports_occupied_shops">Yamepangwa</string>
+    <string name="reports_vacant_shops">Wazi</string>
+    <string name="reports_occupancy_rate">Kiwango cha upangaji</string>
+    <string name="reports_active_tenants">Wapangaji wanaotumika</string>
+    <string name="reports_overdue_tenants">Wapangaji waliochelewa</string>
+    <string name="reports_total_records">Jumla ya rekodi</string>
+    <string name="reports_confirmed">Zimethibitishwa</string>
+    <string name="reports_pending">Zinasubiri</string>
+    <string name="reports_rejected">Zimekataliwa</string>
+    <string name="reports_total_confirmed_amount">Jumla ya kiasi kilichothibitishwa</string>
+    <string name="reports_no_payments">Hakuna rekodi za malipo bado</string>
+
     <string name="users_add_admin">Ongeza Msimamizi</string>
     <string name="users_empty">Hakuna wasimamizi waliosajiliwa bado</string>
     <string name="users_name_hint">Jina kamili</string>

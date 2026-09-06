@@ -143,6 +143,22 @@
     <string name="dashboard_next_due_upcoming_format">%1$s · %2$s — %3$d days</string>
     <string name="dashboard_no_upcoming">No upcoming or overdue payments</string>
 
+    <string name="reports_subtitle">Live overview · view only</string>
+    <string name="reports_section_portfolio">Portfolio</string>
+    <string name="reports_section_payments">Payments</string>
+    <string name="reports_total_shops">Total shops</string>
+    <string name="reports_occupied_shops">Occupied</string>
+    <string name="reports_vacant_shops">Vacant</string>
+    <string name="reports_occupancy_rate">Occupancy rate</string>
+    <string name="reports_active_tenants">Active tenants</string>
+    <string name="reports_overdue_tenants">Overdue tenants</string>
+    <string name="reports_total_records">Total records</string>
+    <string name="reports_confirmed">Confirmed</string>
+    <string name="reports_pending">Pending</string>
+    <string name="reports_rejected">Rejected</string>
+    <string name="reports_total_confirmed_amount">Total confirmed amount</string>
+    <string name="reports_no_payments">No payment records yet</string>
+
     <string name="users_add_admin">Add Admin</string>
     <string name="users_empty">No admins registered yet</string>
     <string name="users_name_hint">Full name</string>
