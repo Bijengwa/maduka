@@ -29,13 +29,13 @@ import com.maduka.rentmanager.data.model.Tenant;
 import com.maduka.rentmanager.data.model.UserRole;
 import com.maduka.rentmanager.ui.admin.payments.RecordPaymentActivity;
 import com.maduka.rentmanager.util.DateCalculator;
+import com.maduka.rentmanager.util.MoneyFormatter;
 import com.maduka.rentmanager.util.Prefs;
 import com.maduka.rentmanager.util.VerseProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /** Admin/Super Admin dashboard: welcome + Bible verse (Admin/Super Admin only, never Tenant) +
@@ -66,9 +66,12 @@ public class AdminDashboardFragment extends Fragment {
     private Map<String, Tenant> activeTenantByShopId = new HashMap<>();
     private Map<String, String> shopNamesById = new HashMap<>();
     private PaymentFilter currentFilter = PaymentFilter.ALL;
+    private long collectionThisMonth;
+    private boolean collectionAmountExpanded;
 
     private AppBarLayout appBar;
-    private TextView tvWelcome, tvWelcomeSubtitle, btnRecordPayment;
+    private TextView tvWelcome, tvWelcomeSubtitle;
+    private View btnRecordPayment;
     private TextView tvVerseText, tvVerseReference;
     private View cardUnits, cardCollection, cardNextDue, cardOverdue;
     private TextView tvStatUnits, tvStatUnitsNote, tvStatCollection, tvStatNextDue, tvStatOverdue, tvStatOverdueNote;
@@ -171,7 +174,10 @@ public class AdminDashboardFragment extends Fragment {
         });
 
         cardUnits.setOnClickListener(v -> switchTab(R.id.nav_properties));
-        cardCollection.setOnClickListener(v -> switchTab(R.id.nav_reports));
+        cardCollection.setOnClickListener(v -> {
+            collectionAmountExpanded = !collectionAmountExpanded;
+            updateCollectionDisplay();
+        });
         cardNextDue.setOnClickListener(v -> jumpToPayments(PaymentFilter.NEXT_DUE));
         cardOverdue.setOnClickListener(v -> jumpToPayments(PaymentFilter.OVERDUE));
         tvViewAllUpcoming.setOnClickListener(v -> jumpToPayments(PaymentFilter.NEXT_DUE));
@@ -339,7 +345,7 @@ public class AdminDashboardFragment extends Fragment {
 
         long monthStart = DateCalculator.startOfMonth(now);
         long nextMonthStart = DateCalculator.addMonths(monthStart, 1);
-        long collectionThisMonth = 0;
+        collectionThisMonth = 0;
         for (PaymentRecord p : allPayments) {
             if (p != null && p.getPaymentDate() >= monthStart && p.getPaymentDate() < nextMonthStart) {
                 collectionThisMonth += p.getAmount();
@@ -348,12 +354,19 @@ public class AdminDashboardFragment extends Fragment {
 
         tvStatUnits.setText(String.valueOf(units));
         tvStatUnitsNote.setText(getString(R.string.dashboard_units_note_format, occupied, units));
-        tvStatCollection.setText(getString(R.string.dashboard_amount_format,
-                String.format(Locale.US, "%,d", collectionThisMonth)));
+        updateCollectionDisplay();
         tvStatNextDue.setText(String.valueOf(nextDueCount));
         tvStatOverdue.setText(String.valueOf(overdueCount));
-        tvStatOverdueNote.setText(getString(R.string.dashboard_amount_format,
-                String.format(Locale.US, "%,d", overdueAmount)));
+        tvStatOverdueNote.setText(getString(R.string.dashboard_amount_format, MoneyFormatter.compact(overdueAmount)));
+    }
+
+    /** Compact by default so a large amount never breaks the card's layout; tapping the card
+     * (see the click listener in onViewCreated) reveals the exact figure, per the design spec. */
+    private void updateCollectionDisplay() {
+        String amount = collectionAmountExpanded
+                ? MoneyFormatter.full(collectionThisMonth)
+                : MoneyFormatter.compact(collectionThisMonth);
+        tvStatCollection.setText(getString(R.string.dashboard_amount_format, amount));
     }
 
     private void renderUpcoming() {

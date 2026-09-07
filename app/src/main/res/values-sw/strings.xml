@@ -205,6 +205,7 @@
 
     <string name="payments_record_title">Rekodi Malipo</string>
     <string name="payments_action_record">+ Rekodi Malipo</string>
+    <string name="payments_action_record_short">Rekodi Malipo</string>
     <string name="payments_tenant_label">Mpangaji</string>
     <string name="payments_amount_label">Kiasi (TZS)</string>
     <string name="payments_method_label">Njia ya malipo</string>

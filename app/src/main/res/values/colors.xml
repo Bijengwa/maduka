@@ -5,18 +5,18 @@
     <color name="md_text">#E9E9ED</color>
     <color name="md_divider">#29E9E9ED</color>
 
-    <color name="md_accent">#7BA3C7</color>
-    <color name="md_accent_2">#E8C99E</color>
+    <color name="md_accent">#9184D9</color>
+    <color name="md_accent_2">#A7A1DB</color>
 
-    <color name="md_accent_100">#EFF5FA</color>
-    <color name="md_accent_200">#D2E1ED</color>
-    <color name="md_accent_300">#B5CCE1</color>
-    <color name="md_accent_400">#98B8D4</color>
-    <color name="md_accent_500">#7BA3C7</color>
-    <color name="md_accent_600">#5980A6</color>
-    <color name="md_accent_700">#456483</color>
-    <color name="md_accent_800">#314960</color>
-    <color name="md_accent_900">#1D2D3D</color>
+    <color name="md_accent_100">#F5F4FF</color>
+    <color name="md_accent_200">#E7E5FE</color>
+    <color name="md_accent_300">#D2CEFD</color>
+    <color name="md_accent_400">#B5ABFC</color>
+    <color name="md_accent_500">#968AE0</color>
+    <color name="md_accent_600">#796CBF</color>
+    <color name="md_accent_700">#5D5294</color>
+    <color name="md_accent_800">#423A6A</color>
+    <color name="md_accent_900">#2B2741</color>
 
     <color name="md_neutral_100">#F3F5FE</color>
     <color name="md_neutral_200">#E4E7F5</color>

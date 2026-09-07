@@ -205,6 +205,7 @@
 
     <string name="payments_record_title">Record Payment</string>
     <string name="payments_action_record">+ Record Payment</string>
+    <string name="payments_action_record_short">Record Payment</string>
     <string name="payments_tenant_label">Tenant</string>
     <string name="payments_amount_label">Amount (TZS)</string>
     <string name="payments_method_label">Payment method</string>

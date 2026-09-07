@@ -35,20 +35,34 @@
                 android:text="@string/dashboard_welcome_subtitle"
                 android:textAppearance="@style/TextAppearance.Maduka.Small" />
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/btnRecordPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_4"
                 android:background="@drawable/bg_button_primary"
+                android:orientation="horizontal"
                 android:gravity="center"
                 android:paddingTop="@dimen/space_4"
                 android:paddingBottom="@dimen/space_4"
-                android:text="@string/payments_action_record"
-                android:textColor="@color/md_bg"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:visibility="gone" />
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_coins"
+                    android:tint="@color/md_bg"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_2"
+                    android:text="@string/payments_action_record_short"
+                    android:textColor="@color/md_bg"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/verseCard"

@@ -12,11 +12,11 @@ import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.model.PaymentRecord;
 import com.maduka.rentmanager.ui.common.StatusPill;
 import com.maduka.rentmanager.util.DateCalculator;
+import com.maduka.rentmanager.util.MoneyFormatter;
 import com.maduka.rentmanager.util.StatusPresentation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /** One row per PaymentRecord on the dashboard's payment list - date/tenant/shop/amount/paid-to
  * phone/due-status, per the dashboard redesign spec. The "status" here is the associated
@@ -79,7 +79,7 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
         void bind(Row row) {
             tvTenant.setText(row.tenantName);
             tvAmount.setText(itemView.getContext().getString(R.string.dashboard_amount_format,
-                    String.format(Locale.US, "%,d", row.payment.getAmount())));
+                    MoneyFormatter.compact(row.payment.getAmount())));
             tvShopDate.setText(row.shopName + " · " + DateCalculator.formatDdMmYyyy(row.payment.getPaymentDate()));
 
             String phone = row.payment.getPaymentPhoneNumber();

@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.maduka.rentmanager.R;
 import com.maduka.rentmanager.data.model.Tenant;
 import com.maduka.rentmanager.util.DateCalculator;
+import com.maduka.rentmanager.util.MoneyFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /** Rows for the dashboard's "Malipo Yanayokaribia / Upcoming Payments" section - active tenants
  * whose dueDate falls within the next 30 calendar days, per the dashboard redesign spec. */
@@ -75,7 +75,7 @@ public class UpcomingPaymentAdapter extends RecyclerView.Adapter<UpcomingPayment
             String daysLeft = itemView.getContext().getString(R.string.label_days_left_format, Math.max(0, days));
             tvDue.setText(dueDate + " · " + daysLeft);
             tvAmount.setText(itemView.getContext().getString(R.string.dashboard_amount_format,
-                    String.format(Locale.US, "%,d", row.tenant.getMonthlyRent())));
+                    MoneyFormatter.compact(row.tenant.getMonthlyRent())));
         }
     }
 }
