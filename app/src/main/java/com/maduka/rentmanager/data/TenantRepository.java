@@ -164,8 +164,8 @@ public class TenantRepository {
      * There is no approval workflow: this first payment, like every payment recorded via
      * {@link PaymentRepository#recordPayment}, is immediately a valid recorded payment. */
     public void registerTenant(String name, String phone, String email, String password, Shop shop,
-                                int monthsPaid, long paymentDateMillis, String recordedByUid,
-                                FirebaseManager.Callback<Void> cb) {
+                                int monthsPaid, long paymentDateMillis, String paymentPhoneNumber,
+                                String recordedByUid, FirebaseManager.Callback<Void> cb) {
         FirebaseAuth secondaryAuth = SecondaryAuthProvider.get();
         secondaryAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
@@ -201,6 +201,7 @@ public class TenantRepository {
                     payment.setAmount(amount);
                     payment.setMonthsCovered(monthsPaid);
                     payment.setPaymentDate(paymentDateMillis);
+                    payment.setPaymentPhoneNumber(paymentPhoneNumber);
                     payment.setRecordedByUid(recordedByUid);
                     payment.setCreatedAt(now);
                     payment.setUpdatedAt(now);

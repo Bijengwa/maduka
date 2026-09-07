@@ -59,6 +59,7 @@ public class RegisterTenantActivity extends AppCompatActivity {
     private Spinner spinnerShop;
     private TextInputEditText etMonthsPaid;
     private TextInputEditText etPaymentDate;
+    private TextInputEditText etPaymentPhone;
     private TextView tvComputedAmount;
     private TextView tvNoVacantShops;
     private Button btnRegister;
@@ -97,6 +98,7 @@ public class RegisterTenantActivity extends AppCompatActivity {
         spinnerShop = findViewById(R.id.spinnerShop);
         etMonthsPaid = findViewById(R.id.etMonthsPaid);
         etPaymentDate = findViewById(R.id.etPaymentDate);
+        etPaymentPhone = findViewById(R.id.etPaymentPhone);
         tvComputedAmount = findViewById(R.id.tvComputedAmount);
         tvNoVacantShops = findViewById(R.id.tvNoVacantShops);
         btnRegister = findViewById(R.id.btnRegister);
@@ -167,6 +169,7 @@ public class RegisterTenantActivity extends AppCompatActivity {
         spinnerShop.setEnabled(enabled);
         etMonthsPaid.setEnabled(enabled);
         etPaymentDate.setEnabled(enabled);
+        etPaymentPhone.setEnabled(enabled);
         btnRegister.setEnabled(enabled);
     }
 
@@ -232,6 +235,12 @@ public class RegisterTenantActivity extends AppCompatActivity {
             return;
         }
 
+        String paymentPhone = textOf(etPaymentPhone);
+        if (paymentPhone.isEmpty()) {
+            Toast.makeText(this, R.string.payments_error_phone_required, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         int selected = spinnerShop.getSelectedItemPosition();
         if (selected < 0 || selected >= vacantShops.size()) return;
         Shop selectedShop = vacantShops.get(selected);
@@ -240,7 +249,7 @@ public class RegisterTenantActivity extends AppCompatActivity {
 
         setFormEnabled(false);
         tenantRepository.registerTenant(name, phone, email, password, selectedShop, months, paymentDateMillis,
-                recordedByUid, new FirebaseManager.Callback<Void>() {
+                paymentPhone, recordedByUid, new FirebaseManager.Callback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 finish();
