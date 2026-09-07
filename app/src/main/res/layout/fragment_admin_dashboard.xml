@@ -1,137 +1,304 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_bg"
-    android:clipToPadding="false"
-    android:paddingBottom="@dimen/space_8">
+    android:background="@color/md_bg">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/space_6">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nav_dashboard"
-            android:textAppearance="@style/TextAppearance.Maduka.H1" />
-
-        <TextView
-            android:id="@+id/tvSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textAppearance="@style/TextAppearance.Maduka.Small" />
+        android:background="@color/md_bg"
+        app:elevation="0dp">
 
         <LinearLayout
-            android:id="@+id/verseCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_6"
             android:orientation="vertical"
-            android:background="@drawable/bg_card"
-            android:padding="@dimen/space_4">
+            android:paddingStart="@dimen/space_6"
+            android:paddingEnd="@dimen/space_6"
+            android:paddingTop="@dimen/space_6"
+            app:layout_scrollFlags="scroll">
 
             <TextView
-                android:id="@+id/tvVerseText"
-                android:layout_width="match_parent"
+                android:id="@+id/tvWelcome"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="italic"
+                android:textAppearance="@style/TextAppearance.Maduka.H1" />
+
+            <TextView
+                android:id="@+id/tvWelcomeSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/dashboard_welcome_subtitle"
                 android:textAppearance="@style/TextAppearance.Maduka.Small" />
 
             <TextView
-                android:id="@+id/tvVerseReference"
+                android:id="@+id/btnRecordPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                android:layout_marginTop="@dimen/space_4"
+                android:background="@drawable/bg_button_primary"
+                android:gravity="center"
+                android:paddingTop="@dimen/space_4"
+                android:paddingBottom="@dimen/space_4"
+                android:text="@string/payments_action_record"
+                android:textColor="@color/md_bg"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/verseCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_4">
+
+                <TextView
+                    android:id="@+id/tvVerseText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textAppearance="@style/TextAppearance.Maduka.Small" />
+
+                <TextView
+                    android:id="@+id/tvVerseReference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/cardUnits"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/space_2"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/space_4">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_units" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                    <TextView android:id="@+id/tvStatUnits" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" />
+                    <TextView android:id="@+id/tvStatUnitsNote" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cardCollection"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/space_2"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/space_4">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/dashboard_stat_collection" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                    <TextView android:id="@+id/tvStatCollection" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_good_fg" />
+                    <TextView android:id="@+id/tvStatCollectionNote" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/dashboard_collection_note" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/cardNextDue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/space_2"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/space_4">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/dashboard_stat_next_due" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                    <TextView android:id="@+id/tvStatNextDue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_wait_fg" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/dashboard_next_due_note" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cardOverdue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/space_2"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/space_4">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/dashboard_stat_overdue" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                    <TextView android:id="@+id/tvStatOverdue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_bad_fg" />
+                    <TextView android:id="@+id/tvStatOverdueNote" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/dashboard_upcoming_title"
+                    android:textAppearance="@style/TextAppearance.Maduka.H3" />
+
+                <TextView
+                    android:id="@+id/tvViewAllUpcoming"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/space_2"
+                    android:text="@string/dashboard_view_all"
+                    android:textAppearance="@style/TextAppearance.Maduka.Small"
+                    android:textColor="@color/md_accent" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerUpcoming"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:id="@+id/tvUpcomingEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2"
+                android:text="@string/dashboard_upcoming_empty"
+                android:textAppearance="@style/TextAppearance.Maduka.Small"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_6" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_6"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/space_2"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card"
-                android:padding="@dimen/space_4">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_units" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatUnits" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/space_2"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card"
-                android:padding="@dimen/space_4">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_occupied" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatOccupied" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_good_fg" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_3"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/space_2"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card"
-                android:padding="@dimen/space_4">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_empty" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatEmpty" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_neutral_400" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/space_2"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card"
-                android:padding="@dimen/space_4">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_overdue" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvStatOverdue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_bad_fg" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_6"
             android:orientation="vertical"
-            android:background="@drawable/bg_card"
-            android:padding="@dimen/space_4">
+            android:background="@color/md_bg"
+            android:paddingStart="@dimen/space_6"
+            android:paddingEnd="@dimen/space_6"
+            android:paddingTop="@dimen/space_3"
+            android:paddingBottom="@dimen/space_3">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dashboard_next_due_title"
-                android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-
-            <TextView
-                android:id="@+id/tvNextDue"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textAppearance="@style/TextAppearance.Maduka.Body" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/nav_payments"
+                    android:textAppearance="@style/TextAppearance.Maduka.H3" />
+
+                <LinearLayout
+                    android:id="@+id/btnRefresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/space_2">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_refresh"
+                        android:tint="@color/md_accent"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_2"
+                        android:text="@string/action_refresh"
+                        android:textAppearance="@style/TextAppearance.Maduka.Small"
+                        android:textColor="@color/md_accent" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_3"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView android:id="@+id/chipAll" style="@style/MadukaFilterChip" android:text="@string/dashboard_filter_all" />
+                    <TextView android:id="@+id/chipNextDue" style="@style/MadukaFilterChip" android:layout_marginStart="@dimen/space_2" android:text="@string/dashboard_filter_next_due" />
+                    <TextView android:id="@+id/chipActive" style="@style/MadukaFilterChip" android:layout_marginStart="@dimen/space_2" android:text="@string/dashboard_filter_active" />
+                    <TextView android:id="@+id/chipOverdue" style="@style/MadukaFilterChip" android:layout_marginStart="@dimen/space_2" android:text="@string/dashboard_filter_overdue" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/space_3"
+                android:background="@color/md_divider" />
         </LinearLayout>
 
-    </LinearLayout>
-</ScrollView>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerPayments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/space_6"
+        android:paddingEnd="@dimen/space_6"
+        android:paddingTop="@dimen/space_2"
+        android:paddingBottom="@dimen/space_8"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <TextView
+        android:id="@+id/tvPaymentsEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_8"
+        android:gravity="center"
+        android:text="@string/reports_no_payments"
+        android:textAppearance="@style/TextAppearance.Maduka.Small"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

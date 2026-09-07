@@ -18,10 +18,12 @@
         android:paddingStart="@dimen/space_3"
         android:paddingEnd="@dimen/space_3">
 
-        <View
+        <TextView
+            android:id="@+id/tvTopBarTitle"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.Maduka.H3" />
 
         <ImageButton
             android:id="@+id/btnNotifications"

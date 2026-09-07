@@ -137,11 +137,29 @@
     <string name="notif_tenant_confirmed_title">Malipo yamethibitishwa</string>
     <string name="notif_tenant_confirmed_message_format">TSh %1$s zimethibitishwa kwa miezi %2$d.</string>
 
-    <string name="dashboard_subtitle_format">Maduka %1$d · %2$d yamepangwa</string>
-    <string name="dashboard_next_due_title">Malipo yajayo</string>
-    <string name="dashboard_next_due_overdue_format">%1$s · %2$s — imechelewa siku %3$d</string>
-    <string name="dashboard_next_due_upcoming_format">%1$s · %2$s — siku %3$d</string>
-    <string name="dashboard_no_upcoming">Hakuna malipo yanayokaribia au yaliyochelewa</string>
+    <string name="dashboard_welcome_named_format">Karibu, %1$s</string>
+    <string name="dashboard_welcome_generic">Karibu</string>
+    <string name="dashboard_welcome_subtitle">Hivi ndivyo mali yako inavyoendelea leo</string>
+
+    <string name="dashboard_stat_collection">Mapato</string>
+    <string name="dashboard_stat_next_due">Inakaribia</string>
+    <string name="dashboard_stat_overdue">Imepita Muda</string>
+    <string name="dashboard_units_note_format">%1$d / %2$d kaa mahali</string>
+    <string name="dashboard_collection_note">Mwezi huu</string>
+    <string name="dashboard_next_due_note">Ndani ya siku 30</string>
+    <string name="dashboard_amount_format">TZS %1$s</string>
+
+    <string name="dashboard_upcoming_title">Malipo Yanayokaribia</string>
+    <string name="dashboard_upcoming_due_date_format">Inaisha %1$s</string>
+    <string name="dashboard_upcoming_empty">Hakuna malipo yanayokaribia ndani ya siku 30 zijazo</string>
+    <string name="dashboard_view_all">Ona yote</string>
+
+    <string name="dashboard_filter_all">Zote</string>
+    <string name="dashboard_filter_next_due">Inakaribia</string>
+    <string name="dashboard_filter_active">Hai</string>
+    <string name="dashboard_filter_overdue">Imechelewa</string>
+
+    <string name="action_refresh">Onyesha upya</string>
 
     <string name="reports_subtitle">Muhtasari wa moja kwa moja · kuangalia tu</string>
     <string name="reports_section_portfolio">Maduka na Wapangaji</string>

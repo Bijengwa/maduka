@@ -32,12 +32,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String STATE_SELECTED_NAV_ID = "selected_nav_id";
 
     private UserRole role;
     private BottomNavigationView bottomNav;
+    private TextView tvTopBarTitle;
     private int selectedNavId;
 
     @Override
@@ -63,12 +65,14 @@ public class MainActivity extends AppCompatActivity {
 
         View topBar = findViewById(R.id.topBar);
         EdgeToEdge.applyTopInset(topBar);
+        tvTopBarTitle = findViewById(R.id.tvTopBarTitle);
 
         bottomNav = findViewById(R.id.bottomNav);
         EdgeToEdge.applyBottomInset(bottomNav);
         bottomNav.inflateMenu(menuFor(role));
         bottomNav.setOnItemSelectedListener(item -> {
             selectedNavId = item.getItemId();
+            tvTopBarTitle.setText(item.getTitle());
             showFragment(fragmentFor(selectedNavId));
             return true;
         });
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 ? savedInstanceState.getInt(STATE_SELECTED_NAV_ID, bottomNav.getMenu().getItem(0).getItemId())
                 : bottomNav.getMenu().getItem(0).getItemId();
         bottomNav.setSelectedItemId(selectedNavId);
+        tvTopBarTitle.setText(bottomNav.getMenu().findItem(selectedNavId).getTitle());
         showFragment(fragmentFor(selectedNavId));
 
         Button btnLanguage = findViewById(R.id.btnLanguage);
@@ -123,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Fragment fragmentFor(int itemId) {
-        if (itemId == R.id.nav_dashboard) return role == UserRole.TENANT ? new TenantDashboardFragment() : new AdminDashboardFragment();
+        if (itemId == R.id.nav_dashboard) return role == UserRole.TENANT ? new TenantDashboardFragment() : AdminDashboardFragment.newInstance(role);
         if (itemId == R.id.nav_properties) return PropertiesFragment.newInstance(role);
         if (itemId == R.id.nav_tenants) return TenantsFragment.newInstance(role);
         if (itemId == R.id.nav_reports) return new ReportsFragment();

@@ -32,6 +32,19 @@ public final class DateCalculator {
         return c.getTimeInMillis();
     }
 
+    /** Midnight UTC on the 1st of the calendar month containing the given instant - the
+     * dashboard's "Collection this month" card uses this to bucket PaymentRecord.paymentDate. */
+    public static long startOfMonth(long epochMillis) {
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        c.setTimeInMillis(epochMillis);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
+
     /** Midnight UTC of the calendar day containing the given instant. */
     public static long startOfDay(long epochMillis) {
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));

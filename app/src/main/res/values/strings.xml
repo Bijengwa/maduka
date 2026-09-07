@@ -137,11 +137,29 @@
     <string name="notif_tenant_confirmed_title">Payment confirmed</string>
     <string name="notif_tenant_confirmed_message_format">TSh %1$s confirmed for %2$d month(s).</string>
 
-    <string name="dashboard_subtitle_format">%1$d units · %2$d occupied</string>
-    <string name="dashboard_next_due_title">Next due</string>
-    <string name="dashboard_next_due_overdue_format">%1$s · %2$s — %3$d days overdue</string>
-    <string name="dashboard_next_due_upcoming_format">%1$s · %2$s — %3$d days</string>
-    <string name="dashboard_no_upcoming">No upcoming or overdue payments</string>
+    <string name="dashboard_welcome_named_format">Welcome, %1$s</string>
+    <string name="dashboard_welcome_generic">Welcome</string>
+    <string name="dashboard_welcome_subtitle">Here\'s how your properties are doing today</string>
+
+    <string name="dashboard_stat_collection">Collection</string>
+    <string name="dashboard_stat_next_due">Next Due</string>
+    <string name="dashboard_stat_overdue">Overdue</string>
+    <string name="dashboard_units_note_format">%1$d / %2$d occupied</string>
+    <string name="dashboard_collection_note">This month</string>
+    <string name="dashboard_next_due_note">Within 30 days</string>
+    <string name="dashboard_amount_format">TZS %1$s</string>
+
+    <string name="dashboard_upcoming_title">Upcoming Payments</string>
+    <string name="dashboard_upcoming_due_date_format">Due %1$s</string>
+    <string name="dashboard_upcoming_empty">No payments due in the next 30 days</string>
+    <string name="dashboard_view_all">View all</string>
+
+    <string name="dashboard_filter_all">All</string>
+    <string name="dashboard_filter_next_due">Next Due</string>
+    <string name="dashboard_filter_active">Active</string>
+    <string name="dashboard_filter_overdue">Overdue</string>
+
+    <string name="action_refresh">Refresh</string>
 
     <string name="reports_subtitle">Live overview · view only</string>
     <string name="reports_section_portfolio">Portfolio</string>
