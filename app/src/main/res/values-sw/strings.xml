@@ -65,9 +65,9 @@
     <string name="tenant_stat_total_paid">Jumla ya malipo</string>
     <string name="tenant_stat_months_covered">Miezi iliyolipiwa</string>
     <string name="tenant_months_covered_note">muda wote</string>
-    <string name="tenant_status_active_label">Yupo</string>
+    <string name="tenant_status_active_label">Nipo</string>
     <string name="tenant_status_next_due_label">Inakaribia</string>
-    <string name="tenant_status_overdue_label">Hayupo</string>
+    <string name="tenant_status_overdue_label">Sipo</string>
     <string name="tenant_status_days_until_format">siku %1$d hadi %2$s</string>
     <string name="tenant_status_days_overdue_format">siku %1$d zimepita</string>
     <string name="tenant_status_empty">Hakuna taarifa ya duka au ukodishaji unaotumika</string>
