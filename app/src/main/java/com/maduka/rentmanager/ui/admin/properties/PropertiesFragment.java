@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.ValueEventListener;
 import com.maduka.rentmanager.R;
+import com.maduka.rentmanager.data.FirebaseManager;
 import com.maduka.rentmanager.data.ShopRepository;
 import com.maduka.rentmanager.data.TenantRepository;
+import com.maduka.rentmanager.data.model.PresenceStatus;
 import com.maduka.rentmanager.data.model.Shop;
 import com.maduka.rentmanager.data.model.Tenant;
 import com.maduka.rentmanager.data.model.UserRole;
@@ -50,7 +52,7 @@ public class PropertiesFragment extends Fragment {
     private RecyclerView recyclerShops;
     private TextView tvEmpty;
     private TextView tvSubtitle;
-    private TextView tvStatUnits, tvStatUnitsSub, tvStatOccupied, tvStatOccupiedSub, tvStatEmpty, tvStatOverdue;
+    private TextView tvStatUnits, tvStatUnitsSub, tvStatOccupied, tvStatOccupiedSub, tvStatEmpty, tvStatEmptySub, tvStatOverdue, tvStatOverdueSub;
     private TextView filterAll, filterOccupied, filterEmpty, filterOverdue;
     private Button btnAddShop;
     private ShopAdapter adapter;
@@ -91,7 +93,9 @@ public class PropertiesFragment extends Fragment {
         tvStatOccupied = view.findViewById(R.id.tvStatOccupied);
         tvStatOccupiedSub = view.findViewById(R.id.tvStatOccupiedSub);
         tvStatEmpty = view.findViewById(R.id.tvStatEmpty);
+        tvStatEmptySub = view.findViewById(R.id.tvStatEmptySub);
         tvStatOverdue = view.findViewById(R.id.tvStatOverdue);
+        tvStatOverdueSub = view.findViewById(R.id.tvStatOverdueSub);
         filterAll = view.findViewById(R.id.filterAll);
         filterOccupied = view.findViewById(R.id.filterOccupied);
         filterEmpty = view.findViewById(R.id.filterEmpty);
@@ -114,6 +118,50 @@ public class PropertiesFragment extends Fragment {
         } else {
             btnAddShop.setVisibility(View.GONE);
         }
+
+        // Overdue-tenant Yupo/Hayupo is an operational mutation - Super-Admin-only, same
+        // pattern as Add Shop above: Admin never gets the listener wired at all.
+        adapter.setShowPresenceActions(role == UserRole.SUPER_ADMIN);
+        adapter.setOnPresenceDecisionListener(new ShopAdapter.OnPresenceDecisionListener() {
+            @Override
+            public void onYupo(Tenant tenant) {
+                tenantRepository.setPresence(tenant.getUid(), PresenceStatus.YUPO, System.currentTimeMillis(),
+                        new FirebaseManager.Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                if (!canTouchViews()) return;
+                                Toast.makeText(getContext(), R.string.shops_presence_yupo_success, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                if (!canTouchViews()) return;
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+
+            @Override
+            public void onHayupo(Tenant tenant) {
+                tenantRepository.endTenancy(tenant.getUid(), tenant.getShopId(), System.currentTimeMillis(),
+                        new FirebaseManager.Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                if (!canTouchViews()) return;
+                                String shopName = shopNameFor(tenant.getShopId());
+                                Toast.makeText(getContext(),
+                                        getString(R.string.tenants_end_tenancy_success, tenant.getName(), shopName),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                if (!canTouchViews()) return;
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
 
         filterAll.setOnClickListener(v -> setFilter(Filter.ALL));
         filterOccupied.setOnClickListener(v -> setFilter(Filter.OCCUPIED));
@@ -174,6 +222,31 @@ public class PropertiesFragment extends Fragment {
         return isAdded() && getView() != null;
     }
 
+    private String shopNameFor(String shopId) {
+        if (shopId == null) return "";
+        for (Shop shop : allShops) {
+            if (shop != null && shopId.equals(shop.getShopId())) {
+                return shop.getName() != null && !shop.getName().isEmpty() ? shop.getName() : shopId;
+            }
+        }
+        return shopId;
+    }
+
+    /** "A1 · A2 · A3 · +2 more" - a sensible compact representation that never assumes a fixed
+     * shop count. Caps at 3 names so a large portfolio doesn't overflow the card. */
+    private String compactShopList(List<Shop> shops) {
+        StringBuilder sb = new StringBuilder();
+        int shown = Math.min(shops.size(), 3);
+        for (int i = 0; i < shown; i++) {
+            if (i > 0) sb.append(" · ");
+            Shop shop = shops.get(i);
+            sb.append(shop.getName() != null && !shop.getName().isEmpty() ? shop.getName() : shop.getShopId());
+        }
+        int remaining = shops.size() - shown;
+        if (remaining > 0) sb.append(" ").append(getString(R.string.shops_stat_list_more_format, remaining));
+        return sb.toString();
+    }
+
     private void setFilter(Filter newFilter) {
         filter = newFilter;
         updateFilterChipStyles();
@@ -202,7 +275,8 @@ public class PropertiesFragment extends Fragment {
         long now = System.currentTimeMillis();
         int units = allShops.size();
         int occupied = 0;
-        int overdueCount = 0;
+        List<Shop> emptyShops = new ArrayList<>();
+        List<Shop> overdueShops = new ArrayList<>();
         List<ShopAdapter.Row> allRows = new ArrayList<>();
         for (Shop shop : allShops) {
             if (shop == null) continue;
@@ -210,11 +284,14 @@ public class PropertiesFragment extends Fragment {
             boolean isOccupied = shop.isOccupied() && tenant != null;
             if (isOccupied) {
                 occupied++;
-                if (DateCalculator.isOverdue(tenant.getDueDate(), now)) overdueCount++;
+                if (DateCalculator.isOverdue(tenant.getDueDate(), now)) overdueShops.add(shop);
+            } else {
+                emptyShops.add(shop);
             }
             allRows.add(new ShopAdapter.Row(shop, tenant));
         }
         int empty = units - occupied;
+        int overdueCount = overdueShops.size();
 
         tvSubtitle.setText(getString(R.string.shops_subtitle_format, units));
         tvStatUnits.setText(String.valueOf(units));
@@ -224,7 +301,9 @@ public class PropertiesFragment extends Fragment {
                 ? Math.round(occupied * 100f / units) + "%"
                 : "");
         tvStatEmpty.setText(String.valueOf(empty));
+        tvStatEmptySub.setText(compactShopList(emptyShops));
         tvStatOverdue.setText(String.valueOf(overdueCount));
+        tvStatOverdueSub.setText(compactShopList(overdueShops));
 
         List<ShopAdapter.Row> filtered = new ArrayList<>();
         for (ShopAdapter.Row row : allRows) {

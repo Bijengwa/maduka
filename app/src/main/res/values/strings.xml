@@ -91,6 +91,12 @@
     <string name="shops_subtitle_format">%1$d units registered</string>
     <string name="shops_no_results">No shops match this filter</string>
     <string name="shops_title">Shops</string>
+    <string name="label_move_in">Move-in</string>
+    <string name="shops_presence_prompt">Paid months have run out. Is this tenant still here?</string>
+    <string name="action_yupo">Yupo</string>
+    <string name="action_hayupo">Hayupo</string>
+    <string name="shops_presence_yupo_success">Marked as still here</string>
+    <string name="shops_stat_list_more_format">+%1$d more</string>
 
     <string name="tenants_subtitle_format">%1$d tenants · %2$d overdue</string>
     <string name="tenants_readonly_note">Only the Super Admin can register new tenants.</string>

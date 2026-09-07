@@ -91,6 +91,12 @@
     <string name="shops_subtitle_format">Maduka %1$d yamesajiliwa</string>
     <string name="shops_no_results">Hakuna duka linalolingana na kichujio hiki</string>
     <string name="shops_title">Maduka</string>
+    <string name="label_move_in">Aliingia</string>
+    <string name="shops_presence_prompt">Miezi iliyolipiwa imeisha. Je, mpangaji bado yupo?</string>
+    <string name="action_yupo">Yupo</string>
+    <string name="action_hayupo">Hayupo</string>
+    <string name="shops_presence_yupo_success">Imewekwa kuwa bado yupo</string>
+    <string name="shops_stat_list_more_format">+%1$d zaidi</string>
 
     <string name="tenants_subtitle_format">Wapangaji %1$d · %2$d wamechelewa</string>
     <string name="tenants_readonly_note">Msimamizi Mkuu pekee ndiye anaweza kusajili wapangaji wapya.</string>

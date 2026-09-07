@@ -15,13 +15,6 @@
         android:paddingTop="@dimen/space_6">
 
         <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/shops_title"
-            android:textAppearance="@style/TextAppearance.Maduka.H1" />
-
-        <TextView
             android:id="@+id/tvSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,6 +74,7 @@
                 android:padding="@dimen/space_4">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_empty" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
                 <TextView android:id="@+id/tvStatEmpty" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_neutral_400" />
+                <TextView android:id="@+id/tvStatEmptySub" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Small" />
             </LinearLayout>
 
             <LinearLayout
@@ -94,6 +88,7 @@
                 android:padding="@dimen/space_4">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shops_stat_overdue" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
                 <TextView android:id="@+id/tvStatOverdue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_bad_fg" />
+                <TextView android:id="@+id/tvStatOverdueSub" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Small" />
             </LinearLayout>
         </LinearLayout>
 
