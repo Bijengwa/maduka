@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +53,7 @@ public class PropertiesFragment extends Fragment {
     private TextView tvSubtitle;
     private TextView tvStatUnits, tvStatUnitsSub, tvStatOccupied, tvStatOccupiedSub, tvStatEmpty, tvStatEmptySub, tvStatOverdue, tvStatOverdueSub;
     private TextView filterAll, filterOccupied, filterEmpty, filterOverdue;
-    private Button btnAddShop;
+    private View btnAddShop;
     private ShopAdapter adapter;
     private ValueEventListener shopsRegistration;
     private ValueEventListener tenantsRegistration;

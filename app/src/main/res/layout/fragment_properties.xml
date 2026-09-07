@@ -144,7 +144,7 @@
             android:paddingStart="@dimen/space_6"
             android:paddingEnd="@dimen/space_6"
             android:paddingTop="@dimen/space_4"
-            android:paddingBottom="88dp"
+            android:paddingBottom="80dp"
             android:visibility="gone"
             tools:listitem="@layout/item_shop_card" />
 
@@ -157,19 +157,18 @@
             android:textAppearance="@style/TextAppearance.Maduka.Body"
             android:visibility="gone" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnAddShop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/space_6"
-            android:background="@drawable/bg_button_primary"
-            android:paddingTop="@dimen/space_3"
-            android:paddingBottom="@dimen/space_3"
-            android:textAllCaps="false"
-            android:textColor="@color/md_bg"
-            android:textSize="16sp"
-            android:text="@string/properties_add_shop"
+            android:background="@drawable/bg_fab_circle"
+            android:src="@drawable/ic_properties"
+            android:tint="@color/md_bg"
+            android:padding="@dimen/space_4"
+            android:elevation="6dp"
+            android:contentDescription="@string/properties_add_shop"
             android:visibility="gone" />
     </FrameLayout>
 
