@@ -221,6 +221,8 @@
     <string name="payments_error_invalid_amount">Weka kiasi sahihi.</string>
     <string name="payments_success">Malipo yamerekodiwa</string>
     <string name="payment_phone_label">Imelipiwa</string>
+    <string name="dashboard_paid_to_format">Imelipiwa: %1$s</string>
+    <string name="dashboard_due_format">Inaisha: %1$s</string>
 
     <string-array name="verse_texts">
         <item>Mtu mwaminifu atafurika baraka; bali mwenye kuhimizwa kuwa tajiri hatakosa kuadhibiwa.</item>

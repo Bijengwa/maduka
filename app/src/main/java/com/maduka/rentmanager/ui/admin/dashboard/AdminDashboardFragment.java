@@ -406,7 +406,8 @@ public class AdminDashboardFragment extends Fragment {
             if (tenant == null) continue;
             DateCalculator.DueBucket bucket = DateCalculator.classifyDueDate(tenant.getDueDate(), now);
             if (!matchesFilter(bucket)) continue;
-            rows.add(new DashboardPaymentAdapter.Row(p, tenant.getName(), shopNameFor(tenant.getShopId()), bucket));
+            rows.add(new DashboardPaymentAdapter.Row(p, tenant.getName(), shopNameFor(tenant.getShopId()), bucket,
+                    tenant.getDueDate()));
         }
         paymentAdapter.submitList(rows);
 

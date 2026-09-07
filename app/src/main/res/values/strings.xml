@@ -221,6 +221,8 @@
     <string name="payments_error_invalid_amount">Enter a valid amount.</string>
     <string name="payments_success">Payment recorded</string>
     <string name="payment_phone_label">Paid to</string>
+    <string name="dashboard_paid_to_format">Paid to: %1$s</string>
+    <string name="dashboard_due_format">Due: %1$s</string>
 
     <string-array name="verse_texts">
         <item>A faithful man shall abound with blessings: but he that maketh haste to be rich shall not be innocent.</item>

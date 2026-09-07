@@ -29,12 +29,15 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
         final String tenantName;
         final String shopName;
         final DateCalculator.DueBucket bucket;
+        final long tenantDueDate;
 
-        public Row(PaymentRecord payment, String tenantName, String shopName, DateCalculator.DueBucket bucket) {
+        public Row(PaymentRecord payment, String tenantName, String shopName, DateCalculator.DueBucket bucket,
+                   long tenantDueDate) {
             this.payment = payment;
             this.tenantName = tenantName;
             this.shopName = shopName;
             this.bucket = bucket;
+            this.tenantDueDate = tenantDueDate;
         }
     }
 
@@ -65,7 +68,7 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvTenant, tvAmount, tvShopDate, tvPaidTo, tvDueStatus;
+        private final TextView tvTenant, tvAmount, tvShopDate, tvPaidTo, tvDue, tvDueStatus;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +76,7 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
             tvAmount = itemView.findViewById(R.id.tvAmount);
             tvShopDate = itemView.findViewById(R.id.tvShopDate);
             tvPaidTo = itemView.findViewById(R.id.tvPaidTo);
+            tvDue = itemView.findViewById(R.id.tvDue);
             tvDueStatus = itemView.findViewById(R.id.tvDueStatus);
         }
 
@@ -80,12 +84,16 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
             tvTenant.setText(row.tenantName);
             tvAmount.setText(itemView.getContext().getString(R.string.dashboard_amount_format,
                     MoneyFormatter.compact(row.payment.getAmount())));
-            tvShopDate.setText(row.shopName + " · " + DateCalculator.formatDdMmYyyy(row.payment.getPaymentDate()));
+            String months = itemView.getContext().getString(R.string.months_covered_format, row.payment.getMonthsCovered());
+            tvShopDate.setText(row.shopName + " · " + months);
 
             String phone = row.payment.getPaymentPhoneNumber();
-            tvPaidTo.setText(phone != null && !phone.isEmpty()
-                    ? itemView.getContext().getString(R.string.payment_phone_label) + " " + phone
-                    : "—");
+            tvPaidTo.setText(itemView.getContext().getString(R.string.dashboard_paid_to_format,
+                    phone != null && !phone.isEmpty() ? phone : "—"));
+
+            String notSet = itemView.getContext().getString(R.string.label_date_not_set);
+            tvDue.setText(itemView.getContext().getString(R.string.dashboard_due_format,
+                    DateCalculator.formatDueDateOrUnknown(row.tenantDueDate, notSet)));
 
             StatusPresentation.Tone tone = StatusPresentation.toneFor(row.bucket);
             int labelRes;
