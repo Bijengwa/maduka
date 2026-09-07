@@ -13,29 +13,55 @@
         android:padding="@dimen/space_6">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nav_dashboard"
-            android:textAppearance="@style/TextAppearance.Maduka.H1" />
-
-        <TextView
             android:id="@+id/tvSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:textAppearance="@style/TextAppearance.Maduka.Small" />
 
         <TextView
             android:id="@+id/tvWelcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_6"
+            android:layout_marginTop="2dp"
             android:textAppearance="@style/TextAppearance.Maduka.H3" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_4"
+            android:layout_marginTop="@dimen/space_6"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/space_2"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_4">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/tenant_stat_total_paid" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvTotalPaid" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="TZS" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/space_2"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_4">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/tenant_stat_months_covered" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                <TextView android:id="@+id/tvMonthsCovered" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/tenant_months_covered_note" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_3"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -47,7 +73,8 @@
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_4">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_last_payment" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvLastPayment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+                <TextView android:id="@+id/tvLastPayment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" android:textColor="@color/md_status_good_fg" />
+                <TextView android:id="@+id/tvLastPaymentAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
             </LinearLayout>
 
             <LinearLayout
@@ -59,36 +86,41 @@
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_4">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_due_date" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                <TextView android:id="@+id/tvDueDate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H3" />
+                <TextView android:id="@+id/tvDueDate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.H2" />
+                <TextView android:id="@+id/tvDueDays" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/statusPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_6"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:gravity="center"
             android:background="@drawable/bg_card"
-            android:padding="@dimen/space_4">
+            android:padding="@dimen/space_8">
+
+            <ImageView
+                android:id="@+id/ivStatus"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:contentDescription="@null" />
 
             <TextView
-                android:id="@+id/tvStatus"
+                android:id="@+id/tvStatusLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/space_4"
-                android:paddingEnd="@dimen/space_4"
-                android:paddingTop="@dimen/space_1"
-                android:paddingBottom="@dimen/space_1"
-                android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                android:layout_marginTop="@dimen/space_3"
+                android:textAppearance="@style/TextAppearance.Maduka.H2" />
 
             <TextView
-                android:id="@+id/tvDaysMessage"
-                android:layout_width="0dp"
+                android:id="@+id/tvStatusMessage"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/space_3"
-                android:textAppearance="@style/TextAppearance.Maduka.Body" />
+                android:layout_marginTop="2dp"
+                android:textAppearance="@style/TextAppearance.Maduka.Small" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -98,29 +130,58 @@
             android:orientation="vertical"
             android:background="@drawable/bg_card">
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/rowHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:padding="@dimen/space_4"
-                android:text="@string/tenant_dashboard_view_history"
-                android:textAppearance="@style/TextAppearance.Maduka.Body"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground" />
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_history" android:tint="@color/md_neutral_400" android:contentDescription="@null" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="@dimen/space_3" android:text="@string/tenant_dashboard_view_history" android:textAppearance="@style/TextAppearance.Maduka.Body" />
+                <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_chevron_right" android:tint="@color/md_neutral_500" android:contentDescription="@null" />
+            </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" />
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/rowDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:padding="@dimen/space_4"
-                android:text="@string/tenant_dashboard_view_details"
-                android:textAppearance="@style/TextAppearance.Maduka.Body"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground" />
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_details" android:tint="@color/md_neutral_400" android:contentDescription="@null" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="@dimen/space_3" android:text="@string/tenant_dashboard_view_details" android:textAppearance="@style/TextAppearance.Maduka.Body" />
+                <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_chevron_right" android:tint="@color/md_neutral_500" android:contentDescription="@null" />
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" />
+
+            <LinearLayout
+                android:id="@+id/rowContactAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="@dimen/space_4"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_call" android:tint="@color/md_accent" android:contentDescription="@null" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="@dimen/space_3" android:text="@string/tenant_action_contact_admin" android:textAppearance="@style/TextAppearance.Maduka.Body" android:textColor="@color/md_accent" />
+                <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_chevron_right" android:tint="@color/md_accent" android:contentDescription="@null" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

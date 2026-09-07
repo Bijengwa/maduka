@@ -56,6 +56,28 @@
             android:src="@drawable/ic_settings"
             android:tint="@color/md_text"
             android:contentDescription="@string/settings_title" />
+
+        <ImageButton
+            android:id="@+id/btnLock"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/space_3"
+            android:src="@drawable/ic_password"
+            android:tint="@color/md_text"
+            android:contentDescription="@string/change_password_title"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/btnLogout"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/space_3"
+            android:src="@drawable/ic_sign_out"
+            android:tint="@color/md_text"
+            android:contentDescription="@string/action_sign_out"
+            android:visibility="gone" />
     </LinearLayout>
 
     <View

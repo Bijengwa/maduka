@@ -99,18 +99,40 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ImageButton btnNotifications = findViewById(R.id.btnNotifications);
-        btnNotifications.setOnClickListener(v -> {
-            if (role == UserRole.SUPER_ADMIN) {
-                // Super Admin's 5 tabs (Dashboard/Properties/Tenants/Reports/Users) have no
-                // Notifications destination - the bell opens the same content full-screen.
-                startActivity(new Intent(this, com.maduka.rentmanager.ui.admin.notifications.NotificationsActivity.class));
-            } else {
-                bottomNav.setSelectedItemId(R.id.nav_notifications);
-            }
-        });
-
         ImageButton btnSettings = findViewById(R.id.btnSettings);
-        btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
+        ImageButton btnLock = findViewById(R.id.btnLock);
+        ImageButton btnLogout = findViewById(R.id.btnLogout);
+
+        if (role == UserRole.TENANT) {
+            // Tenant's header is a direct lock (change password) + logout pair instead of the
+            // Admin/Super Admin bell+settings - Tenant already reaches Notifications via its own
+            // bottom tab, and has no use for the broader Settings screen's other content.
+            btnNotifications.setVisibility(View.GONE);
+            btnSettings.setVisibility(View.GONE);
+            btnLock.setVisibility(View.VISIBLE);
+            btnLogout.setVisibility(View.VISIBLE);
+            btnLock.setOnClickListener(v ->
+                    new com.maduka.rentmanager.ui.common.ChangePasswordDialog().show(getSupportFragmentManager(), "change_password"));
+            btnLogout.setOnClickListener(v -> {
+                new com.maduka.rentmanager.data.AuthRepository().signOut();
+                Prefs.get(this).setRememberMe(false, null, null);
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            });
+        } else {
+            btnNotifications.setOnClickListener(v -> {
+                if (role == UserRole.SUPER_ADMIN) {
+                    // Super Admin's 5 tabs (Dashboard/Properties/Tenants/Reports/Users) have no
+                    // Notifications destination - the bell opens the same content full-screen.
+                    startActivity(new Intent(this, com.maduka.rentmanager.ui.admin.notifications.NotificationsActivity.class));
+                } else {
+                    bottomNav.setSelectedItemId(R.id.nav_notifications);
+                }
+            });
+            btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
+        }
     }
 
     @Override

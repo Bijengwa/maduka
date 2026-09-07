@@ -62,6 +62,17 @@
 
     <string name="label_last_payment">Malipo ya mwisho</string>
     <string name="label_due_date">Tarehe ya malipo</string>
+    <string name="tenant_stat_total_paid">Jumla ya malipo</string>
+    <string name="tenant_stat_months_covered">Miezi iliyolipiwa</string>
+    <string name="tenant_months_covered_note">muda wote</string>
+    <string name="tenant_status_active_label">Yupo</string>
+    <string name="tenant_status_next_due_label">Inakaribia</string>
+    <string name="tenant_status_overdue_label">Hayupo</string>
+    <string name="tenant_status_days_until_format">siku %1$d hadi %2$s</string>
+    <string name="tenant_status_days_overdue_format">siku %1$d zimepita</string>
+    <string name="tenant_status_empty">Hakuna taarifa ya duka au ukodishaji unaotumika</string>
+    <string name="tenant_action_contact_admin">Wasiliana na msimamizi</string>
+    <string name="tenant_contact_not_available">Mawasiliano ya msimamizi bado hayajawekwa</string>
     <string name="label_days_left_format">Siku %1$d zilizobaki</string>
     <string name="label_days_overdue_format">Siku %1$d za kuchelewa</string>
     <string name="label_no_tenant">Hakuna mpangaji</string>

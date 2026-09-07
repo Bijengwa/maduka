@@ -62,6 +62,17 @@
 
     <string name="label_last_payment">Last payment</string>
     <string name="label_due_date">Due date</string>
+    <string name="tenant_stat_total_paid">Total paid</string>
+    <string name="tenant_stat_months_covered">Months covered</string>
+    <string name="tenant_months_covered_note">all time</string>
+    <string name="tenant_status_active_label">Active</string>
+    <string name="tenant_status_next_due_label">Approaching</string>
+    <string name="tenant_status_overdue_label">Overdue</string>
+    <string name="tenant_status_days_until_format">%1$d days until %2$s</string>
+    <string name="tenant_status_days_overdue_format">%1$d days overdue</string>
+    <string name="tenant_status_empty">No active shop or rental information</string>
+    <string name="tenant_action_contact_admin">Contact admin</string>
+    <string name="tenant_contact_not_available">Admin contact isn\'t set up yet</string>
     <string name="label_days_left_format">%1$d days left</string>
     <string name="label_days_overdue_format">%1$d days overdue</string>
     <string name="label_no_tenant">No tenant assigned</string>

@@ -96,4 +96,15 @@ public final class DateCalculator {
     public static String formatDueDateOrUnknown(long dueDateMillis, String unknownLabel) {
         return hasValidDueDate(dueDateMillis) ? formatDdMmYyyy(dueDateMillis) : unknownLabel;
     }
+
+    /** Compact day/month only (no year) - the Tenant dashboard's summary cards use this. */
+    public static String formatDdMm(long millis) {
+        SimpleDateFormat fmt = new SimpleDateFormat("dd/MM", Locale.US);
+        fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return fmt.format(new Date(millis));
+    }
+
+    public static String formatDdMmOrUnknown(long millis, String unknownLabel) {
+        return hasValidDueDate(millis) ? formatDdMm(millis) : unknownLabel;
+    }
 }
