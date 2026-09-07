@@ -37,6 +37,20 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Firebase Auth already persists the session across process restarts; "Remember Me"
+        // already stores which role that session is for - this just closes the loop so a
+        // returning user with a live session skips straight to MainActivity instead of being
+        // asked to sign in again every launch. Unchecking Remember Me still means what it says.
+        Prefs earlyPrefs = Prefs.get(this);
+        if (earlyPrefs.isRememberMe() && authRepository.currentUid() != null && earlyPrefs.rememberedRole() != null) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(EXTRA_ROLE, earlyPrefs.rememberedRole());
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         View root = findViewById(R.id.loginRoot);
