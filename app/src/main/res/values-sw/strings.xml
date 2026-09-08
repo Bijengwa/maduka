@@ -59,9 +59,14 @@
     <string name="status_active">Anatumika</string>
     <string name="status_disabled">Amezimwa</string>
     <string name="status_overdue">Amechelewa</string>
+    <string name="status_awaiting">Inangoja</string>
+    <string name="status_yupo">Yupo</string>
+    <string name="status_hayupo">Hayupo</string>
 
     <string name="label_last_payment">Malipo ya mwisho</string>
     <string name="label_due_date">Tarehe ya malipo</string>
+    <string name="card_label_start_date">Ameanza</string>
+    <string name="card_label_due_date">Mpaka</string>
     <string name="tenant_stat_total_paid">Jumla ya malipo</string>
     <string name="tenant_stat_months_covered">Miezi iliyolipiwa</string>
     <string name="tenant_months_covered_note">muda wote</string>
@@ -73,12 +78,13 @@
     <string name="tenant_status_empty">Hakuna taarifa ya duka au ukodishaji unaotumika</string>
     <string name="tenant_action_contact_admin">Wasiliana na msimamizi</string>
     <string name="tenant_contact_not_available">Mawasiliano ya msimamizi bado hayajawekwa</string>
-    <string name="label_days_left_format">Siku %1$d zilizobaki</string>
+    <string name="label_days_left_format">Bado siku %1$d</string>
     <string name="label_days_overdue_format">Siku %1$d za kuchelewa</string>
     <string name="label_no_tenant">Hakuna mpangaji</string>
     <string name="label_date_not_set">Haijawekwa</string>
     <string name="label_rent_not_set">Kodi haijawekwa</string>
     <string name="label_days">Siku</string>
+    <string name="label_shop_unit">Duka / Chumba</string>
 
     <string name="shops_stat_units">Maduka</string>
     <string name="shops_stat_occupied">Yamepangwa</string>

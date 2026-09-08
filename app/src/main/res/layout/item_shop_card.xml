@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_last_payment" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/card_label_start_date" android:textAppearance="@style/TextAppearance.Maduka.Caption" android:textAllCaps="false" />
                     <TextView android:id="@+id/tvLastPayment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Body" />
                 </LinearLayout>
 
@@ -100,35 +100,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_due_date" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/card_label_due_date" android:textAppearance="@style/TextAppearance.Maduka.Caption" android:textAllCaps="false" />
                     <TextView android:id="@+id/tvDueDate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Body" />
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvDaysRemaining"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_3"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_move_in" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                    <TextView android:id="@+id/tvMoveIn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Body" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_days" android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-                    <TextView android:id="@+id/tvDaysRemaining" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="@style/TextAppearance.Maduka.Body" />
-                </LinearLayout>
-            </LinearLayout>
+                android:textAppearance="@style/TextAppearance.Maduka.Body" />
 
         </LinearLayout>
 

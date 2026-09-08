@@ -23,12 +23,18 @@ import java.util.Map;
 
 public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder> {
 
-    public interface OnEndTenancyListener { void onEndTenancy(Tenant tenant); }
+    /** Confirms whether an overdue tenant is still physically at the shop - Super Admin only.
+     * Yupo reaffirms presence (TenantRepository.setPresence); Hayupo ends the tenancy outright
+     * (TenantRepository.endTenancy) - mirrors ShopAdapter's identical prompt on shop cards. */
+    public interface OnPresenceDecisionListener {
+        void onYupo(Tenant tenant);
+        void onHayupo(Tenant tenant);
+    }
 
     private final List<Tenant> tenants = new ArrayList<>();
     private Map<String, String> shopNamesById = new HashMap<>();
-    private boolean showEndTenancyAction;
-    private OnEndTenancyListener endTenancyListener;
+    private boolean showPresenceActions;
+    private OnPresenceDecisionListener presenceListener;
 
     public void submitList(List<Tenant> newTenants) {
         tenants.clear();
@@ -36,14 +42,14 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
-    /** Ending a tenancy is Super-Admin-only - TenantsFragment passes true only for that role. */
-    public void setShowEndTenancyAction(boolean show) {
-        this.showEndTenancyAction = show;
+    /** The Yupo/Hayupo decision is Super-Admin-only - TenantsFragment passes true only for that role. */
+    public void setShowPresenceActions(boolean show) {
+        this.showPresenceActions = show;
         notifyDataSetChanged();
     }
 
-    public void setOnEndTenancyListener(OnEndTenancyListener listener) {
-        this.endTenancyListener = listener;
+    public void setOnPresenceDecisionListener(OnPresenceDecisionListener listener) {
+        this.presenceListener = listener;
     }
 
     public String shopNameFor(String shopId) {
@@ -68,7 +74,7 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(tenants.get(position), shopNamesById, showEndTenancyAction, endTenancyListener);
+        holder.bind(tenants.get(position), shopNamesById, showPresenceActions, presenceListener);
     }
 
     @Override
@@ -83,7 +89,9 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
         private final TextView tvLastPayment;
         private final TextView tvDueDate;
         private final TextView tvDaysRemaining;
-        private final TextView tvEndTenancy;
+        private final View rowPresenceCheck;
+        private final TextView btnYupo;
+        private final TextView btnHayupo;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,11 +103,13 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
             tvLastPayment = itemView.findViewById(R.id.tvLastPayment);
             tvDueDate = itemView.findViewById(R.id.tvDueDate);
             tvDaysRemaining = itemView.findViewById(R.id.tvDaysRemaining);
-            tvEndTenancy = itemView.findViewById(R.id.tvEndTenancy);
+            rowPresenceCheck = itemView.findViewById(R.id.rowPresenceCheck);
+            btnYupo = itemView.findViewById(R.id.btnYupo);
+            btnHayupo = itemView.findViewById(R.id.btnHayupo);
         }
 
-        void bind(Tenant tenant, Map<String, String> shopNamesById, boolean showEndTenancyAction,
-                  OnEndTenancyListener endTenancyListener) {
+        void bind(Tenant tenant, Map<String, String> shopNamesById, boolean showPresenceActions,
+                  OnPresenceDecisionListener presenceListener) {
             tvName.setText(tenant.getName());
 
             String phone = tenant.getPhone() != null ? tenant.getPhone() : "";
@@ -107,28 +117,24 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
             if (shopName == null) shopName = tenant.getShopId();
 
             StringBuilder detail = new StringBuilder();
-            if (!phone.isEmpty()) detail.append(phone);
-            if (detail.length() > 0) detail.append("  ·  ");
             detail.append(shopName);
+            if (!phone.isEmpty()) detail.append("  ·  ").append(phone);
             tvContact.setText(detail.toString());
 
-            tvRent.setText(String.format(Locale.US, "TSh %,d /month", tenant.getMonthlyRent()));
+            tvRent.setText(String.format(Locale.US, "TSh %,d", tenant.getMonthlyRent()));
 
             long now = System.currentTimeMillis();
             boolean overdue = DateCalculator.isOverdue(tenant.getDueDate(), now);
             PresenceStatus presence = tenant.getPresenceStatus() != null ? tenant.getPresenceStatus() : PresenceStatus.YUPO;
 
-            StatusPresentation.Tone tone;
+            StatusPresentation.Tone tone = StatusPresentation.toneFor(presence, overdue);
             int labelRes;
-            if (overdue) {
-                tone = StatusPresentation.Tone.BAD;
-                labelRes = R.string.status_overdue;
-            } else if (presence == PresenceStatus.YUPO) {
-                tone = StatusPresentation.Tone.GOOD;
-                labelRes = R.string.status_active;
+            if (tone == StatusPresentation.Tone.WAIT) {
+                labelRes = R.string.status_awaiting;
+            } else if (tone == StatusPresentation.Tone.BAD) {
+                labelRes = R.string.status_hayupo;
             } else {
-                tone = StatusPresentation.Tone.BAD;
-                labelRes = R.string.status_disabled;
+                labelRes = R.string.status_yupo;
             }
             StatusPill.apply(tvStatus, tone, labelRes);
             StatusPill.accent(accentBar, tone);
@@ -145,10 +151,16 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
                         : itemView.getContext().getString(R.string.label_days_left_format, days));
             }
 
-            tvEndTenancy.setVisibility(showEndTenancyAction ? View.VISIBLE : View.GONE);
-            tvEndTenancy.setOnClickListener(v -> {
-                if (endTenancyListener != null) endTenancyListener.onEndTenancy(tenant);
-            });
+            boolean showPresence = overdue && presence == PresenceStatus.YUPO && showPresenceActions;
+            rowPresenceCheck.setVisibility(showPresence ? View.VISIBLE : View.GONE);
+            if (showPresence) {
+                btnYupo.setOnClickListener(v -> {
+                    if (presenceListener != null) presenceListener.onYupo(tenant);
+                });
+                btnHayupo.setOnClickListener(v -> {
+                    if (presenceListener != null) presenceListener.onHayupo(tenant);
+                });
+            }
         }
     }
 }

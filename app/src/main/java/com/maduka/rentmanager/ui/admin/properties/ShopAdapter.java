@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maduka.rentmanager.R;
+import com.maduka.rentmanager.data.model.PresenceStatus;
 import com.maduka.rentmanager.data.model.Shop;
 import com.maduka.rentmanager.data.model.Tenant;
 import com.maduka.rentmanager.ui.common.StatusPill;
@@ -84,7 +85,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         private final View rowPaymentInfo;
         private final TextView tvLastPayment;
         private final TextView tvDueDate;
-        private final TextView tvMoveIn;
         private final TextView tvDaysRemaining;
         private final View rowPresenceCheck;
         private final TextView btnYupo;
@@ -100,7 +100,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             rowPaymentInfo = itemView.findViewById(R.id.rowPaymentInfo);
             tvLastPayment = itemView.findViewById(R.id.tvLastPayment);
             tvDueDate = itemView.findViewById(R.id.tvDueDate);
-            tvMoveIn = itemView.findViewById(R.id.tvMoveIn);
             tvDaysRemaining = itemView.findViewById(R.id.tvDaysRemaining);
             rowPresenceCheck = itemView.findViewById(R.id.rowPresenceCheck);
             btnYupo = itemView.findViewById(R.id.btnYupo);
@@ -133,15 +132,18 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 
             long now = System.currentTimeMillis();
             boolean overdue = DateCalculator.isOverdue(tenant.getDueDate(), now);
-            StatusPresentation.Tone tone = overdue ? StatusPresentation.Tone.BAD : StatusPresentation.Tone.GOOD;
-            StatusPill.apply(tvStatus, tone, overdue ? R.string.status_overdue : R.string.status_occupied);
+            PresenceStatus presence = tenant.getPresenceStatus() != null ? tenant.getPresenceStatus() : PresenceStatus.YUPO;
+            StatusPresentation.Tone tone = StatusPresentation.toneFor(presence, overdue);
+            int statusLabel = tone == StatusPresentation.Tone.WAIT
+                    ? R.string.status_awaiting
+                    : (tone == StatusPresentation.Tone.BAD ? R.string.status_hayupo : R.string.status_yupo);
+            StatusPill.apply(tvStatus, tone, statusLabel);
             StatusPill.accent(accentBar, tone);
 
             String notSet = itemView.getContext().getString(R.string.label_date_not_set);
             rowPaymentInfo.setVisibility(View.VISIBLE);
             tvLastPayment.setText(DateCalculator.formatDueDateOrUnknown(tenant.getLastPaymentDate(), notSet));
             tvDueDate.setText(DateCalculator.formatDueDateOrUnknown(tenant.getDueDate(), notSet));
-            tvMoveIn.setText(DateCalculator.formatDueDateOrUnknown(tenant.getMoveInDate(), notSet));
             if (DateCalculator.hasValidDueDate(tenant.getDueDate())) {
                 int days = DateCalculator.daysBetween(now, tenant.getDueDate());
                 tvDaysRemaining.setText(overdue

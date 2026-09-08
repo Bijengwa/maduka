@@ -86,8 +86,47 @@ public class TenantsFragment extends Fragment {
         adapter = new TenantAdapter();
         recyclerTenants.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerTenants.setAdapter(adapter);
-        adapter.setShowEndTenancyAction(role == UserRole.SUPER_ADMIN);
-        adapter.setOnEndTenancyListener(this::confirmEndTenancy);
+        adapter.setShowPresenceActions(role == UserRole.SUPER_ADMIN);
+        adapter.setOnPresenceDecisionListener(new TenantAdapter.OnPresenceDecisionListener() {
+            @Override
+            public void onYupo(Tenant tenant) {
+                tenantRepository.setPresence(tenant.getUid(), com.maduka.rentmanager.data.model.PresenceStatus.YUPO,
+                        System.currentTimeMillis(), new FirebaseManager.Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                if (!canTouchViews()) return;
+                                Toast.makeText(getContext(), R.string.shops_presence_yupo_success, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                if (!canTouchViews()) return;
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+
+            @Override
+            public void onHayupo(Tenant tenant) {
+                String shopName = adapter.shopNameFor(tenant.getShopId());
+                tenantRepository.endTenancy(tenant.getUid(), tenant.getShopId(), System.currentTimeMillis(),
+                        new FirebaseManager.Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                if (!canTouchViews()) return;
+                                Toast.makeText(getContext(),
+                                        getString(R.string.tenants_end_tenancy_success, tenant.getName(), shopName),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                if (!canTouchViews()) return;
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
 
         // Register Tenant is Super-Admin-only: Admin never gets the click listener wired,
         // not merely a hidden button - it sees the read-only note instead.
@@ -169,32 +208,5 @@ public class TenantsFragment extends Fragment {
 
     private boolean canTouchViews() {
         return isAdded() && getView() != null;
-    }
-
-    private void confirmEndTenancy(Tenant tenant) {
-        if (!canTouchViews() || tenant.getShopId() == null) return;
-        String shopName = adapter.shopNameFor(tenant.getShopId());
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(R.string.tenants_end_tenancy_confirm_title)
-                .setMessage(getString(R.string.tenants_end_tenancy_confirm_message, tenant.getName(), shopName))
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(R.string.tenants_end_tenancy_action, (dialog, which) ->
-                        tenantRepository.endTenancy(tenant.getUid(), tenant.getShopId(), System.currentTimeMillis(),
-                                new FirebaseManager.Callback<Void>() {
-                                    @Override
-                                    public void onSuccess(Void result) {
-                                        if (!canTouchViews()) return;
-                                        Toast.makeText(getContext(),
-                                                getString(R.string.tenants_end_tenancy_success, tenant.getName(), shopName),
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    @Override
-                                    public void onError(String message) {
-                                        if (!canTouchViews()) return;
-                                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                                    }
-                                }))
-                .show();
     }
 }

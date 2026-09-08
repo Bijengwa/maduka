@@ -59,9 +59,14 @@
     <string name="status_active">Active</string>
     <string name="status_disabled">Disabled</string>
     <string name="status_overdue">Overdue</string>
+    <string name="status_awaiting">Inangoja</string>
+    <string name="status_yupo">Yupo</string>
+    <string name="status_hayupo">Hayupo</string>
 
     <string name="label_last_payment">Last payment</string>
     <string name="label_due_date">Due date</string>
+    <string name="card_label_start_date">Start date</string>
+    <string name="card_label_due_date">Due date</string>
     <string name="tenant_stat_total_paid">Total paid</string>
     <string name="tenant_stat_months_covered">Months covered</string>
     <string name="tenant_months_covered_note">all time</string>
@@ -79,6 +84,7 @@
     <string name="label_date_not_set">Not set</string>
     <string name="label_rent_not_set">Rent not set</string>
     <string name="label_days">Days</string>
+    <string name="label_shop_unit">Shop / Unit</string>
 
     <string name="shops_stat_units">Units</string>
     <string name="shops_stat_occupied">Occupied</string>

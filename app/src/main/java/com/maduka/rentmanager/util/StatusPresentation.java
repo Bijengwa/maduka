@@ -24,6 +24,13 @@ public final class StatusPresentation {
         return status == PresenceStatus.YUPO ? Tone.GOOD : Tone.BAD;
     }
 
+    /** A tenant/shop that's still Yupo but past its due date is "Inangoja" (amber) - awaiting the
+     * Yupo/Hayupo decision - not yet "Overdue" red, which is reserved for a confirmed Hayupo. */
+    public static Tone toneFor(PresenceStatus status, boolean overdue) {
+        if (status != PresenceStatus.YUPO) return Tone.BAD;
+        return overdue ? Tone.WAIT : Tone.GOOD;
+    }
+
     public static int fgColorRes(Tone tone) {
         switch (tone) {
             case GOOD: return R.color.md_status_good_fg;
