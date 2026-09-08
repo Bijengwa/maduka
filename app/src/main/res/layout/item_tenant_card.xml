@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/bg_card"
-    android:clipToOutline="true"
     android:layout_marginBottom="@dimen/space_3">
 
     <View

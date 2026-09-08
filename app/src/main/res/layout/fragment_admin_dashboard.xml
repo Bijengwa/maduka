@@ -51,7 +51,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/ic_coins"
-                    android:tint="@color/md_bg"
+                    android:tint="@color/md_accent"
                     android:contentDescription="@null" />
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_2"
                     android:text="@string/payments_action_record_short"
-                    android:textColor="@color/md_bg"
+                    android:textColor="@color/md_accent"
                     android:textStyle="bold"
                     android:textSize="15sp" />
             </LinearLayout>

@@ -182,7 +182,7 @@ public class TenantNotificationsFragment extends Fragment {
     private void style(TextView chip, boolean selected) {
         chip.setBackgroundResource(selected ? R.drawable.shape_pill_selected : R.drawable.shape_pill_unselected);
         chip.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(),
-                selected ? R.color.md_bg : R.color.md_text));
+                selected ? R.color.md_accent_300 : R.color.md_neutral_500));
     }
 
     private void render() {

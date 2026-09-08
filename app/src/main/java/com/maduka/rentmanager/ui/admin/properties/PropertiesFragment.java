@@ -262,8 +262,8 @@ public class PropertiesFragment extends Fragment {
     private void style(TextView chip, boolean selected) {
         chip.setBackgroundResource(selected ? R.drawable.shape_pill_selected : R.drawable.shape_pill_unselected);
         chip.setTextColor(selected
-                ? androidx.core.content.ContextCompat.getColor(requireContext(), R.color.md_bg)
-                : androidx.core.content.ContextCompat.getColor(requireContext(), R.color.md_text));
+                ? androidx.core.content.ContextCompat.getColor(requireContext(), R.color.md_accent_300)
+                : androidx.core.content.ContextCompat.getColor(requireContext(), R.color.md_neutral_500));
     }
 
     /** Recomputes the summary stats and the filtered, tenant-joined row list from the two live

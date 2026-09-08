@@ -214,7 +214,7 @@
                 android:paddingTop="@dimen/space_4"
                 android:paddingBottom="@dimen/space_4"
                 android:textAllCaps="false"
-                android:textColor="@color/md_bg"
+                android:textColor="@color/md_accent"
                 android:textSize="16sp"
                 android:text="@string/users_register_action" />
 

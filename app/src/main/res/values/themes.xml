@@ -21,12 +21,12 @@
          combined font-family) since per-weight selection via fontWeight
          needs API 28+ and minSdk here is 24. -->
     <style name="TextAppearance.Maduka.H1" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/md_text</item>
     </style>
     <style name="TextAppearance.Maduka.H2" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/md_text</item>
     </style>

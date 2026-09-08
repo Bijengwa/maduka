@@ -115,7 +115,7 @@
             android:paddingTop="@dimen/space_3"
             android:paddingBottom="@dimen/space_3"
             android:textAllCaps="false"
-            android:textColor="@color/md_bg"
+            android:textColor="@color/md_accent"
             android:textSize="16sp"
             android:text="@string/login_sign_in" />
 

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@android:color/transparent" />
+    <solid android:color="@color/md_status_bad_bg" />
     <corners android:radius="@dimen/radius_md" />
-    <stroke
-        android:width="1dp"
-        android:color="@color/md_accent" />
+    <stroke android:width="1dp" android:color="@color/md_status_bad_border" />
 </shape>
