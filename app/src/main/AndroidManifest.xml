@@ -33,10 +33,6 @@
             android:exported="false" />
 
         <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".ui.admin.properties.AddShopActivity"
             android:exported="false" />
 

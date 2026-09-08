@@ -18,12 +18,29 @@
         android:paddingStart="@dimen/space_3"
         android:paddingEnd="@dimen/space_3">
 
-        <TextView
-            android:id="@+id/tvTopBarTitle"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="@style/TextAppearance.Maduka.H3" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTopBarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Maduka.H3" />
+
+            <TextView
+                android:id="@+id/tvTopBarSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Maduka.Small"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/btnNotifications"
@@ -33,7 +50,8 @@
             android:padding="@dimen/space_3"
             android:src="@drawable/ic_notifications"
             android:tint="@color/md_text"
-            android:contentDescription="@string/nav_notifications" />
+            android:contentDescription="@string/nav_notifications"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btnLanguage"
@@ -48,16 +66,6 @@
             android:text="EN" />
 
         <ImageButton
-            android:id="@+id/btnSettings"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="@dimen/space_3"
-            android:src="@drawable/ic_settings"
-            android:tint="@color/md_text"
-            android:contentDescription="@string/settings_title" />
-
-        <ImageButton
             android:id="@+id/btnLock"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -65,8 +73,7 @@
             android:padding="@dimen/space_3"
             android:src="@drawable/ic_password"
             android:tint="@color/md_text"
-            android:contentDescription="@string/change_password_title"
-            android:visibility="gone" />
+            android:contentDescription="@string/change_password_title" />
 
         <ImageButton
             android:id="@+id/btnLogout"
@@ -76,8 +83,7 @@
             android:padding="@dimen/space_3"
             android:src="@drawable/ic_sign_out"
             android:tint="@color/md_text"
-            android:contentDescription="@string/action_sign_out"
-            android:visibility="gone" />
+            android:contentDescription="@string/action_sign_out" />
     </LinearLayout>
 
     <View
