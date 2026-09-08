@@ -2,85 +2,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/bg_card"
     android:padding="@dimen/space_4"
     android:layout_marginBottom="@dimen/space_2">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="top">
+        android:layout_marginEnd="@dimen/space_3"
+        android:textAppearance="@style/TextAppearance.Maduka.Small" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvTenant"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAppearance="@style/TextAppearance.Maduka.H3" />
+            android:textAppearance="@style/TextAppearance.Maduka.Body" />
+
+        <TextView
+            android:id="@+id/tvShopDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.Maduka.Small" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_2"
+        android:orientation="vertical"
+        android:gravity="end">
 
         <TextView
             android:id="@+id/tvAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_2"
-            android:textAppearance="@style/TextAppearance.Maduka.H3" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvShopDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textAppearance="@style/TextAppearance.Maduka.Small" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_2"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:src="@drawable/ic_call"
-            android:tint="@color/md_neutral_500"
-            android:contentDescription="@null" />
-
-        <TextView
-            android:id="@+id/tvPaidTo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_2"
-            android:textAppearance="@style/TextAppearance.Maduka.Caption" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_3"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:id="@+id/tvDue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+            android:textAppearance="@style/TextAppearance.Maduka.Body" />
 
         <TextView
             android:id="@+id/tvDueStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_2"
+            android:layout_marginTop="4dp"
             android:paddingStart="@dimen/space_3"
             android:paddingEnd="@dimen/space_3"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:textAppearance="@style/TextAppearance.Maduka.Caption" />
+            android:textAppearance="@style/TextAppearance.Maduka.Caption"
+            android:textAllCaps="false" />
     </LinearLayout>
 
 </LinearLayout>

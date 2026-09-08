@@ -68,32 +68,28 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvTenant, tvAmount, tvShopDate, tvPaidTo, tvDue, tvDueStatus;
+        private final TextView tvDate, tvTenant, tvAmount, tvShopDate, tvDueStatus;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvDate = itemView.findViewById(R.id.tvDate);
             tvTenant = itemView.findViewById(R.id.tvTenant);
             tvAmount = itemView.findViewById(R.id.tvAmount);
             tvShopDate = itemView.findViewById(R.id.tvShopDate);
-            tvPaidTo = itemView.findViewById(R.id.tvPaidTo);
-            tvDue = itemView.findViewById(R.id.tvDue);
             tvDueStatus = itemView.findViewById(R.id.tvDueStatus);
         }
 
         void bind(Row row) {
+            tvDate.setText(DateCalculator.formatDdMm(row.payment.getPaymentDate()));
             tvTenant.setText(row.tenantName);
             tvAmount.setText(itemView.getContext().getString(R.string.dashboard_amount_format,
                     MoneyFormatter.compact(row.payment.getAmount())));
+
             String months = itemView.getContext().getString(R.string.months_covered_format, row.payment.getMonthsCovered());
-            tvShopDate.setText(row.shopName + " · " + months);
-
-            String phone = row.payment.getPaymentPhoneNumber();
-            tvPaidTo.setText(itemView.getContext().getString(R.string.dashboard_paid_to_format,
-                    phone != null && !phone.isEmpty() ? phone : "—"));
-
-            String notSet = itemView.getContext().getString(R.string.label_date_not_set);
-            tvDue.setText(itemView.getContext().getString(R.string.dashboard_due_format,
-                    DateCalculator.formatDueDateOrUnknown(row.tenantDueDate, notSet)));
+            String recordedBy = row.payment.getRecordedByName();
+            StringBuilder meta = new StringBuilder(row.shopName).append(" · ").append(months);
+            if (recordedBy != null && !recordedBy.isEmpty()) meta.append(" · ").append(recordedBy);
+            tvShopDate.setText(meta.toString());
 
             StatusPresentation.Tone tone = StatusPresentation.toneFor(row.bucket);
             int labelRes;
