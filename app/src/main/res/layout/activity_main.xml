@@ -63,7 +63,7 @@
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/space_3"
-            android:src="@drawable/ic_password"
+            android:src="@drawable/ic_ph_lock_key"
             android:tint="@color/md_text"
             android:contentDescription="@string/change_password_title"
             android:visibility="gone" />

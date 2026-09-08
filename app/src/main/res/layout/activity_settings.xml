@@ -62,7 +62,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_password"
+                android:src="@drawable/ic_ph_lock_key"
                 android:tint="@color/md_text"
                 android:contentDescription="@null" />
 
