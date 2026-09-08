@@ -174,13 +174,24 @@
 
     <string name="dashboard_upcoming_title">Upcoming Payments</string>
     <string name="dashboard_upcoming_due_date_format">Due %1$s</string>
-    <string name="dashboard_upcoming_empty">No payments due in the next 30 days</string>
+    <string name="dashboard_upcoming_empty">No upcoming payments</string>
     <string name="dashboard_view_all">View all</string>
+    <string name="dashboard_next_due_format">Next due: %1$s · %2$s</string>
+    <string name="dashboard_next_due_detail_format">%1$s · TZS %2$s</string>
+    <string name="dashboard_next_due_days_format">%1$d days</string>
 
     <string name="dashboard_filter_all">All</string>
     <string name="dashboard_filter_next_due">Next Due</string>
     <string name="dashboard_filter_active">Active</string>
     <string name="dashboard_filter_overdue">Overdue</string>
+
+    <string name="dashboard_header_date">Date</string>
+    <string name="dashboard_header_tenant">Tenant</string>
+    <string name="dashboard_header_tzs">TZS</string>
+
+    <string name="payment_status_pending">Pending</string>
+    <string name="payment_status_confirmed">Confirmed</string>
+    <string name="payment_status_rejected">Rejected</string>
 
     <string name="action_refresh">Refresh</string>
 

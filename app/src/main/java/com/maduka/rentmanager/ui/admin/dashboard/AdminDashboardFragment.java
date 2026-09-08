@@ -75,9 +75,7 @@ public class AdminDashboardFragment extends Fragment {
     private TextView tvVerseText, tvVerseReference;
     private View cardUnits, cardCollection, cardNextDue, cardOverdue;
     private TextView tvStatUnits, tvStatUnitsNote, tvStatCollection, tvStatNextDue, tvStatOverdue, tvStatOverdueNote;
-    private TextView tvViewAllUpcoming, tvUpcomingEmpty;
-    private RecyclerView recyclerUpcoming;
-    private UpcomingPaymentAdapter upcomingAdapter;
+    private TextView tvUpcomingPrimary, tvUpcomingSecondary, tvUpcomingDays;
     private View btnRefresh;
     private TextView chipAll, chipNextDue, chipActive, chipOverdue;
     private RecyclerView recyclerPayments;
@@ -128,9 +126,9 @@ public class AdminDashboardFragment extends Fragment {
         tvStatNextDue = view.findViewById(R.id.tvStatNextDue);
         tvStatOverdue = view.findViewById(R.id.tvStatOverdue);
         tvStatOverdueNote = view.findViewById(R.id.tvStatOverdueNote);
-        tvViewAllUpcoming = view.findViewById(R.id.tvViewAllUpcoming);
-        tvUpcomingEmpty = view.findViewById(R.id.tvUpcomingEmpty);
-        recyclerUpcoming = view.findViewById(R.id.recyclerUpcoming);
+        tvUpcomingPrimary = view.findViewById(R.id.tvUpcomingPrimary);
+        tvUpcomingSecondary = view.findViewById(R.id.tvUpcomingSecondary);
+        tvUpcomingDays = view.findViewById(R.id.tvUpcomingDays);
         btnRefresh = view.findViewById(R.id.btnRefresh);
         chipAll = view.findViewById(R.id.chipAll);
         chipNextDue = view.findViewById(R.id.chipNextDue);
@@ -139,13 +137,9 @@ public class AdminDashboardFragment extends Fragment {
         recyclerPayments = view.findViewById(R.id.recyclerPayments);
         tvPaymentsEmpty = view.findViewById(R.id.tvPaymentsEmpty);
 
-        upcomingAdapter = new UpcomingPaymentAdapter();
-        recyclerUpcoming.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerUpcoming.setAdapter(upcomingAdapter);
-
         paymentAdapter = new DashboardPaymentAdapter();
         recyclerPayments.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerPayments.setAdapter(paymentAdapter);
+        recyclerPayments.setAdapter(new androidx.recyclerview.widget.ConcatAdapter(new PaymentsHeaderAdapter(), paymentAdapter));
 
         Prefs prefs = Prefs.get(requireContext());
         int verseIndex = VerseProvider.indexFor(prefs.signInCount());
@@ -180,7 +174,7 @@ public class AdminDashboardFragment extends Fragment {
         });
         cardNextDue.setOnClickListener(v -> jumpToPayments(PaymentFilter.NEXT_DUE));
         cardOverdue.setOnClickListener(v -> jumpToPayments(PaymentFilter.OVERDUE));
-        tvViewAllUpcoming.setOnClickListener(v -> jumpToPayments(PaymentFilter.NEXT_DUE));
+        view.findViewById(R.id.cardUpcoming).setOnClickListener(v -> jumpToPayments(PaymentFilter.NEXT_DUE));
         btnRefresh.setOnClickListener(v -> refreshData());
         chipAll.setOnClickListener(v -> setFilter(PaymentFilter.ALL));
         chipNextDue.setOnClickListener(v -> setFilter(PaymentFilter.NEXT_DUE));
@@ -379,17 +373,23 @@ public class AdminDashboardFragment extends Fragment {
         }
         upcoming.sort((a, b) -> Long.compare(a.getDueDate(), b.getDueDate()));
 
-        List<UpcomingPaymentAdapter.Row> rows = new ArrayList<>();
-        for (int i = 0; i < upcoming.size() && i < MAX_UPCOMING_ROWS; i++) {
-            Tenant t = upcoming.get(i);
-            rows.add(new UpcomingPaymentAdapter.Row(t, shopNameFor(t.getShopId())));
+        if (upcoming.isEmpty()) {
+            tvUpcomingPrimary.setText(R.string.dashboard_upcoming_empty);
+            tvUpcomingSecondary.setText("");
+            tvUpcomingDays.setVisibility(View.GONE);
+            return;
         }
-        upcomingAdapter.submitList(rows);
 
-        boolean empty = upcoming.isEmpty();
-        recyclerUpcoming.setVisibility(empty ? View.GONE : View.VISIBLE);
-        tvUpcomingEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
-        tvViewAllUpcoming.setVisibility(empty ? View.GONE : View.VISIBLE);
+        Tenant next = upcoming.get(0);
+        String shopName = shopNameFor(next.getShopId());
+        tvUpcomingPrimary.setText(getString(R.string.dashboard_next_due_format, next.getName(), shopName));
+        String notSet = getString(R.string.label_date_not_set);
+        tvUpcomingSecondary.setText(getString(R.string.dashboard_next_due_detail_format,
+                DateCalculator.formatDdMmYyyy(next.getDueDate()),
+                MoneyFormatter.compact(next.getMonthlyRent())));
+        int days = DateCalculator.daysBetween(now, next.getDueDate());
+        tvUpcomingDays.setText(getString(R.string.dashboard_next_due_days_format, days));
+        tvUpcomingDays.setVisibility(View.VISIBLE);
     }
 
     private void renderPayments() {

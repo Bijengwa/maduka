@@ -171,45 +171,54 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/cardUpcoming"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_6"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_card"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/space_4">
 
-                <TextView
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_ph_timer"
+                    android:tint="@color/md_neutral_400"
+                    android:contentDescription="@null" />
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/dashboard_upcoming_title"
-                    android:textAppearance="@style/TextAppearance.Maduka.H3" />
+                    android:layout_marginStart="@dimen/space_3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvUpcomingPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.Maduka.Body" />
+
+                    <TextView
+                        android:id="@+id/tvUpcomingSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="@style/TextAppearance.Maduka.Small" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvViewAllUpcoming"
+                    android:id="@+id/tvUpcomingDays"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:padding="@dimen/space_2"
-                    android:text="@string/dashboard_view_all"
-                    android:textAppearance="@style/TextAppearance.Maduka.Small"
-                    android:textColor="@color/md_accent" />
+                    android:layout_marginStart="@dimen/space_2"
+                    android:textAppearance="@style/TextAppearance.Maduka.H3"
+                    android:visibility="gone" />
             </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerUpcoming"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_2"
-                android:nestedScrollingEnabled="false" />
-
-            <TextView
-                android:id="@+id/tvUpcomingEmpty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_2"
-                android:text="@string/dashboard_upcoming_empty"
-                android:textAppearance="@style/TextAppearance.Maduka.Small"
-                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"

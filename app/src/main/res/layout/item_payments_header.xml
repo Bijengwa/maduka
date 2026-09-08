@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/space_2"
+    android:paddingEnd="@dimen/space_2"
+    android:paddingBottom="@dimen/space_2">
+
+    <TextView
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:text="@string/dashboard_header_date"
+        android:textAppearance="@style/TextAppearance.Maduka.Caption"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/space_3"
+        android:text="@string/dashboard_header_tenant"
+        android:textAppearance="@style/TextAppearance.Maduka.Caption"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dashboard_header_tzs"
+        android:textAppearance="@style/TextAppearance.Maduka.Caption"
+        android:textAllCaps="false" />
+
+</LinearLayout>

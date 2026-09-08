@@ -174,13 +174,24 @@
 
     <string name="dashboard_upcoming_title">Malipo Yanayokaribia</string>
     <string name="dashboard_upcoming_due_date_format">Inaisha %1$s</string>
-    <string name="dashboard_upcoming_empty">Hakuna malipo yanayokaribia ndani ya siku 30 zijazo</string>
+    <string name="dashboard_upcoming_empty">Hakuna malipo yanayokaribia</string>
     <string name="dashboard_view_all">Ona yote</string>
+    <string name="dashboard_next_due_format">Inakaribia: %1$s · %2$s</string>
+    <string name="dashboard_next_due_detail_format">%1$s · TZS %2$s</string>
+    <string name="dashboard_next_due_days_format">Siku %1$d</string>
 
     <string name="dashboard_filter_all">Zote</string>
     <string name="dashboard_filter_next_due">Inakaribia</string>
     <string name="dashboard_filter_active">Hai</string>
     <string name="dashboard_filter_overdue">Imechelewa</string>
+
+    <string name="dashboard_header_date">Tarehe</string>
+    <string name="dashboard_header_tenant">Mpangaji</string>
+    <string name="dashboard_header_tzs">TZS</string>
+
+    <string name="payment_status_pending">Inangoja</string>
+    <string name="payment_status_confirmed">Imethibitishwa</string>
+    <string name="payment_status_rejected">Imekataliwa</string>
 
     <string name="action_refresh">Onyesha upya</string>
 

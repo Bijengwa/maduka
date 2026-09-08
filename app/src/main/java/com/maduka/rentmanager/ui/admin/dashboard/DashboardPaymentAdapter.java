@@ -91,13 +91,20 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
             if (recordedBy != null && !recordedBy.isEmpty()) meta.append(" · ").append(recordedBy);
             tvShopDate.setText(meta.toString());
 
-            StatusPresentation.Tone tone = StatusPresentation.toneFor(row.bucket);
+            String rawStatus = row.payment.getStatus();
+            StatusPresentation.Tone tone;
             int labelRes;
-            switch (row.bucket) {
-                case ACTIVE: labelRes = R.string.dashboard_filter_active; break;
-                case NEXT_DUE: labelRes = R.string.dashboard_filter_next_due; break;
-                case OVERDUE: labelRes = R.string.dashboard_filter_overdue; break;
-                default: labelRes = R.string.label_date_not_set;
+            if (rawStatus != null && rawStatus.equalsIgnoreCase("pending")) {
+                tone = StatusPresentation.Tone.WAIT;
+                labelRes = R.string.payment_status_pending;
+            } else if (rawStatus != null && rawStatus.equalsIgnoreCase("rejected")) {
+                tone = StatusPresentation.Tone.BAD;
+                labelRes = R.string.payment_status_rejected;
+            } else {
+                // No status field (every payment recorded today) or an explicit "confirmed" on an
+                // older record - both display identically: a payment is valid once it's written.
+                tone = StatusPresentation.Tone.GOOD;
+                labelRes = R.string.payment_status_confirmed;
             }
             StatusPill.apply(tvDueStatus, tone, labelRes);
         }

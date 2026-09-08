@@ -20,6 +20,12 @@ public class PaymentRecord {
     private String paymentPhoneNumber;
     private long createdAt;
     private long updatedAt;
+    // Read-only display field only - some historical records written before the approval
+    // workflow was removed still carry a raw "pending"/"confirmed"/"rejected" string in Firebase.
+    // There is no setter path in this app that writes it and no UI to change it; a record with no
+    // status (i.e. every payment recorded today) is displayed as confirmed, since it's valid the
+    // moment it's written.
+    private String status;
 
     public PaymentRecord() {}
 
@@ -51,4 +57,6 @@ public class PaymentRecord {
     public void setCreatedAt(long createdAt) { this.createdAt = createdAt; }
     public long getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(long updatedAt) { this.updatedAt = updatedAt; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }
