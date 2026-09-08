@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -31,24 +30,24 @@ public class ChangePasswordDialog extends DialogFragment {
             String confirmPassword = etConfirmPassword.getText() != null ? etConfirmPassword.getText().toString() : "";
 
             if (newPassword.length() < 6) {
-                Toast.makeText(getContext(), R.string.change_password_error_length, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(requireActivity(), getString(R.string.change_password_error_length), MadukaToast.Kind.BAD);
                 return;
             }
             if (!newPassword.equals(confirmPassword)) {
-                Toast.makeText(getContext(), R.string.change_password_error_mismatch, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(requireActivity(), getString(R.string.change_password_error_mismatch), MadukaToast.Kind.BAD);
                 return;
             }
 
             new AuthRepository().changePassword(newPassword, new FirebaseManager.Callback<Void>() {
                 @Override
                 public void onSuccess(Void result) {
-                    Toast.makeText(getContext(), R.string.change_password_success, Toast.LENGTH_SHORT).show();
+                    MadukaToast.show(requireActivity(), getString(R.string.change_password_success), MadukaToast.Kind.OK);
                     dismiss();
                 }
 
                 @Override
                 public void onError(String message) {
-                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
                 }
             });
         });

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import com.maduka.rentmanager.ui.common.MadukaToast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -71,11 +71,11 @@ public class RegisterAdminActivity extends AppCompatActivity {
             String password = textOf(etPassword);
 
             if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, R.string.users_error_required, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(this, getString(R.string.users_error_required), MadukaToast.Kind.BAD);
                 return;
             }
             if (password.length() < 6) {
-                Toast.makeText(this, R.string.change_password_error_length, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(this, getString(R.string.change_password_error_length), MadukaToast.Kind.BAD);
                 return;
             }
 
@@ -83,14 +83,14 @@ public class RegisterAdminActivity extends AppCompatActivity {
             userRepository.registerAdmin(name, phone, email, password, new FirebaseManager.Callback<Void>() {
                 @Override
                 public void onSuccess(Void result) {
-                    Toast.makeText(RegisterAdminActivity.this, R.string.users_register_success, Toast.LENGTH_SHORT).show();
+                    MadukaToast.show(RegisterAdminActivity.this, getString(R.string.users_register_success), MadukaToast.Kind.OK);
                     finish();
                 }
 
                 @Override
                 public void onError(String message) {
                     btnRegister.setEnabled(true);
-                    Toast.makeText(RegisterAdminActivity.this, message, Toast.LENGTH_SHORT).show();
+                    MadukaToast.show(RegisterAdminActivity.this, message, MadukaToast.Kind.BAD);
                 }
             });
         });

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.maduka.rentmanager.ui.common.MadukaToast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -95,13 +95,13 @@ public class TenantsFragment extends Fragment {
                             @Override
                             public void onSuccess(Void result) {
                                 if (!canTouchViews()) return;
-                                Toast.makeText(getContext(), R.string.shops_presence_yupo_success, Toast.LENGTH_SHORT).show();
+                                MadukaToast.show(requireActivity(), getString(R.string.shops_presence_yupo_success), MadukaToast.Kind.OK);
                             }
 
                             @Override
                             public void onError(String message) {
                                 if (!canTouchViews()) return;
-                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
                             }
                         });
             }
@@ -114,15 +114,15 @@ public class TenantsFragment extends Fragment {
                             @Override
                             public void onSuccess(Void result) {
                                 if (!canTouchViews()) return;
-                                Toast.makeText(getContext(),
+                                MadukaToast.show(requireActivity(),
                                         getString(R.string.tenants_end_tenancy_success, tenant.getName(), shopName),
-                                        Toast.LENGTH_SHORT).show();
+                                        MadukaToast.Kind.OK);
                             }
 
                             @Override
                             public void onError(String message) {
                                 if (!canTouchViews()) return;
-                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
                             }
                         });
             }
@@ -157,7 +157,7 @@ public class TenantsFragment extends Fragment {
             @Override
             public void onError(String message) {
                 if (!canTouchViews()) return;
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
             }
         });
 
@@ -188,7 +188,7 @@ public class TenantsFragment extends Fragment {
             @Override
             public void onError(String message) {
                 if (!canTouchViews()) return;
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
             }
         });
     }

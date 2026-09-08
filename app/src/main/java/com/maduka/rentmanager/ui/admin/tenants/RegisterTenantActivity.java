@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.maduka.rentmanager.ui.common.MadukaToast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -136,7 +136,7 @@ public class RegisterTenantActivity extends AppCompatActivity {
 
             @Override
             public void onError(String message) {
-                Toast.makeText(RegisterTenantActivity.this, message, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(RegisterTenantActivity.this, message, MadukaToast.Kind.BAD);
             }
         });
 
@@ -221,23 +221,23 @@ public class RegisterTenantActivity extends AppCompatActivity {
         String password = textOf(etPassword);
 
         if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, R.string.users_error_required, Toast.LENGTH_SHORT).show();
+            MadukaToast.show(this, getString(R.string.users_error_required), MadukaToast.Kind.BAD);
             return;
         }
         if (password.length() < 6) {
-            Toast.makeText(this, R.string.change_password_error_length, Toast.LENGTH_SHORT).show();
+            MadukaToast.show(this, getString(R.string.change_password_error_length), MadukaToast.Kind.BAD);
             return;
         }
 
         int months = parseMonths();
         if (months <= 0) {
-            Toast.makeText(this, R.string.tenants_error_invalid_months, Toast.LENGTH_SHORT).show();
+            MadukaToast.show(this, getString(R.string.tenants_error_invalid_months), MadukaToast.Kind.BAD);
             return;
         }
 
         String paymentPhone = textOf(etPaymentPhone);
         if (paymentPhone.isEmpty()) {
-            Toast.makeText(this, R.string.payments_error_phone_required, Toast.LENGTH_SHORT).show();
+            MadukaToast.show(this, getString(R.string.payments_error_phone_required), MadukaToast.Kind.BAD);
             return;
         }
 
@@ -258,7 +258,7 @@ public class RegisterTenantActivity extends AppCompatActivity {
             @Override
             public void onError(String message) {
                 setFormEnabled(true);
-                Toast.makeText(RegisterTenantActivity.this, message, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(RegisterTenantActivity.this, message, MadukaToast.Kind.BAD);
             }
         });
     }

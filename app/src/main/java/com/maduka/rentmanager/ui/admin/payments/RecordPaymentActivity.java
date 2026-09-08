@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.maduka.rentmanager.ui.common.MadukaToast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -163,14 +163,14 @@ public class RecordPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(String message) {
-                        Toast.makeText(RecordPaymentActivity.this, message, Toast.LENGTH_SHORT).show();
+                        MadukaToast.show(RecordPaymentActivity.this, message, MadukaToast.Kind.BAD);
                     }
                 });
             }
 
             @Override
             public void onError(String message) {
-                Toast.makeText(RecordPaymentActivity.this, message, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(RecordPaymentActivity.this, message, MadukaToast.Kind.BAD);
             }
         });
     }
@@ -269,17 +269,17 @@ public class RecordPaymentActivity extends AppCompatActivity {
 
         int months = parseMonths();
         if (months <= 0) {
-            Toast.makeText(this, R.string.tenants_error_invalid_months, Toast.LENGTH_SHORT).show();
+            MadukaToast.show(this, getString(R.string.tenants_error_invalid_months), MadukaToast.Kind.BAD);
             return;
         }
         long amount = parseAmount();
         if (amount <= 0) {
-            Toast.makeText(this, R.string.payments_error_invalid_amount, Toast.LENGTH_SHORT).show();
+            MadukaToast.show(this, getString(R.string.payments_error_invalid_amount), MadukaToast.Kind.BAD);
             return;
         }
         String paymentPhone = textOf(etPaymentPhone);
         if (paymentPhone.isEmpty()) {
-            Toast.makeText(this, R.string.payments_error_phone_required, Toast.LENGTH_SHORT).show();
+            MadukaToast.show(this, getString(R.string.payments_error_phone_required), MadukaToast.Kind.BAD);
             return;
         }
 
@@ -295,14 +295,14 @@ public class RecordPaymentActivity extends AppCompatActivity {
                         new FirebaseManager.Callback<Void>() {
                             @Override
                             public void onSuccess(Void result) {
-                                Toast.makeText(RecordPaymentActivity.this, R.string.payments_success, Toast.LENGTH_SHORT).show();
+                                MadukaToast.show(RecordPaymentActivity.this, getString(R.string.payments_success), MadukaToast.Kind.OK);
                                 finish();
                             }
 
                             @Override
                             public void onError(String message) {
                                 setFormEnabled(true);
-                                Toast.makeText(RecordPaymentActivity.this, message, Toast.LENGTH_SHORT).show();
+                                MadukaToast.show(RecordPaymentActivity.this, message, MadukaToast.Kind.BAD);
                             }
                         }));
     }

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.maduka.rentmanager.ui.common.MadukaToast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,7 +82,7 @@ public class TenantDashboardFragment extends Fragment {
         // per-tenant "assigned admin" record to look up a real number from. Telling the user
         // honestly beats faking a phone number or a dead action.
         rowContactAdmin.setOnClickListener(v ->
-                Toast.makeText(getContext(), R.string.tenant_contact_not_available, Toast.LENGTH_SHORT).show());
+                MadukaToast.show(requireActivity(), getString(R.string.tenant_contact_not_available), MadukaToast.Kind.INFO));
 
         tenantUid = new AuthRepository().currentUid();
         if (tenantUid == null) return;

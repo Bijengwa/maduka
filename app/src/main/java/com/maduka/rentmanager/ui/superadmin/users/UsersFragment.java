@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.maduka.rentmanager.ui.common.MadukaToast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -92,7 +92,7 @@ public class UsersFragment extends Fragment {
             @Override
             public void onError(String message) {
                 if (!canTouchViews()) return;
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
             }
         });
     }
