@@ -15,6 +15,7 @@ import com.maduka.rentmanager.ui.admin.properties.PropertiesFragment;
 import com.maduka.rentmanager.ui.admin.reports.ReportsFragment;
 import com.maduka.rentmanager.ui.admin.tenants.TenantsFragment;
 import com.maduka.rentmanager.ui.login.LoginActivity;
+import com.maduka.rentmanager.ui.settings.SettingsActivity;
 import com.maduka.rentmanager.ui.superadmin.users.UsersFragment;
 import com.maduka.rentmanager.ui.tenant.dashboard.TenantDashboardFragment;
 import com.maduka.rentmanager.ui.tenant.details.TenantDetailsFragment;
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private UserRole role;
     private BottomNavigationView bottomNav;
     private TextView tvTopBarTitle;
-    private TextView tvTopBarSubtitle;
     private int selectedNavId;
 
     @Override
@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         View topBar = findViewById(R.id.topBar);
         EdgeToEdge.applyTopInset(topBar);
         tvTopBarTitle = findViewById(R.id.tvTopBarTitle);
-        tvTopBarSubtitle = findViewById(R.id.tvTopBarSubtitle);
 
         bottomNav = findViewById(R.id.bottomNav);
         EdgeToEdge.applyBottomInset(bottomNav);
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             selectedNavId = item.getItemId();
             tvTopBarTitle.setText(item.getTitle());
-            setTopBarSubtitle(null);
             showFragment(fragmentFor(selectedNavId));
             return true;
         });
@@ -101,42 +99,39 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ImageButton btnNotifications = findViewById(R.id.btnNotifications);
+        ImageButton btnSettings = findViewById(R.id.btnSettings);
         ImageButton btnLock = findViewById(R.id.btnLock);
         ImageButton btnLogout = findViewById(R.id.btnLogout);
 
-        // Lock (change password) and sign-out live in the top bar for every role now - the
-        // separate Settings screen (which only ever held these same two actions) is retired.
-        btnLock.setOnClickListener(v ->
-                new com.maduka.rentmanager.ui.common.ChangePasswordDialog().show(getSupportFragmentManager(), "change_password"));
-        btnLogout.setOnClickListener(v -> {
-            new com.maduka.rentmanager.data.AuthRepository().signOut();
-            Prefs.get(this).setRememberMe(false, null, null);
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
-
-        // Only Super Admin gets the bell: its 5 tabs (Dashboard/Properties/Tenants/Reports/Users)
-        // have no Notifications destination, so the bell opens it full-screen instead. Admin
-        // already has a Notifications tab; Tenant has its own equivalent tab too.
-        if (role == UserRole.SUPER_ADMIN) {
-            btnNotifications.setVisibility(View.VISIBLE);
-            btnNotifications.setOnClickListener(v ->
-                    startActivity(new Intent(this, com.maduka.rentmanager.ui.admin.notifications.NotificationsActivity.class)));
-        }
-    }
-
-    /** Lets a hosted fragment show a one-line subtitle under the top bar's title (e.g. "9 units
-     * registered"), matching the reference design's title+subtitle top bar on every screen. Pass
-     * null to hide it (done automatically on every tab switch). */
-    public void setTopBarSubtitle(String subtitle) {
-        if (tvTopBarSubtitle == null) return;
-        if (subtitle == null || subtitle.isEmpty()) {
-            tvTopBarSubtitle.setVisibility(View.GONE);
+        if (role == UserRole.TENANT) {
+            // Tenant's header is a direct lock (change password) + logout pair instead of the
+            // Admin/Super Admin bell+settings - Tenant already reaches Notifications via its own
+            // bottom tab, and has no use for the broader Settings screen's other content.
+            btnNotifications.setVisibility(View.GONE);
+            btnSettings.setVisibility(View.GONE);
+            btnLock.setVisibility(View.VISIBLE);
+            btnLogout.setVisibility(View.VISIBLE);
+            btnLock.setOnClickListener(v ->
+                    new com.maduka.rentmanager.ui.common.ChangePasswordDialog().show(getSupportFragmentManager(), "change_password"));
+            btnLogout.setOnClickListener(v -> {
+                new com.maduka.rentmanager.data.AuthRepository().signOut();
+                Prefs.get(this).setRememberMe(false, null, null);
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            });
         } else {
-            tvTopBarSubtitle.setText(subtitle);
-            tvTopBarSubtitle.setVisibility(View.VISIBLE);
+            btnNotifications.setOnClickListener(v -> {
+                if (role == UserRole.SUPER_ADMIN) {
+                    // Super Admin's 5 tabs (Dashboard/Properties/Tenants/Reports/Users) have no
+                    // Notifications destination - the bell opens the same content full-screen.
+                    startActivity(new Intent(this, com.maduka.rentmanager.ui.admin.notifications.NotificationsActivity.class));
+                } else {
+                    bottomNav.setSelectedItemId(R.id.nav_notifications);
+                }
+            });
+            btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
         }
     }
 
