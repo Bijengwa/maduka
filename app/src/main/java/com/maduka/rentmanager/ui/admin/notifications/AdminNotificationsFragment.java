@@ -31,7 +31,7 @@ import java.util.Locale;
  * OverdueCheckReceiver/NotificationRepository work). Only actionable states surface: overdue,
  * due today, due within 7 days - a comfortably-current tenant generates no card. */
 public class AdminNotificationsFragment extends Fragment {
-    private static final long DUE_SOON_WINDOW_DAYS = 7;
+    private static final long DUE_SOON_WINDOW_DAYS = 30; // "due next month" must surface, not just the last week
     private enum Filter { ALL, OVERDUE, DUE_TODAY, DUE_SOON }
 
     private final TenantRepository tenantRepository = new TenantRepository();
@@ -87,6 +87,10 @@ public class AdminNotificationsFragment extends Fragment {
         long now = System.currentTimeMillis();
         List<NotifItem> items = new ArrayList<>();
         for (Tenant tenant : tenants) {
+            // Skip tenants with no due date yet (would otherwise read as ~20,000 days overdue)
+            // and former tenants whose tenancy has ended (shopId cleared).
+            if (!DateCalculator.hasValidDueDate(tenant.getDueDate())) continue;
+            if (tenant.getShopId() == null || tenant.getShopId().isEmpty()) continue;
             int days = DateCalculator.daysBetween(now, tenant.getDueDate());
             String rent = String.format(Locale.US, "%,d", tenant.getMonthlyRent());
             String date = DateCalculator.formatDdMmYyyy(tenant.getDueDate());

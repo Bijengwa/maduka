@@ -3,7 +3,9 @@ package com.maduka.rentmanager.notifications;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
@@ -12,6 +14,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import com.maduka.rentmanager.R;
+import com.maduka.rentmanager.ui.login.LoginActivity;
 
 public final class NotificationHelper {
     public static final String CHANNEL_ID = "overdue_reminders";
@@ -42,6 +45,9 @@ public final class NotificationHelper {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setContentIntent(PendingIntent.getActivity(context, 0,
+                        new Intent(context, LoginActivity.class),
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE))
                 .setAutoCancel(true);
         NotificationManagerCompat.from(context).notify(notificationId, builder.build());
     }

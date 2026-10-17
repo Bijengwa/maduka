@@ -22,7 +22,11 @@ import java.util.Locale;
 public class OverdueCheckReceiver extends BroadcastReceiver {
     private static final int NOTIFICATION_ID_TENANT = 1001;
     private static final int NOTIFICATION_ID_ADMIN_SUMMARY = 1002;
-    private static final int DUE_SOON_WINDOW_DAYS = 7;
+    private static final int DUE_SOON_WINDOW_DAYS = 30;
+    /** Within the last week the tenant is reminded on every run; further out (up to a month) only
+     * on these day-counts, so "due next month" is announced without nagging twice a day. */
+    private static final int DAILY_REMINDER_DAYS = 7;
+    private static final int[] EARLY_REMINDER_DAYS = {30, 21, 14};
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -59,12 +63,21 @@ public class OverdueCheckReceiver extends BroadcastReceiver {
             public void onTenants(List<Tenant> tenants) {
                 long now = System.currentTimeMillis();
                 int overdueCount = 0;
+                int upcomingCount = 0;
                 for (Tenant t : tenants) {
-                    if (t != null && DateCalculator.isOverdue(t.getDueDate(), now)) overdueCount++;
+                    if (t == null || t.getShopId() == null || t.getShopId().isEmpty()) continue;
+                    if (DateCalculator.isOverdue(t.getDueDate(), now)) {
+                        overdueCount++;
+                    } else if (DateCalculator.hasValidDueDate(t.getDueDate())
+                            && DateCalculator.daysBetween(now, t.getDueDate()) <= DUE_SOON_WINDOW_DAYS) {
+                        upcomingCount++;
+                    }
                 }
-                if (overdueCount > 0) {
+                if (overdueCount > 0 || upcomingCount > 0) {
                     String title = context.getString(R.string.notif_admin_summary_title);
-                    String message = context.getString(R.string.notif_admin_summary_message_format, overdueCount);
+                    String message = upcomingCount == 0
+                            ? context.getString(R.string.notif_admin_summary_message_format, overdueCount)
+                            : context.getString(R.string.notif_admin_summary_upcoming_format, overdueCount, upcomingCount);
                     NotificationHelper.show(context, NOTIFICATION_ID_ADMIN_SUMMARY, title, message);
                 }
                 pendingResult.finish();
@@ -77,7 +90,15 @@ public class OverdueCheckReceiver extends BroadcastReceiver {
         });
     }
 
+    private static boolean isEarlyReminderDay(int days) {
+        for (int d : EARLY_REMINDER_DAYS) {
+            if (d == days) return true;
+        }
+        return false;
+    }
+
     private void notifyTenant(Context context, Tenant tenant) {
+        if (tenant.getShopId() == null || tenant.getShopId().isEmpty()) return;
         if (!DateCalculator.hasValidDueDate(tenant.getDueDate())) return;
         long now = System.currentTimeMillis();
         int days = DateCalculator.daysBetween(now, tenant.getDueDate());
@@ -91,7 +112,7 @@ public class OverdueCheckReceiver extends BroadcastReceiver {
         } else if (days == 0) {
             title = context.getString(R.string.notif_system_due_today_title);
             message = context.getString(R.string.notif_system_due_today_message_format, rent);
-        } else if (days <= DUE_SOON_WINDOW_DAYS) {
+        } else if (days <= DAILY_REMINDER_DAYS || isEarlyReminderDay(days)) {
             title = context.getString(R.string.notif_system_due_soon_title);
             message = context.getString(R.string.notif_system_due_soon_message_format, rent, days);
         } else {

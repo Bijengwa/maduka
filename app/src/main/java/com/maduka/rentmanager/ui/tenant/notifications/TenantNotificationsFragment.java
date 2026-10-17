@@ -144,7 +144,7 @@ public class TenantNotificationsFragment extends Fragment {
                     getString(R.string.notif_tenant_due_today_message_format,
                             String.format(Locale.US, "%,d", tenant.getMonthlyRent())),
                     DateCalculator.formatDdMmYyyy(tenant.getDueDate()), StatusPresentation.Tone.WAIT, tenant.getDueDate());
-        } else if (days <= 7) {
+        } else if (days <= 30) {
             return new NotifItem(NotifItem.Category.DUE_SOON,
                     getString(R.string.notif_tenant_due_soon_title),
                     getString(R.string.notif_tenant_due_soon_message_format, shopName, days),
