@@ -161,6 +161,10 @@ public class TenantRepository {
      * UserRepository.registerAdmin, so the currently signed-in Admin/Super Admin's own session
      * is never disturbed by creating this new Firebase Auth account. Marks the shop occupied.
      *
+     * monthsPaid == 0 means "no payment yet": the tenant already exists in real life and simply
+     * pays next on paymentDateMillis, which is then stored as the due date as-is. No payment
+     * record is written and lastPaymentDate stays unset (0).
+     *
      * There is no approval workflow: this first payment, like every payment recorded via
      * {@link PaymentRepository#recordPayment}, is immediately a valid recorded payment. */
     public void registerTenant(String name, String phone, String email, String password, Shop shop,
@@ -173,7 +177,9 @@ public class TenantRepository {
                     secondaryAuth.signOut();
 
                     long now = System.currentTimeMillis();
-                    long dueDate = DateCalculator.addMonths(paymentDateMillis, monthsPaid);
+                    boolean scheduleOnly = monthsPaid <= 0;
+                    long dueDate = scheduleOnly ? paymentDateMillis
+                            : DateCalculator.addMonths(paymentDateMillis, monthsPaid);
                     long amount = monthsPaid * shop.getMonthlyRent();
 
                     Tenant tenant = new Tenant();
@@ -184,8 +190,8 @@ public class TenantRepository {
                     tenant.setAuthEmail(email);
                     tenant.setShopId(shop.getShopId());
                     tenant.setMonthlyRent(shop.getMonthlyRent());
-                    tenant.setMoveInDate(paymentDateMillis);
-                    tenant.setLastPaymentDate(paymentDateMillis);
+                    tenant.setMoveInDate(scheduleOnly ? now : paymentDateMillis);
+                    tenant.setLastPaymentDate(scheduleOnly ? 0 : paymentDateMillis);
                     tenant.setDueDate(dueDate);
                     tenant.setMonthsCovered(monthsPaid);
                     tenant.setPresenceStatus(PresenceStatus.YUPO);
@@ -214,7 +220,9 @@ public class TenantRepository {
                     writes.put("/" + FirebaseSchema.SHOPS + "/" + shop.getShopId() + "/occupied", true);
                     writes.put("/" + FirebaseSchema.SHOPS + "/" + shop.getShopId() + "/tenantUid", uid);
                     writes.put("/" + FirebaseSchema.SHOPS + "/" + shop.getShopId() + "/updatedAt", now);
-                    writes.put("/" + FirebaseSchema.PAYMENTS + "/" + paymentRef.getKey(), payment);
+                    if (!scheduleOnly) {
+                        writes.put("/" + FirebaseSchema.PAYMENTS + "/" + paymentRef.getKey(), payment);
+                    }
 
                     fb.root().updateChildren(writes)
                             .addOnSuccessListener(v -> cb.onSuccess(null))

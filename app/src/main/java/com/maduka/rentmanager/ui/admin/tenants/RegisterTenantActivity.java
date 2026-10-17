@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -63,6 +64,9 @@ public class RegisterTenantActivity extends AppCompatActivity {
     private TextView tvComputedAmount;
     private TextView tvNoVacantShops;
     private Button btnRegister;
+    private CheckBox cbNotPaidYet;
+    private View tilMonthsPaid, tilPaymentPhone;
+    private TextView tvPaymentDateLabel;
     private long paymentDateMillis;
 
     @Override
@@ -102,6 +106,11 @@ public class RegisterTenantActivity extends AppCompatActivity {
         tvComputedAmount = findViewById(R.id.tvComputedAmount);
         tvNoVacantShops = findViewById(R.id.tvNoVacantShops);
         btnRegister = findViewById(R.id.btnRegister);
+        cbNotPaidYet = findViewById(R.id.cbNotPaidYet);
+        tilMonthsPaid = findViewById(R.id.tilMonthsPaid);
+        tilPaymentPhone = findViewById(R.id.tilPaymentPhone);
+        tvPaymentDateLabel = findViewById(R.id.tvPaymentDateLabel);
+        cbNotPaidYet.setOnCheckedChangeListener((b, checked) -> applyMode(checked));
 
         paymentDateMillis = System.currentTimeMillis();
         etPaymentDate.setText(DateCalculator.formatDdMmYyyy(paymentDateMillis));
@@ -143,6 +152,20 @@ public class RegisterTenantActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(v -> submit());
     }
 
+    /** "Not paid yet" mode: an existing tenant who simply pays next on a given date. Hides the
+     * payment fields and turns the date into the next payment date, defaulting to next month. */
+    private void applyMode(boolean notPaidYet) {
+        tilMonthsPaid.setVisibility(notPaidYet ? View.GONE : View.VISIBLE);
+        tilPaymentPhone.setVisibility(notPaidYet ? View.GONE : View.VISIBLE);
+        tvComputedAmount.setVisibility(notPaidYet ? View.GONE : View.VISIBLE);
+        tvPaymentDateLabel.setText(notPaidYet ? R.string.tenants_next_payment_date_label
+                : R.string.tenants_payment_date_label);
+        paymentDateMillis = notPaidYet
+                ? DateCalculator.addMonths(System.currentTimeMillis(), 1)
+                : System.currentTimeMillis();
+        etPaymentDate.setText(DateCalculator.formatDdMmYyyy(paymentDateMillis));
+    }
+
     private void bindVacantShops() {
         boolean hasVacant = !vacantShops.isEmpty();
         tvNoVacantShops.setVisibility(hasVacant ? View.GONE : View.VISIBLE);
@@ -170,14 +193,16 @@ public class RegisterTenantActivity extends AppCompatActivity {
         etMonthsPaid.setEnabled(enabled);
         etPaymentDate.setEnabled(enabled);
         etPaymentPhone.setEnabled(enabled);
+        cbNotPaidYet.setEnabled(enabled);
         btnRegister.setEnabled(enabled);
     }
 
     private void showDatePicker() {
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
         cal.setTimeInMillis(paymentDateMillis);
         new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-            Calendar picked = Calendar.getInstance();
+            Calendar picked = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
+            picked.clear();
             picked.set(year, month, dayOfMonth, 0, 0, 0);
             picked.set(Calendar.MILLISECOND, 0);
             paymentDateMillis = picked.getTimeInMillis();
@@ -229,14 +254,15 @@ public class RegisterTenantActivity extends AppCompatActivity {
             return;
         }
 
-        int months = parseMonths();
-        if (months <= 0) {
+        boolean notPaidYet = cbNotPaidYet.isChecked();
+        int months = notPaidYet ? 0 : parseMonths();
+        if (!notPaidYet && months <= 0) {
             MadukaToast.show(this, getString(R.string.tenants_error_invalid_months), MadukaToast.Kind.BAD);
             return;
         }
 
         String paymentPhone = textOf(etPaymentPhone);
-        if (paymentPhone.isEmpty()) {
+        if (!notPaidYet && paymentPhone.isEmpty()) {
             MadukaToast.show(this, getString(R.string.payments_error_phone_required), MadukaToast.Kind.BAD);
             return;
         }

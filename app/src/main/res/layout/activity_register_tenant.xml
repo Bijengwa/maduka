@@ -130,6 +130,14 @@
                 android:background="@drawable/bg_card"
                 android:padding="@dimen/space_3" />
 
+            <CheckBox
+                android:id="@+id/cbNotPaidYet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_4"
+                android:text="@string/tenants_not_paid_yet"
+                android:textAppearance="@style/TextAppearance.Maduka.Body" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilMonthsPaid"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -148,6 +156,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tvPaymentDateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_6"
