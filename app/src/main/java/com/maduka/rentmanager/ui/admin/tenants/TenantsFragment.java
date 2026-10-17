@@ -128,6 +128,10 @@ public class TenantsFragment extends Fragment {
             }
         });
 
+        if (role == UserRole.SUPER_ADMIN) {
+            adapter.setOnTenantClickListener(this::showTenantActions);
+        }
+
         // Register Tenant is Super-Admin-only: Admin never gets the click listener wired,
         // not merely a hidden button - it sees the read-only note instead.
         if (role == UserRole.SUPER_ADMIN) {
@@ -204,6 +208,72 @@ public class TenantsFragment extends Fragment {
             tenantsRegistration = null;
         }
         super.onDestroyView();
+    }
+
+    /** Super Admin tap on a tenant card: set the next due date, or delete the tenant. */
+    private void showTenantActions(Tenant tenant) {
+        CharSequence[] options = {
+                getString(R.string.tenants_set_due_date_action),
+                getString(R.string.tenants_delete_action)
+        };
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(tenant.getName())
+                .setItems(options, (d, which) -> {
+                    if (which == 0) pickDueDate(tenant); else confirmDelete(tenant);
+                })
+                .show();
+    }
+
+    private void pickDueDate(Tenant tenant) {
+        long now = System.currentTimeMillis();
+        long initial = DateCalculator.hasValidDueDate(tenant.getDueDate())
+                ? tenant.getDueDate() : DateCalculator.addMonths(now, 1);
+        java.util.Calendar c = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
+        c.setTimeInMillis(initial);
+        new android.app.DatePickerDialog(requireContext(), (picker, year, month, day) -> {
+            // Stored as midnight UTC, the convention DateCalculator formats and compares with.
+            java.util.Calendar picked = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
+            picked.clear();
+            picked.set(year, month, day, 0, 0, 0);
+            long dueDate = picked.getTimeInMillis();
+            tenantRepository.setDueDate(tenant.getUid(), dueDate, new FirebaseManager.Callback<Void>() {
+                @Override
+                public void onSuccess(Void result) {
+                    if (!canTouchViews()) return;
+                    MadukaToast.show(requireActivity(), getString(R.string.tenants_set_due_date_success,
+                            tenant.getName(), DateCalculator.formatDdMmYyyy(dueDate)), MadukaToast.Kind.OK);
+                }
+
+                @Override
+                public void onError(String message) {
+                    if (!canTouchViews()) return;
+                    MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
+                }
+            });
+        }, c.get(java.util.Calendar.YEAR), c.get(java.util.Calendar.MONTH), c.get(java.util.Calendar.DAY_OF_MONTH)).show();
+    }
+
+    private void confirmDelete(Tenant tenant) {
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(R.string.tenants_delete_confirm_title)
+                .setMessage(getString(R.string.tenants_delete_confirm_message, tenant.getName()))
+                .setNegativeButton(R.string.action_cancel, null)
+                .setPositiveButton(R.string.action_delete, (d, w) ->
+                        tenantRepository.deleteTenant(tenant, new FirebaseManager.Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                if (!canTouchViews()) return;
+                                MadukaToast.show(requireActivity(),
+                                        getString(R.string.tenants_delete_success, tenant.getName()), MadukaToast.Kind.OK);
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                if (!canTouchViews()) return;
+                                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
+                            }
+                        }))
+                .show();
     }
 
     private boolean canTouchViews() {

@@ -121,6 +121,35 @@ public class PropertiesFragment extends Fragment {
         // Overdue-tenant Yupo/Hayupo is an operational mutation - Super-Admin-only, same
         // pattern as Add Shop above: Admin never gets the listener wired at all.
         adapter.setShowPresenceActions(role == UserRole.SUPER_ADMIN);
+        if (role == UserRole.SUPER_ADMIN) {
+            adapter.setOnShopClickListener(shop -> {
+                String shopName = shop.getName() != null ? shop.getName() : shop.getShopId();
+                if (shop.isOccupied()) {
+                    MadukaToast.show(requireActivity(), getString(R.string.shops_delete_occupied), MadukaToast.Kind.INFO);
+                    return;
+                }
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.shops_delete_confirm_title)
+                        .setMessage(getString(R.string.shops_delete_confirm_message, shopName))
+                        .setNegativeButton(R.string.action_cancel, null)
+                        .setPositiveButton(R.string.action_delete, (d, w) ->
+                                shopRepository.deleteShop(shop, new com.maduka.rentmanager.data.FirebaseManager.Callback<Void>() {
+                                    @Override
+                                    public void onSuccess(Void result) {
+                                        if (!isAdded()) return;
+                                        MadukaToast.show(requireActivity(),
+                                                getString(R.string.shops_delete_success, shopName), MadukaToast.Kind.OK);
+                                    }
+
+                                    @Override
+                                    public void onError(String message) {
+                                        if (!isAdded()) return;
+                                        MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
+                                    }
+                                }))
+                        .show();
+            });
+        }
         adapter.setOnPresenceDecisionListener(new ShopAdapter.OnPresenceDecisionListener() {
             @Override
             public void onYupo(Tenant tenant) {

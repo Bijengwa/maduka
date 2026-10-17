@@ -124,4 +124,20 @@ public class UserRepository {
                 })
                 .addOnFailureListener(e -> cb.onError(e.getMessage()));
     }
+
+    /** Super-Admin-only permanent delete: removes the admin record and their login_index entry so
+     * they can no longer sign in. The Firebase Auth account itself cannot be deleted from a
+     * client, only made unreachable. */
+    public void deleteAdmin(AdminUser admin, FirebaseManager.Callback<Void> cb) {
+        Map<String, Object> writes = new HashMap<>();
+        writes.put("/" + FirebaseSchema.ADMINS + "/" + admin.getUid(), null);
+        String loginEmail = admin.getAuthEmail() != null ? admin.getAuthEmail() : admin.getEmail();
+        if (loginEmail != null && !loginEmail.isEmpty()) {
+            writes.put("/" + FirebaseSchema.LOGIN_INDEX + "/" + UserRole.ADMIN.node + "/"
+                    + LoginKeyUtil.sanitize(loginEmail), null);
+        }
+        fb.root().updateChildren(writes)
+                .addOnSuccessListener(v -> cb.onSuccess(null))
+                .addOnFailureListener(e -> cb.onError(e.getMessage()));
+    }
 }

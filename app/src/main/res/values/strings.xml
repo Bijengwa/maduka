@@ -273,4 +273,22 @@
         <item>Matthew 25:21, KJV</item>
         <item>Proverbs 3:3, KJV</item>
     </string-array>
+
+    <!-- Super Admin: delete + set next due date -->
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="tenants_set_due_date_action">Set next payment date</string>
+    <string name="tenants_set_due_date_success">%1$s pays next on %2$s</string>
+    <string name="tenants_delete_action">Delete tenant</string>
+    <string name="tenants_delete_confirm_title">Delete tenant?</string>
+    <string name="tenants_delete_confirm_message">%1$s will be deleted permanently and can no longer sign in. Their shop becomes vacant. Past payment records are kept.</string>
+    <string name="tenants_delete_success">%1$s deleted</string>
+    <string name="shops_delete_confirm_title">Delete shop?</string>
+    <string name="shops_delete_confirm_message">%1$s will be deleted permanently.</string>
+    <string name="shops_delete_success">%1$s deleted</string>
+    <string name="shops_delete_occupied">This shop has a tenant. Delete the tenant or mark them as left first.</string>
+    <string name="users_delete_confirm_title">Delete admin?</string>
+    <string name="users_delete_confirm_message">%1$s will be deleted permanently and can no longer sign in.</string>
+    <string name="users_delete_success">%1$s deleted</string>
+    <string name="notif_admin_summary_upcoming_format">%1$d overdue · %2$d due within 30 days.</string>
 </resources>

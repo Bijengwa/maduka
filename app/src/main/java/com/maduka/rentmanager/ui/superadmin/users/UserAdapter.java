@@ -20,7 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+    public interface OnAdminClickListener { void onAdminClick(AdminUser admin); }
+
     private final List<AdminUser> admins = new ArrayList<>();
+    private OnAdminClickListener clickListener;
+
+    public void setOnAdminClickListener(OnAdminClickListener listener) {
+        this.clickListener = listener;
+    }
 
     public void submitList(List<AdminUser> newAdmins) {
         admins.clear();
@@ -37,7 +44,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(admins.get(position));
+        AdminUser admin = admins.get(position);
+        holder.bind(admin);
+        holder.itemView.setOnClickListener(clickListener == null ? null : v -> clickListener.onAdminClick(admin));
+        holder.itemView.setClickable(clickListener != null);
     }
 
     @Override

@@ -273,4 +273,22 @@
         <item>Mathayo 25:21</item>
         <item>Mithali 3:3</item>
     </string-array>
+
+    <!-- Super Admin: delete + set next due date -->
+    <string name="action_cancel">Ghairi</string>
+    <string name="action_delete">Futa</string>
+    <string name="tenants_set_due_date_action">Weka tarehe ya kulipa ijayo</string>
+    <string name="tenants_set_due_date_success">%1$s atalipa tarehe %2$s</string>
+    <string name="tenants_delete_action">Futa mpangaji</string>
+    <string name="tenants_delete_confirm_title">Futa mpangaji?</string>
+    <string name="tenants_delete_confirm_message">%1$s atafutwa kabisa na hataweza kuingia tena. Duka lake litakuwa wazi. Historia ya malipo itabaki.</string>
+    <string name="tenants_delete_success">%1$s amefutwa</string>
+    <string name="shops_delete_confirm_title">Futa duka?</string>
+    <string name="shops_delete_confirm_message">%1$s litafutwa kabisa.</string>
+    <string name="shops_delete_success">%1$s limefutwa</string>
+    <string name="shops_delete_occupied">Duka hili lina mpangaji. Mfute au mweke kama ameondoka kwanza.</string>
+    <string name="users_delete_confirm_title">Futa admin?</string>
+    <string name="users_delete_confirm_message">%1$s atafutwa kabisa na hataweza kuingia tena.</string>
+    <string name="users_delete_success">%1$s amefutwa</string>
+    <string name="notif_admin_summary_upcoming_format">Waliochelewa %1$d · wanaodaiwa ndani ya siku 30: %2$d.</string>
 </resources>

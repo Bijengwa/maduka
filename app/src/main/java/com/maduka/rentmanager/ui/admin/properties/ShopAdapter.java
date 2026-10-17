@@ -34,6 +34,15 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         void onHayupo(Tenant tenant);
     }
 
+    /** Tap on a shop card - wired for Super Admin only (delete shop). */
+    public interface OnShopClickListener { void onShopClick(Shop shop); }
+
+    private OnShopClickListener clickListener;
+
+    public void setOnShopClickListener(OnShopClickListener listener) {
+        this.clickListener = listener;
+    }
+
     /** One row: a shop, and its current tenant if occupied. */
     public static class Row {
         public final Shop shop;
@@ -70,7 +79,11 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(rows.get(position), showPresenceActions, presenceListener);
+        Row row = rows.get(position);
+        holder.bind(row, showPresenceActions, presenceListener);
+        boolean tappable = clickListener != null && row.shop != null;
+        holder.itemView.setOnClickListener(tappable ? v -> clickListener.onShopClick(row.shop) : null);
+        holder.itemView.setClickable(tappable);
     }
 
     @Override

@@ -31,6 +31,15 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
         void onHayupo(Tenant tenant);
     }
 
+    /** Tap on a tenant card - wired for Super Admin only (set due date / delete). */
+    public interface OnTenantClickListener { void onTenantClick(Tenant tenant); }
+
+    private OnTenantClickListener clickListener;
+
+    public void setOnTenantClickListener(OnTenantClickListener listener) {
+        this.clickListener = listener;
+    }
+
     private final List<Tenant> tenants = new ArrayList<>();
     private Map<String, String> shopNamesById = new HashMap<>();
     private boolean showPresenceActions;
@@ -74,7 +83,10 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(tenants.get(position), shopNamesById, showPresenceActions, presenceListener);
+        Tenant tenant = tenants.get(position);
+        holder.bind(tenant, shopNamesById, showPresenceActions, presenceListener);
+        holder.itemView.setOnClickListener(clickListener == null ? null : v -> clickListener.onTenantClick(tenant));
+        holder.itemView.setClickable(clickListener != null);
     }
 
     @Override

@@ -72,6 +72,26 @@ public class UsersFragment extends Fragment {
         adapter = new UserAdapter();
         recyclerAdmins.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerAdmins.setAdapter(adapter);
+        adapter.setOnAdminClickListener(admin -> new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(R.string.users_delete_confirm_title)
+                .setMessage(getString(R.string.users_delete_confirm_message, admin.getName()))
+                .setNegativeButton(R.string.action_cancel, null)
+                .setPositiveButton(R.string.action_delete, (d, w) ->
+                        userRepository.deleteAdmin(admin, new com.maduka.rentmanager.data.FirebaseManager.Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                if (!canTouchViews()) return;
+                                MadukaToast.show(requireActivity(),
+                                        getString(R.string.users_delete_success, admin.getName()), MadukaToast.Kind.OK);
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                if (!canTouchViews()) return;
+                                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
+                            }
+                        }))
+                .show());
 
         btnAddAdmin.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), RegisterAdminActivity.class);

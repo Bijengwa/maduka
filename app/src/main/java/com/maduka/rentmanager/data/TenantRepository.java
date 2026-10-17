@@ -222,4 +222,40 @@ public class TenantRepository {
                 })
                 .addOnFailureListener(e -> cb.onError(e.getMessage()));
     }
+
+    /** Super-Admin-only: sets (or corrects) the date the tenant's next rent is due, without
+     * recording a payment. This is how already-existing tenants are onboarded - the Super Admin
+     * states "this tenant pays next on <date>" and every due/overdue computation, dashboard
+     * bucket and notification picks it up from tenants/{uid}/dueDate. */
+    public void setDueDate(String tenantUid, long dueDateMillis, FirebaseManager.Callback<Void> cb) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("dueDate", dueDateMillis);
+        updates.put("updatedAt", System.currentTimeMillis());
+        fb.root().child(FirebaseSchema.TENANTS).child(tenantUid).updateChildren(updates)
+                .addOnSuccessListener(v -> cb.onSuccess(null))
+                .addOnFailureListener(e -> cb.onError(e.getMessage()));
+    }
+
+    /** Super-Admin-only permanent delete: removes the tenant record and their login_index entry
+     * (so they can no longer sign in) and frees their shop, in one atomic multi-path write.
+     * Past PaymentRecords are deliberately kept so collection reports stay accurate. The
+     * Firebase Auth account itself cannot be deleted from a client, only made unreachable. */
+    public void deleteTenant(Tenant tenant, FirebaseManager.Callback<Void> cb) {
+        Map<String, Object> writes = new HashMap<>();
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid(), null);
+        String loginEmail = tenant.getAuthEmail() != null ? tenant.getAuthEmail() : tenant.getEmail();
+        if (loginEmail != null && !loginEmail.isEmpty()) {
+            writes.put("/" + FirebaseSchema.LOGIN_INDEX + "/" + UserRole.TENANT.node + "/"
+                    + LoginKeyUtil.sanitize(loginEmail), null);
+        }
+        String shopId = tenant.getShopId();
+        if (shopId != null && !shopId.isEmpty()) {
+            writes.put("/" + FirebaseSchema.SHOPS + "/" + shopId + "/occupied", false);
+            writes.put("/" + FirebaseSchema.SHOPS + "/" + shopId + "/tenantUid", null);
+            writes.put("/" + FirebaseSchema.SHOPS + "/" + shopId + "/updatedAt", System.currentTimeMillis());
+        }
+        fb.root().updateChildren(writes)
+                .addOnSuccessListener(v -> cb.onSuccess(null))
+                .addOnFailureListener(e -> cb.onError(e.getMessage()));
+    }
 }

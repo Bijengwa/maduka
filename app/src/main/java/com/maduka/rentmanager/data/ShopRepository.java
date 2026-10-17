@@ -143,4 +143,18 @@ public class ShopRepository {
                 .addOnSuccessListener(v -> cb.onSuccess(null))
                 .addOnFailureListener(e -> cb.onError(e.getMessage()));
     }
+
+    /** Super-Admin-only permanent delete of a shop (room). Refused while a tenant occupies it -
+     * the tenant must be removed or marked as left first, so no tenant is ever left pointing
+     * at a shop that no longer exists. */
+    public void deleteShop(Shop shop, FirebaseManager.Callback<Void> cb) {
+        if (shop.isOccupied()) {
+            Context context = FirebaseApp.getInstance().getApplicationContext();
+            cb.onError(context.getString(R.string.shops_delete_occupied));
+            return;
+        }
+        fb.root().child(FirebaseSchema.SHOPS).child(shop.getShopId()).removeValue()
+                .addOnSuccessListener(v -> cb.onSuccess(null))
+                .addOnFailureListener(e -> cb.onError(e.getMessage()));
+    }
 }
