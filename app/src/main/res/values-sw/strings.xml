@@ -16,7 +16,7 @@
     <string name="login_error_identifier_required">Ingiza jina la mtumiaji, barua pepe au simu.</string>
     <string name="login_error_password_required">Ingiza neno la siri.</string>
 
-    <string name="nav_dashboard">Dashibodi</string>
+    <string name="nav_dashboard">Nyumbani</string>
     <string name="nav_properties">Maduka</string>
     <string name="nav_tenants">Wapangaji</string>
     <string name="nav_reports">Ripoti</string>
@@ -291,4 +291,9 @@
     <string name="users_delete_confirm_message">%1$s atafutwa kabisa na hataweza kuingia tena.</string>
     <string name="users_delete_success">%1$s amefutwa</string>
     <string name="notif_admin_summary_upcoming_format">Waliochelewa %1$d · wanaodaiwa ndani ya siku 30: %2$d.</string>
+    <string name="reports_overdue_amount">Kiasi kilichochelewa</string>
+    <string name="reports_next_due">Wanaodaiwa ndani ya siku 30</string>
+    <string name="reports_this_month">Mapato ya mwezi huu</string>
+    <string name="tenants_not_paid_yet">Hajalipa bado — weka tarehe ya kulipa ijayo</string>
+    <string name="tenants_next_payment_date_label">Tarehe ya kulipa ijayo</string>
 </resources>

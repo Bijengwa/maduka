@@ -38,7 +38,7 @@ public class ReportsFragment extends Fragment {
     private List<PaymentRecord> allPayments = new ArrayList<>();
     private boolean shopsLoaded, tenantsLoaded, paymentsLoaded;
 
-    private Row rowTotalShops, rowOccupied, rowVacant, rowOccupancy, rowActiveTenants, rowOverdueTenants;
+    private Row rowTotalShops, rowOccupied, rowVacant, rowOccupancy, rowActiveTenants, rowOverdueTenants, rowOverdueAmount, rowNextDue, rowThisMonth;
     private Row rowTotalRecords, rowTotalAmount, rowAverageAmount;
     private TextView tvNoPayments;
 
@@ -71,6 +71,9 @@ public class ReportsFragment extends Fragment {
         rowOccupancy = new Row(view.findViewById(R.id.rowOccupancy));
         rowActiveTenants = new Row(view.findViewById(R.id.rowActiveTenants));
         rowOverdueTenants = new Row(view.findViewById(R.id.rowOverdueTenants));
+        rowOverdueAmount = new Row(view.findViewById(R.id.rowOverdueAmount));
+        rowNextDue = new Row(view.findViewById(R.id.rowNextDue));
+        rowThisMonth = new Row(view.findViewById(R.id.rowThisMonth));
         rowTotalRecords = new Row(view.findViewById(R.id.rowTotalRecords));
         rowTotalAmount = new Row(view.findViewById(R.id.rowTotalAmount));
         rowAverageAmount = new Row(view.findViewById(R.id.rowAverageAmount));
@@ -146,17 +149,30 @@ public class ReportsFragment extends Fragment {
         int occupancyPct = total > 0 ? Math.round(occupied * 100f / total) : 0;
 
         long now = System.currentTimeMillis();
-        int overdue = 0;
+        int activeTenants = 0, overdue = 0, nextDue = 0;
+        long overdueAmount = 0;
         for (Tenant t : allTenants) {
-            if (t != null && DateCalculator.isOverdue(t.getDueDate(), now)) overdue++;
+            // A tenant with no shop has left (TenantRepository.endTenancy) - not active.
+            if (t == null || t.getShopId() == null || t.getShopId().isEmpty()) continue;
+            activeTenants++;
+            DateCalculator.DueBucket bucket = DateCalculator.classifyDueDate(t.getDueDate(), now);
+            if (bucket == DateCalculator.DueBucket.OVERDUE) {
+                overdue++;
+                overdueAmount += t.getMonthlyRent();
+            } else if (bucket == DateCalculator.DueBucket.NEXT_DUE) {
+                nextDue++;
+            }
         }
 
         rowTotalShops.set(getString(R.string.reports_total_shops), String.valueOf(total));
         rowOccupied.set(getString(R.string.reports_occupied_shops), String.valueOf(occupied));
         rowVacant.set(getString(R.string.reports_vacant_shops), String.valueOf(vacant));
         rowOccupancy.set(getString(R.string.reports_occupancy_rate), occupancyPct + "%");
-        rowActiveTenants.set(getString(R.string.reports_active_tenants), String.valueOf(allTenants.size()));
+        rowActiveTenants.set(getString(R.string.reports_active_tenants), String.valueOf(activeTenants));
         rowOverdueTenants.set(getString(R.string.reports_overdue_tenants), String.valueOf(overdue));
+        rowOverdueAmount.set(getString(R.string.reports_overdue_amount),
+                String.format(Locale.US, "TSh %,d", overdueAmount));
+        rowNextDue.set(getString(R.string.reports_next_due), String.valueOf(nextDue));
     }
 
     private void renderPayments() {
@@ -165,6 +181,15 @@ public class ReportsFragment extends Fragment {
             if (p == null) continue;
             totalAmount += p.getAmount();
         }
+        long monthStart = DateCalculator.startOfMonth(System.currentTimeMillis());
+        long nextMonthStart = DateCalculator.addMonths(monthStart, 1);
+        long thisMonth = 0;
+        for (PaymentRecord p : allPayments) {
+            if (p != null && p.getPaymentDate() >= monthStart && p.getPaymentDate() < nextMonthStart) {
+                thisMonth += p.getAmount();
+            }
+        }
+        rowThisMonth.set(getString(R.string.reports_this_month), String.format(Locale.US, "TSh %,d", thisMonth));
         long averageAmount = allPayments.isEmpty() ? 0 : totalAmount / allPayments.size();
 
         rowTotalRecords.set(getString(R.string.reports_total_records), String.valueOf(allPayments.size()));

@@ -66,15 +66,11 @@ public class AdminDashboardFragment extends Fragment {
     private Map<String, Tenant> activeTenantByShopId = new HashMap<>();
     private Map<String, String> shopNamesById = new HashMap<>();
     private PaymentFilter currentFilter = PaymentFilter.ALL;
-    private long collectionThisMonth;
-    private boolean collectionAmountExpanded;
 
     private AppBarLayout appBar;
     private TextView tvWelcome, tvWelcomeSubtitle;
     private View btnRecordPayment;
     private TextView tvVerseText, tvVerseReference;
-    private View cardUnits, cardCollection, cardNextDue, cardOverdue;
-    private TextView tvStatUnits, tvStatUnitsNote, tvStatCollection, tvStatNextDue, tvStatOverdue, tvStatOverdueNote;
     private TextView tvUpcomingPrimary, tvUpcomingSecondary, tvUpcomingDays;
     private View btnRefresh;
     private TextView chipAll, chipNextDue, chipActive, chipOverdue;
@@ -116,16 +112,6 @@ public class AdminDashboardFragment extends Fragment {
         btnRecordPayment = view.findViewById(R.id.btnRecordPayment);
         tvVerseText = view.findViewById(R.id.tvVerseText);
         tvVerseReference = view.findViewById(R.id.tvVerseReference);
-        cardUnits = view.findViewById(R.id.cardUnits);
-        cardCollection = view.findViewById(R.id.cardCollection);
-        cardNextDue = view.findViewById(R.id.cardNextDue);
-        cardOverdue = view.findViewById(R.id.cardOverdue);
-        tvStatUnits = view.findViewById(R.id.tvStatUnits);
-        tvStatUnitsNote = view.findViewById(R.id.tvStatUnitsNote);
-        tvStatCollection = view.findViewById(R.id.tvStatCollection);
-        tvStatNextDue = view.findViewById(R.id.tvStatNextDue);
-        tvStatOverdue = view.findViewById(R.id.tvStatOverdue);
-        tvStatOverdueNote = view.findViewById(R.id.tvStatOverdueNote);
         tvUpcomingPrimary = view.findViewById(R.id.tvUpcomingPrimary);
         tvUpcomingSecondary = view.findViewById(R.id.tvUpcomingSecondary);
         tvUpcomingDays = view.findViewById(R.id.tvUpcomingDays);
@@ -167,13 +153,6 @@ public class AdminDashboardFragment extends Fragment {
                     : getString(R.string.dashboard_welcome_generic));
         });
 
-        cardUnits.setOnClickListener(v -> switchTab(R.id.nav_properties));
-        cardCollection.setOnClickListener(v -> {
-            collectionAmountExpanded = !collectionAmountExpanded;
-            updateCollectionDisplay();
-        });
-        cardNextDue.setOnClickListener(v -> jumpToPayments(PaymentFilter.NEXT_DUE));
-        cardOverdue.setOnClickListener(v -> jumpToPayments(PaymentFilter.OVERDUE));
         view.findViewById(R.id.cardUpcoming).setOnClickListener(v -> jumpToPayments(PaymentFilter.NEXT_DUE));
         btnRefresh.setOnClickListener(v -> refreshData());
         chipAll.setOnClickListener(v -> setFilter(PaymentFilter.ALL));
@@ -305,7 +284,6 @@ public class AdminDashboardFragment extends Fragment {
         }
 
         if (shopsLoaded && tenantsLoaded) {
-            renderStats();
             renderUpcoming();
         }
         if (shopsLoaded && tenantsLoaded && paymentsLoaded) {
@@ -313,55 +291,7 @@ public class AdminDashboardFragment extends Fragment {
         }
     }
 
-    private void renderStats() {
-        long now = System.currentTimeMillis();
 
-        int units = allShops.size();
-        int occupied = 0;
-        for (Shop shop : allShops) {
-            if (shop != null && shop.isOccupied() && shop.getShopId() != null
-                    && activeTenantByShopId.containsKey(shop.getShopId())) {
-                occupied++;
-            }
-        }
-
-        int nextDueCount = 0, overdueCount = 0;
-        long overdueAmount = 0;
-        for (Tenant t : activeTenantsByUid.values()) {
-            DateCalculator.DueBucket bucket = DateCalculator.classifyDueDate(t.getDueDate(), now);
-            if (bucket == DateCalculator.DueBucket.NEXT_DUE) {
-                nextDueCount++;
-            } else if (bucket == DateCalculator.DueBucket.OVERDUE) {
-                overdueCount++;
-                overdueAmount += t.getMonthlyRent();
-            }
-        }
-
-        long monthStart = DateCalculator.startOfMonth(now);
-        long nextMonthStart = DateCalculator.addMonths(monthStart, 1);
-        collectionThisMonth = 0;
-        for (PaymentRecord p : allPayments) {
-            if (p != null && p.getPaymentDate() >= monthStart && p.getPaymentDate() < nextMonthStart) {
-                collectionThisMonth += p.getAmount();
-            }
-        }
-
-        tvStatUnits.setText(String.valueOf(units));
-        tvStatUnitsNote.setText(getString(R.string.dashboard_units_note_format, occupied, units));
-        updateCollectionDisplay();
-        tvStatNextDue.setText(String.valueOf(nextDueCount));
-        tvStatOverdue.setText(String.valueOf(overdueCount));
-        tvStatOverdueNote.setText(getString(R.string.dashboard_amount_format, MoneyFormatter.compact(overdueAmount)));
-    }
-
-    /** Compact by default so a large amount never breaks the card's layout; tapping the card
-     * (see the click listener in onViewCreated) reveals the exact figure, per the design spec. */
-    private void updateCollectionDisplay() {
-        String amount = collectionAmountExpanded
-                ? MoneyFormatter.full(collectionThisMonth)
-                : MoneyFormatter.compact(collectionThisMonth);
-        tvStatCollection.setText(getString(R.string.dashboard_amount_format, amount));
-    }
 
     private void renderUpcoming() {
         long now = System.currentTimeMillis();

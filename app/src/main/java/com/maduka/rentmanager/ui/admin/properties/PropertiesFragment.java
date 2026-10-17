@@ -51,7 +51,6 @@ public class PropertiesFragment extends Fragment {
     private RecyclerView recyclerShops;
     private TextView tvEmpty;
     private TextView tvSubtitle;
-    private TextView tvStatUnits, tvStatUnitsSub, tvStatOccupied, tvStatOccupiedSub, tvStatEmpty, tvStatEmptySub, tvStatOverdue, tvStatOverdueSub;
     private TextView filterAll, filterOccupied, filterEmpty, filterOverdue;
     private View btnAddShop;
     private ShopAdapter adapter;
@@ -87,14 +86,6 @@ public class PropertiesFragment extends Fragment {
         recyclerShops = view.findViewById(R.id.recyclerShops);
         tvEmpty = view.findViewById(R.id.tvEmpty);
         tvSubtitle = view.findViewById(R.id.tvSubtitle);
-        tvStatUnits = view.findViewById(R.id.tvStatUnits);
-        tvStatUnitsSub = view.findViewById(R.id.tvStatUnitsSub);
-        tvStatOccupied = view.findViewById(R.id.tvStatOccupied);
-        tvStatOccupiedSub = view.findViewById(R.id.tvStatOccupiedSub);
-        tvStatEmpty = view.findViewById(R.id.tvStatEmpty);
-        tvStatEmptySub = view.findViewById(R.id.tvStatEmptySub);
-        tvStatOverdue = view.findViewById(R.id.tvStatOverdue);
-        tvStatOverdueSub = view.findViewById(R.id.tvStatOverdueSub);
         filterAll = view.findViewById(R.id.filterAll);
         filterOccupied = view.findViewById(R.id.filterOccupied);
         filterEmpty = view.findViewById(R.id.filterEmpty);
@@ -260,20 +251,6 @@ public class PropertiesFragment extends Fragment {
         return shopId;
     }
 
-    /** "A1 · A2 · A3 · +2 more" - a sensible compact representation that never assumes a fixed
-     * shop count. Caps at 3 names so a large portfolio doesn't overflow the card. */
-    private String compactShopList(List<Shop> shops) {
-        StringBuilder sb = new StringBuilder();
-        int shown = Math.min(shops.size(), 3);
-        for (int i = 0; i < shown; i++) {
-            if (i > 0) sb.append(" · ");
-            Shop shop = shops.get(i);
-            sb.append(shop.getName() != null && !shop.getName().isEmpty() ? shop.getName() : shop.getShopId());
-        }
-        int remaining = shops.size() - shown;
-        if (remaining > 0) sb.append(" ").append(getString(R.string.shops_stat_list_more_format, remaining));
-        return sb.toString();
-    }
 
     private void setFilter(Filter newFilter) {
         filter = newFilter;
@@ -303,8 +280,6 @@ public class PropertiesFragment extends Fragment {
         long now = System.currentTimeMillis();
         int units = allShops.size();
         int occupied = 0;
-        List<Shop> emptyShops = new ArrayList<>();
-        List<Shop> overdueShops = new ArrayList<>();
         List<ShopAdapter.Row> allRows = new ArrayList<>();
         for (Shop shop : allShops) {
             if (shop == null) continue;
@@ -312,26 +287,11 @@ public class PropertiesFragment extends Fragment {
             boolean isOccupied = shop.isOccupied() && tenant != null;
             if (isOccupied) {
                 occupied++;
-                if (DateCalculator.isOverdue(tenant.getDueDate(), now)) overdueShops.add(shop);
-            } else {
-                emptyShops.add(shop);
             }
             allRows.add(new ShopAdapter.Row(shop, tenant));
         }
-        int empty = units - occupied;
-        int overdueCount = overdueShops.size();
 
         tvSubtitle.setText(getString(R.string.shops_subtitle_format, units));
-        tvStatUnits.setText(String.valueOf(units));
-        tvStatUnitsSub.setText("");
-        tvStatOccupied.setText(String.valueOf(occupied));
-        tvStatOccupiedSub.setText(units > 0
-                ? Math.round(occupied * 100f / units) + "%"
-                : "");
-        tvStatEmpty.setText(String.valueOf(empty));
-        tvStatEmptySub.setText(compactShopList(emptyShops));
-        tvStatOverdue.setText(String.valueOf(overdueCount));
-        tvStatOverdueSub.setText(compactShopList(overdueShops));
 
         List<ShopAdapter.Row> filtered = new ArrayList<>();
         for (ShopAdapter.Row row : allRows) {

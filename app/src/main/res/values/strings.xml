@@ -16,7 +16,7 @@
     <string name="login_error_identifier_required">Enter your username, email or phone.</string>
     <string name="login_error_password_required">Enter your password.</string>
 
-    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_dashboard">Home</string>
     <string name="nav_properties">Shops</string>
     <string name="nav_tenants">Tenants</string>
     <string name="nav_reports">Reports</string>
@@ -291,4 +291,9 @@
     <string name="users_delete_confirm_message">%1$s will be deleted permanently and can no longer sign in.</string>
     <string name="users_delete_success">%1$s deleted</string>
     <string name="notif_admin_summary_upcoming_format">%1$d overdue · %2$d due within 30 days.</string>
+    <string name="reports_overdue_amount">Overdue amount</string>
+    <string name="reports_next_due">Due within 30 days</string>
+    <string name="reports_this_month">Collected this month</string>
+    <string name="tenants_not_paid_yet">Has not paid yet — set the next payment date instead</string>
+    <string name="tenants_next_payment_date_label">Next payment date</string>
 </resources>

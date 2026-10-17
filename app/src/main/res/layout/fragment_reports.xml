@@ -51,6 +51,10 @@
             <include layout="@layout/row_label_value" android:id="@+id/rowActiveTenants" />
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
             <include layout="@layout/row_label_value" android:id="@+id/rowOverdueTenants" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowOverdueAmount" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
+            <include layout="@layout/row_label_value" android:id="@+id/rowNextDue" />
         </LinearLayout>
 
         <TextView
@@ -68,6 +72,8 @@
             android:background="@drawable/bg_card"
             android:padding="@dimen/space_4">
 
+            <include layout="@layout/row_label_value" android:id="@+id/rowThisMonth" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
             <include layout="@layout/row_label_value" android:id="@+id/rowTotalRecords" />
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/md_divider" android:layout_marginTop="@dimen/space_2" android:layout_marginBottom="@dimen/space_2" />
             <include layout="@layout/row_label_value" android:id="@+id/rowTotalAmount" />
