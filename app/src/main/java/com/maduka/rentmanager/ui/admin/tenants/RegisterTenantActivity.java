@@ -49,6 +49,9 @@ public class RegisterTenantActivity extends AppCompatActivity {
     public static final String EXTRA_ROLE = "extra_role";
     /** Optional: preselects this (vacant) shop in the picker, e.g. when launched from a shop card. */
     public static final String EXTRA_SHOP_ID = "extra_shop_id";
+    /** Optional: start in "has not paid yet - set the next payment date" mode, for tenants who
+     * already exist and are simply being entered into the system. */
+    public static final String EXTRA_SCHEDULE_ONLY = "extra_schedule_only";
 
     private final ShopRepository shopRepository = new ShopRepository();
     private final TenantRepository tenantRepository = new TenantRepository();
@@ -152,6 +155,9 @@ public class RegisterTenantActivity extends AppCompatActivity {
         });
 
         btnRegister.setOnClickListener(v -> submit());
+        if (getIntent().getBooleanExtra(EXTRA_SCHEDULE_ONLY, false)) {
+            cbNotPaidYet.setChecked(true);
+        }
     }
 
     /** "Not paid yet" mode: an existing tenant who simply pays next on a given date. Hides the

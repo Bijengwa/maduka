@@ -15,6 +15,30 @@
         <item name="android:fontFamily">@font/inter</item>
         <item name="fontFamily">@font/inter</item>
         <item name="alertDialogTheme">@style/Theme.Maduka.Dialog</item>
+        <item name="android:datePickerDialogTheme">@style/Theme.Maduka.DatePicker</item>
+    </style>
+
+    <!-- Calendar dialog: dark surface with the purple accent instead of the stock grey header. -->
+    <style name="Theme.Maduka.DatePicker" parent="android:Theme.Material.Dialog.Alert">
+        <item name="android:colorAccent">@color/md_accent_600</item>
+        <item name="android:colorControlActivated">@color/md_accent_600</item>
+        <item name="android:colorBackground">@color/md_surface</item>
+        <item name="android:windowBackground">@drawable/bg_dialog</item>
+        <item name="android:textColorPrimary">@color/md_text</item>
+        <item name="android:textColorSecondary">@color/md_neutral_400</item>
+        <item name="android:textColorPrimaryInverse">@color/md_text</item>
+        <item name="android:datePickerStyle">@style/Widget.Maduka.DatePicker</item>
+        <item name="android:buttonBarButtonStyle">@style/Widget.Maduka.DialogButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Widget.Maduka.DialogButton</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/Widget.Maduka.DialogButton</item>
+    </style>
+
+    <style name="Widget.Maduka.DialogButton" parent="android:Widget.Material.Button.Borderless.Colored">
+        <item name="android:textColor">@color/md_accent_300</item>
+    </style>
+
+    <style name="Widget.Maduka.DatePicker" parent="android:Widget.Material.DatePicker">
+        <item name="android:headerBackground">@color/md_accent_700</item>
     </style>
 
     <!-- Dark, rounded dialogs that match the cards instead of the stock grey Material dialog. -->

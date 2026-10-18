@@ -233,6 +233,15 @@ public class PropertiesFragment extends Fragment {
                     intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_SHOP_ID, shop.getShopId());
                     startActivity(intent);
                 })
+                .add(R.drawable.ic_schedule, R.string.shops_action_add_existing_tenant,
+                        getString(R.string.shops_action_add_existing_tenant_hint), () -> {
+                    Intent intent = new Intent(getContext(),
+                            com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.class);
+                    intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_ROLE, role.name());
+                    intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_SHOP_ID, shop.getShopId());
+                    intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_SCHEDULE_ONLY, true);
+                    startActivity(intent);
+                })
                 .danger(R.drawable.ic_ph_trash, R.string.shops_delete_action, () -> confirmDeleteShop(shop, shopName))
                 .show();
     }

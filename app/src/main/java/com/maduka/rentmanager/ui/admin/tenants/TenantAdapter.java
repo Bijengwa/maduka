@@ -159,8 +159,10 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
             } else {
                 int days = DateCalculator.daysBetween(now, tenant.getDueDate());
                 tvDaysRemaining.setText(overdue
-                        ? itemView.getContext().getString(R.string.label_days_overdue_format, Math.abs(days))
-                        : itemView.getContext().getString(R.string.label_days_left_format, days));
+                        ? itemView.getContext().getString(R.string.card_days_overdue_short, Math.abs(days))
+                        : itemView.getContext().getString(R.string.card_days_left_short, days));
+                tvDaysRemaining.setTextColor(androidx.core.content.ContextCompat.getColor(itemView.getContext(),
+                        StatusPresentation.fgColorRes(tone)));
             }
 
             boolean showPresence = overdue && presence == PresenceStatus.YUPO && showPresenceActions;

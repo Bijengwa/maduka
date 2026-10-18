@@ -104,12 +104,12 @@
     <string name="shops_presence_yupo_success">Marked as still here</string>
     <string name="shops_stat_list_more_format">+%1$d more</string>
 
-    <string name="tenants_subtitle_format">%1$d tenants · %2$d overdue</string>
+    <string name="tenants_subtitle_format">%1$d tenant(s) · %2$d overdue</string>
     <string name="tenants_readonly_note">Only the Super Admin can register new tenants.</string>
-    <string name="tenants_end_tenancy_action">Tenant Ameondoka</string>
-    <string name="tenants_end_tenancy_confirm_title">Mark tenant as left?</string>
+    <string name="tenants_end_tenancy_action">Tenant Ataondoka</string>
+    <string name="tenants_end_tenancy_confirm_title">Mark tenant as leaving?</string>
     <string name="tenants_end_tenancy_confirm_message">%1$s will be removed from %2$s and the shop will become vacant. Their payment history is kept.</string>
-    <string name="tenants_end_tenancy_success">%1$s marked as left · %2$s is now vacant</string>
+    <string name="tenants_end_tenancy_success">%1$s is leaving · %2$s is now vacant</string>
 
     <string name="tenant_dashboard_view_history">View payment history</string>
     <string name="tenant_dashboard_view_details">View shop details</string>
@@ -307,4 +307,6 @@ Rent runs out: %2$s</string>
     <string name="tenant_sheet_subtitle_format">%1$s · rent ends %2$s</string>
     <string name="card_days_left_short">%1$d days</string>
     <string name="card_days_overdue_short">%1$d days late</string>
+    <string name="shops_action_add_existing_tenant">Add tenant · set payment date</string>
+    <string name="shops_action_add_existing_tenant_hint">For a tenant who already rents here</string>
 </resources>
