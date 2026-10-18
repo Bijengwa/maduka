@@ -290,9 +290,9 @@
     <string name="users_delete_confirm_title">Delete admin?</string>
     <string name="users_delete_confirm_message">%1$s will be deleted permanently and can no longer sign in.</string>
     <string name="users_delete_success">%1$s deleted</string>
-    <string name="notif_admin_summary_upcoming_format">%1$d overdue · %2$d due within 30 days.</string>
+    <string name="notif_admin_summary_upcoming_format">%1$d overdue · %2$d due within a month.</string>
     <string name="reports_overdue_amount">Overdue amount</string>
-    <string name="reports_next_due">Due within 30 days</string>
+    <string name="reports_next_due">Due within a month</string>
     <string name="reports_this_month">Collected this month</string>
     <string name="tenants_not_paid_yet">Existing tenant — enter last payment and when rent ends</string>
     <string name="tenants_next_payment_date_label">Next payment date</string>
@@ -327,4 +327,6 @@ Rent runs out: %2$s</string>
     <string name="tenants_leaving_on">%1$s will move out (ataondoka)</string>
     <string name="tenants_leaving_off">%1$s is staying (atabaki)</string>
     <string name="status_leaving">Ataondoka</string>
+    <string name="dashboard_next_due_more_format">+%1$d more due</string>
+    <string name="dashboard_no_payment_yet">no payment recorded</string>
 </resources>

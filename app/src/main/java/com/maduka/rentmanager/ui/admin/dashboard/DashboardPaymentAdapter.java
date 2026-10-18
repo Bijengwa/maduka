@@ -30,9 +30,18 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
         final String shopName;
         final DateCalculator.DueBucket bucket;
         final long tenantDueDate;
+        /** Monthly rent, shown for rows with no payment record yet. */
+        final long monthlyRent;
 
         public Row(PaymentRecord payment, String tenantName, String shopName, DateCalculator.DueBucket bucket,
                    long tenantDueDate) {
+            this(payment, tenantName, shopName, bucket, tenantDueDate, 0);
+        }
+
+        /** payment == null: a tenant who has no payment recorded yet. */
+        public Row(PaymentRecord payment, String tenantName, String shopName, DateCalculator.DueBucket bucket,
+                   long tenantDueDate, long monthlyRent) {
+            this.monthlyRent = monthlyRent;
             this.payment = payment;
             this.tenantName = tenantName;
             this.shopName = shopName;
@@ -68,6 +77,30 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        private void bindNoPayment(Row row) {
+            android.content.Context ctx = itemView.getContext();
+            tvDate.setText(DateCalculator.formatDdMm(row.tenantDueDate));
+            tvTenant.setText(row.tenantName);
+            tvAmount.setText(ctx.getString(R.string.dashboard_amount_format, MoneyFormatter.compact(row.monthlyRent)));
+            tvShopDate.setText(row.shopName + " · " + ctx.getString(R.string.dashboard_no_payment_yet));
+            StatusPresentation.Tone tone;
+            int labelRes;
+            switch (row.bucket) {
+                case OVERDUE:
+                    tone = StatusPresentation.Tone.BAD;
+                    labelRes = R.string.dashboard_filter_overdue;
+                    break;
+                case NEXT_DUE:
+                    tone = StatusPresentation.Tone.WAIT;
+                    labelRes = R.string.dashboard_filter_next_due;
+                    break;
+                default:
+                    tone = StatusPresentation.Tone.GOOD;
+                    labelRes = R.string.dashboard_filter_active;
+            }
+            StatusPill.apply(tvDueStatus, tone, labelRes);
+        }
+
         private final TextView tvDate, tvTenant, tvAmount, tvShopDate, tvDueStatus;
 
         ViewHolder(@NonNull View itemView) {
@@ -80,6 +113,10 @@ public class DashboardPaymentAdapter extends RecyclerView.Adapter<DashboardPayme
         }
 
         void bind(Row row) {
+            if (row.payment == null) {
+                bindNoPayment(row);
+                return;
+            }
             tvDate.setText(DateCalculator.formatDdMm(row.payment.getPaymentDate()));
             tvTenant.setText(row.tenantName);
             tvAmount.setText(itemView.getContext().getString(R.string.dashboard_amount_format,

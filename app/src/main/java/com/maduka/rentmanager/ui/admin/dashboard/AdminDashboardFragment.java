@@ -314,9 +314,15 @@ public class AdminDashboardFragment extends Fragment {
         String shopName = shopNameFor(next.getShopId());
         tvUpcomingPrimary.setText(getString(R.string.dashboard_next_due_format, next.getName(), shopName));
         String notSet = getString(R.string.label_date_not_set);
-        tvUpcomingSecondary.setText(getString(R.string.dashboard_next_due_detail_format,
+        String detail = getString(R.string.dashboard_next_due_detail_format,
                 DateCalculator.formatDdMmYyyy(next.getDueDate()),
-                MoneyFormatter.compact(next.getMonthlyRent())));
+                MoneyFormatter.compact(next.getMonthlyRent()));
+        // More than one tenant approaching their deadline: show the nearest, say how many
+        // others follow; tapping the card opens the full Next Due list.
+        if (upcoming.size() > 1) {
+            detail = detail + " · " + getString(R.string.dashboard_next_due_more_format, upcoming.size() - 1);
+        }
+        tvUpcomingSecondary.setText(detail);
         int days = DateCalculator.daysBetween(now, next.getDueDate());
         tvUpcomingDays.setText(getString(R.string.dashboard_next_due_days_format, days));
         tvUpcomingDays.setVisibility(View.VISIBLE);
@@ -339,6 +345,25 @@ public class AdminDashboardFragment extends Fragment {
             rows.add(new DashboardPaymentAdapter.Row(p, tenant.getName(), shopNameFor(tenant.getShopId()), bucket,
                     tenant.getDueDate()));
         }
+        // A tenant with no payment recorded yet (e.g. entered with only a rent end date) must
+        // still be visible here, in the same filters, so nobody who rents a shop is missing.
+        java.util.Set<String> withPayment = new java.util.HashSet<>();
+        for (PaymentRecord p : allPayments) {
+            if (p != null && p.getTenantUid() != null) withPayment.add(p.getTenantUid());
+        }
+        List<Tenant> unpaid = new ArrayList<>();
+        for (Tenant t : activeTenantsByUid.values()) {
+            if (!withPayment.contains(t.getUid())) unpaid.add(t);
+        }
+        unpaid.sort((a, b) -> Long.compare(a.getDueDate(), b.getDueDate()));
+        List<DashboardPaymentAdapter.Row> noPaymentRows = new ArrayList<>();
+        for (Tenant t : unpaid) {
+            DateCalculator.DueBucket bucket = DateCalculator.classifyDueDate(t.getDueDate(), now);
+            if (!matchesFilter(bucket)) continue;
+            noPaymentRows.add(new DashboardPaymentAdapter.Row(null, t.getName(), shopNameFor(t.getShopId()), bucket,
+                    t.getDueDate(), t.getMonthlyRent()));
+        }
+        rows.addAll(0, noPaymentRows);
         paymentAdapter.submitList(rows);
 
         boolean empty = rows.isEmpty();

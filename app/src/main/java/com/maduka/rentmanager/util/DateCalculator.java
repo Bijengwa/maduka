@@ -16,7 +16,6 @@ public final class DateCalculator {
      * {@link #hasValidDueDate}. */
     public enum DueBucket { OVERDUE, NEXT_DUE, ACTIVE, UNKNOWN }
 
-    private static final int NEXT_DUE_WINDOW_DAYS = 30;
 
     public static long addMonths(long epochMillis, int months) {
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -74,14 +73,14 @@ public final class DateCalculator {
     }
 
     /** Calendar-correct classification for the dashboard's payment filters: OVERDUE (dueDate
-     * before today), NEXT_DUE (today through today+30 calendar days inclusive), ACTIVE (further
+     * before today), NEXT_DUE (today through the same date next calendar month, inclusive - so rent due "next month" counts), ACTIVE (further
      * out), or UNKNOWN when there is no usable dueDate at all. */
     public static DueBucket classifyDueDate(long dueDateMillis, long nowMillis) {
         if (!hasValidDueDate(dueDateMillis)) return DueBucket.UNKNOWN;
         long today = startOfDay(nowMillis);
         long due = startOfDay(dueDateMillis);
         if (due < today) return DueBucket.OVERDUE;
-        if (due <= addDays(today, NEXT_DUE_WINDOW_DAYS)) return DueBucket.NEXT_DUE;
+        if (due <= startOfDay(addMonths(today, 1))) return DueBucket.NEXT_DUE;
         return DueBucket.ACTIVE;
     }
 

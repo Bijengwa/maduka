@@ -290,9 +290,9 @@
     <string name="users_delete_confirm_title">Futa admin?</string>
     <string name="users_delete_confirm_message">%1$s atafutwa kabisa na hataweza kuingia tena.</string>
     <string name="users_delete_success">%1$s amefutwa</string>
-    <string name="notif_admin_summary_upcoming_format">Waliochelewa %1$d · wanaodaiwa ndani ya siku 30: %2$d.</string>
+    <string name="notif_admin_summary_upcoming_format">Waliochelewa %1$d · wanaodaiwa ndani ya mwezi: %2$d.</string>
     <string name="reports_overdue_amount">Kiasi kilichochelewa</string>
-    <string name="reports_next_due">Wanaodaiwa ndani ya siku 30</string>
+    <string name="reports_next_due">Wanaodaiwa ndani ya mwezi</string>
     <string name="reports_this_month">Mapato ya mwezi huu</string>
     <string name="tenants_not_paid_yet">Mpangaji aliyekuwepo — weka malipo ya mwisho na kodi inaisha lini</string>
     <string name="tenants_next_payment_date_label">Tarehe ya kulipa ijayo</string>
@@ -327,4 +327,6 @@ Kodi inaisha: %2$s</string>
     <string name="tenants_leaving_on">%1$s ataondoka</string>
     <string name="tenants_leaving_off">%1$s atabaki</string>
     <string name="status_leaving">Ataondoka</string>
+    <string name="dashboard_next_due_more_format">+%1$d wengine wanadaiwa</string>
+    <string name="dashboard_no_payment_yet">hakuna malipo yaliyowekwa</string>
 </resources>

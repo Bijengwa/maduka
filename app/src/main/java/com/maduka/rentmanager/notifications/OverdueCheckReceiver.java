@@ -68,8 +68,7 @@ public class OverdueCheckReceiver extends BroadcastReceiver {
                     if (t == null || t.getShopId() == null || t.getShopId().isEmpty()) continue;
                     if (DateCalculator.isOverdue(t.getDueDate(), now)) {
                         overdueCount++;
-                    } else if (DateCalculator.hasValidDueDate(t.getDueDate())
-                            && DateCalculator.daysBetween(now, t.getDueDate()) <= DUE_SOON_WINDOW_DAYS) {
+                    } else if (DateCalculator.classifyDueDate(t.getDueDate(), now) == DateCalculator.DueBucket.NEXT_DUE) {
                         upcomingCount++;
                     }
                 }

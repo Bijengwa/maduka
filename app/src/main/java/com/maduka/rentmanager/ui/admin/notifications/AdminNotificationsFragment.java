@@ -104,7 +104,7 @@ public class AdminNotificationsFragment extends Fragment {
                         getString(R.string.notif_admin_due_today_title_format, tenant.getName()),
                         getString(R.string.notif_admin_due_today_message_format, rent),
                         date, StatusPresentation.Tone.WAIT, tenant.getDueDate()));
-            } else if (days <= DUE_SOON_WINDOW_DAYS) {
+            } else if (DateCalculator.classifyDueDate(tenant.getDueDate(), now) == DateCalculator.DueBucket.NEXT_DUE) {
                 items.add(new NotifItem(NotifItem.Category.DUE_SOON,
                         getString(R.string.notif_admin_due_soon_title_format, tenant.getName(), days),
                         getString(R.string.notif_admin_due_soon_message_format, rent, date),
