@@ -296,4 +296,7 @@
     <string name="reports_this_month">Collected this month</string>
     <string name="tenants_not_paid_yet">Has not paid yet — set the next payment date instead</string>
     <string name="tenants_next_payment_date_label">Next payment date</string>
+    <string name="shops_vacant_actions_message">This shop is vacant.</string>
+    <string name="shops_action_add_tenant">Add tenant</string>
+    <string name="action_close">Close</string>
 </resources>

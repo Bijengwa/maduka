@@ -47,6 +47,8 @@ import java.util.Locale;
  * restriction lives in the code path itself, not just a hidden button. */
 public class RegisterTenantActivity extends AppCompatActivity {
     public static final String EXTRA_ROLE = "extra_role";
+    /** Optional: preselects this (vacant) shop in the picker, e.g. when launched from a shop card. */
+    public static final String EXTRA_SHOP_ID = "extra_shop_id";
 
     private final ShopRepository shopRepository = new ShopRepository();
     private final TenantRepository tenantRepository = new TenantRepository();
@@ -180,6 +182,15 @@ public class RegisterTenantActivity extends AppCompatActivity {
                     android.R.layout.simple_spinner_item, names);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerShop.setAdapter(spinnerAdapter);
+            String preselect = getIntent().getStringExtra(EXTRA_SHOP_ID);
+            if (preselect != null) {
+                for (int i = 0; i < vacantShops.size(); i++) {
+                    if (preselect.equals(vacantShops.get(i).getShopId())) {
+                        spinnerShop.setSelection(i);
+                        break;
+                    }
+                }
+            }
             updateComputedAmount();
         }
     }

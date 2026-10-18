@@ -296,4 +296,7 @@
     <string name="reports_this_month">Mapato ya mwezi huu</string>
     <string name="tenants_not_paid_yet">Hajalipa bado — weka tarehe ya kulipa ijayo</string>
     <string name="tenants_next_payment_date_label">Tarehe ya kulipa ijayo</string>
+    <string name="shops_vacant_actions_message">Duka hili ni wazi.</string>
+    <string name="shops_action_add_tenant">Ongeza mpangaji</string>
+    <string name="action_close">Funga</string>
 </resources>

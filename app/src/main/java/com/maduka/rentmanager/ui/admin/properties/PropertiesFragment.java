@@ -119,25 +119,19 @@ public class PropertiesFragment extends Fragment {
                     MadukaToast.show(requireActivity(), getString(R.string.shops_delete_occupied), MadukaToast.Kind.INFO);
                     return;
                 }
+                // Vacant shop: Add tenant / Delete / Close. Delete still asks for confirmation.
                 new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.shops_delete_confirm_title)
-                        .setMessage(getString(R.string.shops_delete_confirm_message, shopName))
-                        .setNegativeButton(R.string.action_cancel, null)
-                        .setPositiveButton(R.string.action_delete, (d, w) ->
-                                shopRepository.deleteShop(shop, new com.maduka.rentmanager.data.FirebaseManager.Callback<Void>() {
-                                    @Override
-                                    public void onSuccess(Void result) {
-                                        if (!isAdded()) return;
-                                        MadukaToast.show(requireActivity(),
-                                                getString(R.string.shops_delete_success, shopName), MadukaToast.Kind.OK);
-                                    }
-
-                                    @Override
-                                    public void onError(String message) {
-                                        if (!isAdded()) return;
-                                        MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
-                                    }
-                                }))
+                        .setTitle(shopName)
+                        .setMessage(R.string.shops_vacant_actions_message)
+                        .setPositiveButton(R.string.shops_action_add_tenant, (d, w) -> {
+                            Intent intent = new Intent(getContext(),
+                                    com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.class);
+                            intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_ROLE, role.name());
+                            intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_SHOP_ID, shop.getShopId());
+                            startActivity(intent);
+                        })
+                        .setNegativeButton(R.string.action_delete, (d, w) -> confirmDeleteShop(shop, shopName))
+                        .setNeutralButton(R.string.action_close, null)
                         .show();
             });
         }
@@ -235,6 +229,29 @@ public class PropertiesFragment extends Fragment {
             tenantsRegistration = null;
         }
         super.onDestroyView();
+    }
+
+    private void confirmDeleteShop(Shop shop, String shopName) {
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(R.string.shops_delete_confirm_title)
+                .setMessage(getString(R.string.shops_delete_confirm_message, shopName))
+                .setNegativeButton(R.string.action_cancel, null)
+                .setPositiveButton(R.string.action_delete, (d, w) ->
+                        shopRepository.deleteShop(shop, new FirebaseManager.Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                if (!isAdded()) return;
+                                MadukaToast.show(requireActivity(),
+                                        getString(R.string.shops_delete_success, shopName), MadukaToast.Kind.OK);
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                if (!isAdded()) return;
+                                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
+                            }
+                        }))
+                .show();
     }
 
     private boolean canTouchViews() {
