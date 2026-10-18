@@ -18,6 +18,21 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Two completely separate Firebase backends. "prod" keeps the original application id and the
+    // original project (rent-manager-116d8, owner datiuslink@gmail.com); "dev" installs side by
+    // side as "Maduka Dev" and reads app/src/dev/google-services.json from its own project.
+    flavorDimensions += "env"
+    productFlavors {
+        create("prod") {
+            dimension = "env"
+        }
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+    }
+
     buildTypes {
         release {
             optimization { enable = false }
