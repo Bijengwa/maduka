@@ -93,6 +93,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         private final View accentBar;
         private final TextView tvShopId;
         private final TextView tvRent;
+        private final TextView tvRentSuffix;
         private final TextView tvStatus;
         private final TextView tvTenantLine;
         private final View rowPaymentInfo;
@@ -108,6 +109,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             accentBar = itemView.findViewById(R.id.accentBar);
             tvShopId = itemView.findViewById(R.id.tvShopId);
             tvRent = itemView.findViewById(R.id.tvRent);
+            tvRentSuffix = itemView.findViewById(R.id.tvRentSuffix);
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvTenantLine = itemView.findViewById(R.id.tvTenantLine);
             rowPaymentInfo = itemView.findViewById(R.id.rowPaymentInfo);
@@ -129,7 +131,14 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             tvShopId.setText(name);
 
             if (!shop.isOccupied() || tenant == null) {
-                tvRent.setText(R.string.label_rent_not_set);
+                // A vacant shop still has the monthly rent it was created with.
+                boolean hasRent = shop.getMonthlyRent() > 0;
+                if (hasRent) {
+                    tvRent.setText(String.format(Locale.US, "TSh %,d", shop.getMonthlyRent()));
+                } else {
+                    tvRent.setText(R.string.label_rent_not_set);
+                }
+                tvRentSuffix.setVisibility(hasRent ? View.VISIBLE : View.GONE);
                 tvTenantLine.setText(R.string.label_no_tenant);
                 rowPaymentInfo.setVisibility(View.GONE);
                 rowPresenceCheck.setVisibility(View.GONE);
@@ -138,6 +147,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
                 return;
             }
 
+            tvRentSuffix.setVisibility(View.VISIBLE);
             tvRent.setText(String.format(Locale.US, "TSh %,d", tenant.getMonthlyRent()));
             String phone = tenant.getPhone() != null ? tenant.getPhone() : "";
             String tenantName = tenant.getName() != null ? tenant.getName() : "";
