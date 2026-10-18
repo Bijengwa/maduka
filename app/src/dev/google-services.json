@@ -1,0 +1,21 @@
+{
+  "_comment": "PLACEHOLDER - NOT a real Firebase project. It only lets the dev variant compile. Replace this whole file with the google-services.json downloaded from your maduka-dev Firebase project (package com.maduka.rentmanager.dev). Until then the dev app cannot sign in, and it can never touch production data.",
+  "project_info": {
+    "project_number": "000000000000",
+    "firebase_url": "https://maduka-dev-placeholder-default-rtdb.firebaseio.com",
+    "project_id": "maduka-dev-placeholder",
+    "storage_bucket": "maduka-dev-placeholder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+        "android_client_info": { "package_name": "com.maduka.rentmanager.dev" }
+      },
+      "oauth_client": [],
+      "api_key": [ { "current_key": "AIzaSyPLACEHOLDER000000000000000000000" } ],
+      "services": { "appinvite_service": { "other_platform_oauth_client": [] } }
+    }
+  ],
+  "configuration_version": "1"
+}

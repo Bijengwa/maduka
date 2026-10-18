@@ -113,10 +113,23 @@ public class PropertiesFragment extends Fragment {
         // pattern as Add Shop above: Admin never gets the listener wired at all.
         adapter.setShowPresenceActions(role == UserRole.SUPER_ADMIN);
         if (role == UserRole.SUPER_ADMIN) {
-            adapter.setOnShopClickListener(shop -> {
+            adapter.setOnShopClickListener(row -> {
+                Shop shop = row.shop;
                 String shopName = shop.getName() != null ? shop.getName() : shop.getShopId();
-                if (shop.isOccupied()) {
-                    MadukaToast.show(requireActivity(), getString(R.string.shops_delete_occupied), MadukaToast.Kind.INFO);
+                if (shop.isOccupied() && row.tenant != null) {
+                    // Occupied shop: set when this tenant's rent runs out, or close. Deleting
+                    // is not offered until the tenant is removed / marked as left.
+                    String dueText = DateCalculator.formatDueDateOrUnknown(row.tenant.getDueDate(),
+                            getString(R.string.label_date_not_set));
+                    new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                            .setTitle(shopName)
+                            .setMessage(getString(R.string.shops_occupied_actions_message,
+                                    row.tenant.getName(), dueText))
+                            .setPositiveButton(R.string.tenants_set_due_date_action, (d, w) ->
+                                    com.maduka.rentmanager.ui.admin.tenants.DueDatePicker.show(
+                                            requireActivity(), tenantRepository, row.tenant))
+                            .setNeutralButton(R.string.action_close, null)
+                            .show();
                     return;
                 }
                 // Vacant shop: Add tenant / Delete / Close. Delete still asks for confirmation.

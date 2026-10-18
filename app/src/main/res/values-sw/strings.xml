@@ -299,4 +299,6 @@
     <string name="shops_vacant_actions_message">Duka hili ni wazi.</string>
     <string name="shops_action_add_tenant">Ongeza mpangaji</string>
     <string name="action_close">Funga</string>
+    <string name="shops_occupied_actions_message">Mpangaji: %1$s
+Kodi inaisha: %2$s</string>
 </resources>

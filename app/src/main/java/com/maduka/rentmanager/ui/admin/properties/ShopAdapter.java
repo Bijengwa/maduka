@@ -35,7 +35,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     }
 
     /** Tap on a shop card - wired for Super Admin only (delete shop). */
-    public interface OnShopClickListener { void onShopClick(Shop shop); }
+    public interface OnShopClickListener { void onShopClick(Row row); }
 
     private OnShopClickListener clickListener;
 
@@ -82,7 +82,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         Row row = rows.get(position);
         holder.bind(row, showPresenceActions, presenceListener);
         boolean tappable = clickListener != null && row.shop != null;
-        holder.itemView.setOnClickListener(tappable ? v -> clickListener.onShopClick(row.shop) : null);
+        holder.itemView.setOnClickListener(tappable ? v -> clickListener.onShopClick(row) : null);
         holder.itemView.setClickable(tappable);
     }
 

@@ -225,32 +225,7 @@ public class TenantsFragment extends Fragment {
     }
 
     private void pickDueDate(Tenant tenant) {
-        long now = System.currentTimeMillis();
-        long initial = DateCalculator.hasValidDueDate(tenant.getDueDate())
-                ? tenant.getDueDate() : DateCalculator.addMonths(now, 1);
-        java.util.Calendar c = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
-        c.setTimeInMillis(initial);
-        new android.app.DatePickerDialog(requireContext(), (picker, year, month, day) -> {
-            // Stored as midnight UTC, the convention DateCalculator formats and compares with.
-            java.util.Calendar picked = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
-            picked.clear();
-            picked.set(year, month, day, 0, 0, 0);
-            long dueDate = picked.getTimeInMillis();
-            tenantRepository.setDueDate(tenant.getUid(), dueDate, new FirebaseManager.Callback<Void>() {
-                @Override
-                public void onSuccess(Void result) {
-                    if (!canTouchViews()) return;
-                    MadukaToast.show(requireActivity(), getString(R.string.tenants_set_due_date_success,
-                            tenant.getName(), DateCalculator.formatDdMmYyyy(dueDate)), MadukaToast.Kind.OK);
-                }
-
-                @Override
-                public void onError(String message) {
-                    if (!canTouchViews()) return;
-                    MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
-                }
-            });
-        }, c.get(java.util.Calendar.YEAR), c.get(java.util.Calendar.MONTH), c.get(java.util.Calendar.DAY_OF_MONTH)).show();
+        DueDatePicker.show(requireActivity(), tenantRepository, tenant);
     }
 
     private void confirmDelete(Tenant tenant) {

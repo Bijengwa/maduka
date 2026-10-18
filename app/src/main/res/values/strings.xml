@@ -299,4 +299,6 @@
     <string name="shops_vacant_actions_message">This shop is vacant.</string>
     <string name="shops_action_add_tenant">Add tenant</string>
     <string name="action_close">Close</string>
+    <string name="shops_occupied_actions_message">Tenant: %1$s
+Rent runs out: %2$s</string>
 </resources>
