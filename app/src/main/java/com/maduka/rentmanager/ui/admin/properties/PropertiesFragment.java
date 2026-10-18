@@ -242,7 +242,7 @@ public class PropertiesFragment extends Fragment {
         String dueText = DateCalculator.formatDueDateOrUnknown(tenant.getDueDate(),
                 getString(R.string.label_date_not_set));
         new com.maduka.rentmanager.ui.common.ActionSheet(requireContext(), shopName,
-                getString(R.string.shops_occupied_actions_message, tenant.getName(), dueText))
+                getString(R.string.tenant_sheet_subtitle_format, tenant.getName(), dueText))
                 .add(R.drawable.ic_schedule, R.string.tenants_set_due_date_action, () ->
                         com.maduka.rentmanager.ui.admin.tenants.DueDatePicker.show(
                                 requireActivity(), tenantRepository, tenant))

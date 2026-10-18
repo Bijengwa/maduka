@@ -305,4 +305,6 @@ Kodi inaisha: %2$s</string>
     <string name="shops_vacant_subtitle_format">Wazi · %1$s kwa mwezi</string>
     <string name="shops_delete_action">Futa duka</string>
     <string name="tenant_sheet_subtitle_format">%1$s · kodi inaisha %2$s</string>
+    <string name="card_days_left_short">siku %1$d</string>
+    <string name="card_days_overdue_short">siku %1$d zimepita</string>
 </resources>
