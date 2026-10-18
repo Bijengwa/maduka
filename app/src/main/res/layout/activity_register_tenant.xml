@@ -139,6 +139,23 @@
                 android:textAppearance="@style/TextAppearance.Maduka.Body" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilAmountPaid"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:hint="@string/tenants_amount_paid_hint"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAmountPaid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilMonthsPaid"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -203,6 +220,43 @@
                 android:layout_marginTop="@dimen/space_3"
                 android:textAppearance="@style/TextAppearance.Maduka.Body"
                 android:textColor="@color/md_neutral_400" />
+
+            <TextView
+                android:id="@+id/tvNextDateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:text="@string/tenants_next_payment_date_label"
+                android:textAppearance="@style/TextAppearance.Maduka.Caption"
+                android:visibility="gone" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilNextDate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNextDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/cbPresent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_4"
+                android:checked="true"
+                android:text="@string/tenants_present_checkbox"
+                android:textAppearance="@style/TextAppearance.Maduka.Body"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvNoVacantShops"

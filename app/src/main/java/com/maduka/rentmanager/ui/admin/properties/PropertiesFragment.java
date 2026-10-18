@@ -255,6 +255,10 @@ public class PropertiesFragment extends Fragment {
                 .add(R.drawable.ic_schedule, R.string.tenants_set_due_date_action, () ->
                         com.maduka.rentmanager.ui.admin.tenants.DueDatePicker.show(
                                 requireActivity(), tenantRepository, tenant))
+                .add(R.drawable.ic_payments, R.string.past_payment_action,
+                        getString(R.string.past_payment_action_hint), () ->
+                        com.maduka.rentmanager.ui.admin.tenants.PastPaymentDialog.show(requireActivity(),
+                                new com.maduka.rentmanager.data.PaymentRepository(), tenant))
                 .add(R.drawable.ic_sign_out, R.string.tenants_end_tenancy_action, () ->
                         com.maduka.rentmanager.ui.common.ConfirmDialog.danger(requireContext(),
                                 getString(R.string.tenants_end_tenancy_confirm_title),

@@ -170,6 +170,30 @@ public class TenantRepository {
     public void registerTenant(String name, String phone, String email, String password, Shop shop,
                                 int monthsPaid, long paymentDateMillis, String paymentPhoneNumber,
                                 String recordedByUid, FirebaseManager.Callback<Void> cb) {
+        doRegister(name, phone, email, password, shop, monthsPaid, paymentDateMillis, paymentPhoneNumber,
+                recordedByUid, 0, 0, PresenceStatus.YUPO, cb);
+    }
+
+    /** Registers a tenant who already rents the shop in real life, from what the Super Admin
+     * actually knows (e.g. an M-Pesa confirmation): the last payment (amount, date, number it
+     * was sent to - optional), the date the rent now runs out, and whether the tenant is
+     * physically there right now (Yupo/Hayupo).
+     *
+     * amountPaid > 0 records that payment (monthsPaid is how many months it covered, so the
+     * tenant gets a Start date and a payment history); amountPaid == 0 records no payment. The
+     * due date is always dueDateMillis. */
+    public void registerExistingTenant(String name, String phone, String email, String password, Shop shop,
+                                        long amountPaid, int monthsPaid, long lastPaymentDateMillis,
+                                        String paymentPhoneNumber, long dueDateMillis, PresenceStatus presence,
+                                        String recordedByUid, FirebaseManager.Callback<Void> cb) {
+        doRegister(name, phone, email, password, shop, amountPaid > 0 ? Math.max(1, monthsPaid) : 0,
+                lastPaymentDateMillis, paymentPhoneNumber, recordedByUid, amountPaid, dueDateMillis, presence, cb);
+    }
+
+    private void doRegister(String name, String phone, String email, String password, Shop shop,
+                             int monthsPaid, long paymentDateMillis, String paymentPhoneNumber,
+                             String recordedByUid, long amountOverride, long dueDateOverride,
+                             PresenceStatus presence, FirebaseManager.Callback<Void> cb) {
         FirebaseAuth secondaryAuth = SecondaryAuthProvider.get();
         secondaryAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
@@ -177,10 +201,11 @@ public class TenantRepository {
                     secondaryAuth.signOut();
 
                     long now = System.currentTimeMillis();
-                    boolean scheduleOnly = monthsPaid <= 0;
-                    long dueDate = scheduleOnly ? paymentDateMillis
-                            : DateCalculator.addMonths(paymentDateMillis, monthsPaid);
-                    long amount = monthsPaid * shop.getMonthlyRent();
+                    boolean scheduleOnly = monthsPaid <= 0 && amountOverride <= 0;
+                    long dueDate = dueDateOverride > 0 ? dueDateOverride
+                            : (scheduleOnly ? paymentDateMillis
+                                    : DateCalculator.addMonths(paymentDateMillis, monthsPaid));
+                    long amount = amountOverride > 0 ? amountOverride : monthsPaid * shop.getMonthlyRent();
 
                     Tenant tenant = new Tenant();
                     tenant.setUid(uid);
@@ -194,7 +219,7 @@ public class TenantRepository {
                     tenant.setLastPaymentDate(scheduleOnly ? 0 : paymentDateMillis);
                     tenant.setDueDate(dueDate);
                     tenant.setMonthsCovered(monthsPaid);
-                    tenant.setPresenceStatus(PresenceStatus.YUPO);
+                    tenant.setPresenceStatus(presence != null ? presence : PresenceStatus.YUPO);
                     tenant.setLastPresenceCheckAt(now);
                     tenant.setCreatedAt(now);
                     tenant.setUpdatedAt(now);

@@ -294,7 +294,7 @@
     <string name="reports_overdue_amount">Overdue amount</string>
     <string name="reports_next_due">Due within 30 days</string>
     <string name="reports_this_month">Collected this month</string>
-    <string name="tenants_not_paid_yet">Has not paid yet — set the next payment date instead</string>
+    <string name="tenants_not_paid_yet">Existing tenant — enter last payment and when rent ends</string>
     <string name="tenants_next_payment_date_label">Next payment date</string>
     <string name="shops_vacant_actions_message">This shop is vacant.</string>
     <string name="shops_action_add_tenant">Add tenant</string>
@@ -309,4 +309,17 @@ Rent runs out: %2$s</string>
     <string name="card_days_overdue_short">%1$d days late</string>
     <string name="shops_action_add_existing_tenant">Add tenant · set payment date</string>
     <string name="shops_action_add_existing_tenant_hint">For a tenant who already rents here</string>
+    <string name="tenants_amount_paid_hint">Last amount paid (TSh, optional)</string>
+    <string name="tenants_last_payment_date_label">Last payment date</string>
+    <string name="tenants_paid_to_optional_hint">Number paid to (needed if an amount is entered)</string>
+    <string name="tenants_present_checkbox">Tenant is here now (Yupo)</string>
+    <string name="tenants_existing_summary_format">%1$d month(s) covered · rent ends %2$s</string>
+    <string name="action_save">Save</string>
+    <string name="past_payment_action">Record last payment</string>
+    <string name="past_payment_action_hint">A payment already made, e.g. from M-Pesa</string>
+    <string name="past_payment_title">Record last payment</string>
+    <string name="past_payment_intro_format">%1$s · rent TSh %2$s per month. Enter the amount and date they paid; the rent end date follows from it.</string>
+    <string name="tenants_amount_paid_hint_required">Amount paid (TSh)</string>
+    <string name="past_payment_error_amount">Enter the amount that was paid.</string>
+    <string name="past_payment_success_format">%1$s: payment saved · rent ends %2$s</string>
 </resources>

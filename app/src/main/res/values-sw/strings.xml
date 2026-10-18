@@ -294,7 +294,7 @@
     <string name="reports_overdue_amount">Kiasi kilichochelewa</string>
     <string name="reports_next_due">Wanaodaiwa ndani ya siku 30</string>
     <string name="reports_this_month">Mapato ya mwezi huu</string>
-    <string name="tenants_not_paid_yet">Hajalipa bado — weka tarehe ya kulipa ijayo</string>
+    <string name="tenants_not_paid_yet">Mpangaji aliyekuwepo — weka malipo ya mwisho na kodi inaisha lini</string>
     <string name="tenants_next_payment_date_label">Tarehe ya kulipa ijayo</string>
     <string name="shops_vacant_actions_message">Duka hili ni wazi.</string>
     <string name="shops_action_add_tenant">Ongeza mpangaji</string>
@@ -309,4 +309,17 @@ Kodi inaisha: %2$s</string>
     <string name="card_days_overdue_short">siku %1$d zimepita</string>
     <string name="shops_action_add_existing_tenant">Ongeza mpangaji · weka tarehe ya kulipa</string>
     <string name="shops_action_add_existing_tenant_hint">Kwa mpangaji aliyekuwepo tayari</string>
+    <string name="tenants_amount_paid_hint">Kiasi cha mwisho kilicholipwa (TSh, si lazima)</string>
+    <string name="tenants_last_payment_date_label">Tarehe ya malipo ya mwisho</string>
+    <string name="tenants_paid_to_optional_hint">Namba iliyolipiwa (lazima ukiweka kiasi)</string>
+    <string name="tenants_present_checkbox">Mpangaji yupo sasa (Yupo)</string>
+    <string name="tenants_existing_summary_format">Miezi %1$d imelipiwa · kodi inaisha %2$s</string>
+    <string name="action_save">Hifadhi</string>
+    <string name="past_payment_action">Weka malipo ya mwisho</string>
+    <string name="past_payment_action_hint">Malipo yaliyofanyika tayari, mf. kutoka M-Pesa</string>
+    <string name="past_payment_title">Weka malipo ya mwisho</string>
+    <string name="past_payment_intro_format">%1$s · kodi TSh %2$s kwa mwezi. Weka kiasi na tarehe aliyolipa; tarehe ya kodi kuisha itakokotolewa.</string>
+    <string name="tenants_amount_paid_hint_required">Kiasi kilicholipwa (TSh)</string>
+    <string name="past_payment_error_amount">Weka kiasi kilicholipwa.</string>
+    <string name="past_payment_success_format">%1$s: malipo yamehifadhiwa · kodi inaisha %2$s</string>
 </resources>

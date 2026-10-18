@@ -132,6 +132,40 @@ public class PaymentRepository {
                 .addOnFailureListener(e -> cb.onError(e.getMessage()));
     }
 
+    /** Records a payment that was already made before the tenant was entered into the system
+     * (e.g. read from an M-Pesa confirmation) and fixes the tenant's dates to match: unlike
+     * {@link #recordPayment}, it does NOT extend the current due date - dueDateMillis is set
+     * exactly (normally paymentDate + the months the amount covers), and lastPaymentDate becomes
+     * the payment date so the tenant has a real Start date and payment history. */
+    public void recordPastPayment(Tenant tenant, long amount, int monthsCovered, long paymentDateMillis,
+                                   String paymentPhoneNumber, long dueDateMillis, String recordedByUid,
+                                   FirebaseManager.Callback<Void> cb) {
+        long now = System.currentTimeMillis();
+        DatabaseReference paymentRef = fb.root().child(FirebaseSchema.PAYMENTS).push();
+        PaymentRecord payment = new PaymentRecord();
+        payment.setPaymentId(paymentRef.getKey());
+        payment.setTenantUid(tenant.getUid());
+        payment.setShopId(tenant.getShopId());
+        payment.setAmount(amount);
+        payment.setMonthsCovered(monthsCovered);
+        payment.setPaymentDate(paymentDateMillis);
+        payment.setPaymentPhoneNumber(paymentPhoneNumber);
+        payment.setRecordedByUid(recordedByUid);
+        payment.setCreatedAt(now);
+        payment.setUpdatedAt(now);
+
+        Map<String, Object> writes = new HashMap<>();
+        writes.put("/" + FirebaseSchema.PAYMENTS + "/" + paymentRef.getKey(), payment);
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid() + "/lastPaymentDate", paymentDateMillis);
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid() + "/dueDate", dueDateMillis);
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid() + "/monthsCovered", monthsCovered);
+        writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid() + "/updatedAt", now);
+
+        fb.root().updateChildren(writes)
+                .addOnSuccessListener(v -> cb.onSuccess(null))
+                .addOnFailureListener(e -> cb.onError(e.getMessage()));
+    }
+
     private PaymentRecord readPayment(DataSnapshot child) {
         PaymentRecord p;
         try {

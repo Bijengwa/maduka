@@ -218,6 +218,9 @@ public class TenantsFragment extends Fragment {
         new com.maduka.rentmanager.ui.common.ActionSheet(requireContext(), tenant.getName(),
                 getString(R.string.tenant_sheet_subtitle_format, shopName, dueText))
                 .add(R.drawable.ic_schedule, R.string.tenants_set_due_date_action, () -> pickDueDate(tenant))
+                .add(R.drawable.ic_payments, R.string.past_payment_action,
+                        getString(R.string.past_payment_action_hint), () ->
+                        PastPaymentDialog.show(requireActivity(), new com.maduka.rentmanager.data.PaymentRepository(), tenant))
                 .add(R.drawable.ic_sign_out, R.string.tenants_end_tenancy_action, () ->
                         com.maduka.rentmanager.ui.common.ConfirmDialog.danger(requireContext(),
                                 getString(R.string.tenants_end_tenancy_confirm_title),
