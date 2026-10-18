@@ -117,35 +117,10 @@ public class PropertiesFragment extends Fragment {
                 Shop shop = row.shop;
                 String shopName = shop.getName() != null ? shop.getName() : shop.getShopId();
                 if (shop.isOccupied() && row.tenant != null) {
-                    // Occupied shop: set when this tenant's rent runs out, or close. Deleting
-                    // is not offered until the tenant is removed / marked as left.
-                    String dueText = DateCalculator.formatDueDateOrUnknown(row.tenant.getDueDate(),
-                            getString(R.string.label_date_not_set));
-                    new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                            .setTitle(shopName)
-                            .setMessage(getString(R.string.shops_occupied_actions_message,
-                                    row.tenant.getName(), dueText))
-                            .setPositiveButton(R.string.tenants_set_due_date_action, (d, w) ->
-                                    com.maduka.rentmanager.ui.admin.tenants.DueDatePicker.show(
-                                            requireActivity(), tenantRepository, row.tenant))
-                            .setNeutralButton(R.string.action_close, null)
-                            .show();
-                    return;
+                    showOccupiedShopActions(shopName, row.tenant);
+                } else {
+                    showVacantShopActions(shop, shopName);
                 }
-                // Vacant shop: Add tenant / Delete / Close. Delete still asks for confirmation.
-                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                        .setTitle(shopName)
-                        .setMessage(R.string.shops_vacant_actions_message)
-                        .setPositiveButton(R.string.shops_action_add_tenant, (d, w) -> {
-                            Intent intent = new Intent(getContext(),
-                                    com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.class);
-                            intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_ROLE, role.name());
-                            intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_SHOP_ID, shop.getShopId());
-                            startActivity(intent);
-                        })
-                        .setNegativeButton(R.string.action_delete, (d, w) -> confirmDeleteShop(shop, shopName))
-                        .setNeutralButton(R.string.action_close, null)
-                        .show();
             });
         }
         adapter.setOnPresenceDecisionListener(new ShopAdapter.OnPresenceDecisionListener() {
@@ -244,12 +219,87 @@ public class PropertiesFragment extends Fragment {
         super.onDestroyView();
     }
 
+    /** Vacant shop: add a tenant, or delete the shop (danger). */
+    private void showVacantShopActions(Shop shop, String shopName) {
+        String subtitle = shop.getMonthlyRent() > 0
+                ? getString(R.string.shops_vacant_subtitle_format,
+                        String.format(java.util.Locale.US, "TSh %,d", shop.getMonthlyRent()))
+                : getString(R.string.status_vacant);
+        new com.maduka.rentmanager.ui.common.ActionSheet(requireContext(), shopName, subtitle)
+                .add(R.drawable.ic_ph_user_plus, R.string.shops_action_add_tenant, () -> {
+                    Intent intent = new Intent(getContext(),
+                            com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.class);
+                    intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_ROLE, role.name());
+                    intent.putExtra(com.maduka.rentmanager.ui.admin.tenants.RegisterTenantActivity.EXTRA_SHOP_ID, shop.getShopId());
+                    startActivity(intent);
+                })
+                .danger(R.drawable.ic_ph_trash, R.string.shops_delete_action, () -> confirmDeleteShop(shop, shopName))
+                .show();
+    }
+
+    /** Occupied shop: set when the tenant's rent runs out, mark them as left, or delete them. */
+    private void showOccupiedShopActions(String shopName, Tenant tenant) {
+        String dueText = DateCalculator.formatDueDateOrUnknown(tenant.getDueDate(),
+                getString(R.string.label_date_not_set));
+        new com.maduka.rentmanager.ui.common.ActionSheet(requireContext(), shopName,
+                getString(R.string.shops_occupied_actions_message, tenant.getName(), dueText))
+                .add(R.drawable.ic_schedule, R.string.tenants_set_due_date_action, () ->
+                        com.maduka.rentmanager.ui.admin.tenants.DueDatePicker.show(
+                                requireActivity(), tenantRepository, tenant))
+                .add(R.drawable.ic_sign_out, R.string.tenants_end_tenancy_action, () ->
+                        com.maduka.rentmanager.ui.common.ConfirmDialog.danger(requireContext(),
+                                getString(R.string.tenants_end_tenancy_confirm_title),
+                                getString(R.string.tenants_end_tenancy_confirm_message, tenant.getName(), shopName),
+                                R.string.tenants_end_tenancy_action, () -> endTenancy(tenant, shopName)))
+                .danger(R.drawable.ic_ph_trash, R.string.tenants_delete_action, () ->
+                        com.maduka.rentmanager.ui.common.ConfirmDialog.danger(requireContext(),
+                                getString(R.string.tenants_delete_confirm_title),
+                                getString(R.string.tenants_delete_confirm_message, tenant.getName()),
+                                R.string.action_delete, () -> deleteTenant(tenant)))
+                .show();
+    }
+
+    private void endTenancy(Tenant tenant, String shopName) {
+        tenantRepository.endTenancy(tenant.getUid(), tenant.getShopId(), System.currentTimeMillis(),
+                new FirebaseManager.Callback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        if (!canTouchViews()) return;
+                        MadukaToast.show(requireActivity(),
+                                getString(R.string.tenants_end_tenancy_success, tenant.getName(), shopName),
+                                MadukaToast.Kind.OK);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        if (!canTouchViews()) return;
+                        MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
+                    }
+                });
+    }
+
+    private void deleteTenant(Tenant tenant) {
+        tenantRepository.deleteTenant(tenant, new FirebaseManager.Callback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                if (!canTouchViews()) return;
+                MadukaToast.show(requireActivity(),
+                        getString(R.string.tenants_delete_success, tenant.getName()), MadukaToast.Kind.OK);
+            }
+
+            @Override
+            public void onError(String message) {
+                if (!canTouchViews()) return;
+                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
+            }
+        });
+    }
+
     private void confirmDeleteShop(Shop shop, String shopName) {
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(R.string.shops_delete_confirm_title)
-                .setMessage(getString(R.string.shops_delete_confirm_message, shopName))
-                .setNegativeButton(R.string.action_cancel, null)
-                .setPositiveButton(R.string.action_delete, (d, w) ->
+        com.maduka.rentmanager.ui.common.ConfirmDialog.danger(requireContext(),
+                getString(R.string.shops_delete_confirm_title),
+                getString(R.string.shops_delete_confirm_message, shopName),
+                R.string.action_delete, () ->
                         shopRepository.deleteShop(shop, new FirebaseManager.Callback<Void>() {
                             @Override
                             public void onSuccess(Void result) {
@@ -263,8 +313,7 @@ public class PropertiesFragment extends Fragment {
                                 if (!isAdded()) return;
                                 MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
                             }
-                        }))
-                .show();
+                        }));
     }
 
     private boolean canTouchViews() {

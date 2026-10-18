@@ -301,4 +301,8 @@
     <string name="action_close">Funga</string>
     <string name="shops_occupied_actions_message">Mpangaji: %1$s
 Kodi inaisha: %2$s</string>
+    <string name="card_label_remaining">Zilizobaki</string>
+    <string name="shops_vacant_subtitle_format">Wazi · %1$s kwa mwezi</string>
+    <string name="shops_delete_action">Futa duka</string>
+    <string name="tenant_sheet_subtitle_format">%1$s · kodi inaisha %2$s</string>
 </resources>

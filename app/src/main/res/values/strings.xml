@@ -301,4 +301,8 @@
     <string name="action_close">Close</string>
     <string name="shops_occupied_actions_message">Tenant: %1$s
 Rent runs out: %2$s</string>
+    <string name="card_label_remaining">Remaining</string>
+    <string name="shops_vacant_subtitle_format">Vacant · %1$s per month</string>
+    <string name="shops_delete_action">Delete shop</string>
+    <string name="tenant_sheet_subtitle_format">%1$s · rent ends %2$s</string>
 </resources>

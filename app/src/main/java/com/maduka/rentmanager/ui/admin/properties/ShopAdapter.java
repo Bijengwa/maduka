@@ -172,6 +172,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
                 tvDaysRemaining.setText(overdue
                         ? itemView.getContext().getString(R.string.label_days_overdue_format, Math.abs(days))
                         : itemView.getContext().getString(R.string.label_days_left_format, days));
+                tvDaysRemaining.setTextColor(androidx.core.content.ContextCompat.getColor(itemView.getContext(),
+                        StatusPresentation.fgColorRes(tone)));
             } else {
                 tvDaysRemaining.setText(notSet);
             }

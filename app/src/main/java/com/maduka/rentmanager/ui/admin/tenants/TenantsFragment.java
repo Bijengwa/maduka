@@ -210,18 +210,40 @@ public class TenantsFragment extends Fragment {
         super.onDestroyView();
     }
 
-    /** Super Admin tap on a tenant card: set the next due date, or delete the tenant. */
+    /** Super Admin tap on a tenant card: set the rent end date, mark as left, or delete (danger). */
     private void showTenantActions(Tenant tenant) {
-        CharSequence[] options = {
-                getString(R.string.tenants_set_due_date_action),
-                getString(R.string.tenants_delete_action)
-        };
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(tenant.getName())
-                .setItems(options, (d, which) -> {
-                    if (which == 0) pickDueDate(tenant); else confirmDelete(tenant);
-                })
+        String shopName = adapter.shopNameFor(tenant.getShopId());
+        String dueText = DateCalculator.formatDueDateOrUnknown(tenant.getDueDate(),
+                getString(R.string.label_date_not_set));
+        new com.maduka.rentmanager.ui.common.ActionSheet(requireContext(), tenant.getName(),
+                getString(R.string.tenant_sheet_subtitle_format, shopName, dueText))
+                .add(R.drawable.ic_schedule, R.string.tenants_set_due_date_action, () -> pickDueDate(tenant))
+                .add(R.drawable.ic_sign_out, R.string.tenants_end_tenancy_action, () ->
+                        com.maduka.rentmanager.ui.common.ConfirmDialog.danger(requireContext(),
+                                getString(R.string.tenants_end_tenancy_confirm_title),
+                                getString(R.string.tenants_end_tenancy_confirm_message, tenant.getName(), shopName),
+                                R.string.tenants_end_tenancy_action, () -> endTenancy(tenant, shopName)))
+                .danger(R.drawable.ic_ph_trash, R.string.tenants_delete_action, () -> confirmDelete(tenant))
                 .show();
+    }
+
+    private void endTenancy(Tenant tenant, String shopName) {
+        tenantRepository.endTenancy(tenant.getUid(), tenant.getShopId(), System.currentTimeMillis(),
+                new FirebaseManager.Callback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        if (!canTouchViews()) return;
+                        MadukaToast.show(requireActivity(),
+                                getString(R.string.tenants_end_tenancy_success, tenant.getName(), shopName),
+                                MadukaToast.Kind.OK);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        if (!canTouchViews()) return;
+                        MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
+                    }
+                });
     }
 
     private void pickDueDate(Tenant tenant) {
@@ -229,11 +251,10 @@ public class TenantsFragment extends Fragment {
     }
 
     private void confirmDelete(Tenant tenant) {
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(R.string.tenants_delete_confirm_title)
-                .setMessage(getString(R.string.tenants_delete_confirm_message, tenant.getName()))
-                .setNegativeButton(R.string.action_cancel, null)
-                .setPositiveButton(R.string.action_delete, (d, w) ->
+        com.maduka.rentmanager.ui.common.ConfirmDialog.danger(requireContext(),
+                getString(R.string.tenants_delete_confirm_title),
+                getString(R.string.tenants_delete_confirm_message, tenant.getName()),
+                R.string.action_delete, () ->
                         tenantRepository.deleteTenant(tenant, new FirebaseManager.Callback<Void>() {
                             @Override
                             public void onSuccess(Void result) {
@@ -247,8 +268,7 @@ public class TenantsFragment extends Fragment {
                                 if (!canTouchViews()) return;
                                 MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
                             }
-                        }))
-                .show();
+                        }));
     }
 
     private boolean canTouchViews() {
