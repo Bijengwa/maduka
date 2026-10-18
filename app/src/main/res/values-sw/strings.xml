@@ -106,10 +106,10 @@
 
     <string name="tenants_subtitle_format">Wapangaji %1$d · %2$d wamechelewa</string>
     <string name="tenants_readonly_note">Msimamizi Mkuu pekee ndiye anaweza kusajili wapangaji wapya.</string>
-    <string name="tenants_end_tenancy_action">Tenant Ataondoka</string>
-    <string name="tenants_end_tenancy_confirm_title">Weka mpangaji kama ataondoka?</string>
+    <string name="tenants_end_tenancy_action">Achia duka</string>
+    <string name="tenants_end_tenancy_confirm_title">Achia duka?</string>
     <string name="tenants_end_tenancy_confirm_message">%1$s ataondolewa kutoka %2$s na duka litakuwa wazi. Historia yake ya malipo itabaki.</string>
-    <string name="tenants_end_tenancy_success">%1$s ataondoka · %2$s sasa ni wazi</string>
+    <string name="tenants_end_tenancy_success">%1$s ameondoka · %2$s sasa ni wazi</string>
 
     <string name="tenant_dashboard_view_history">Angalia historia ya malipo</string>
     <string name="tenant_dashboard_view_details">Angalia maelezo ya duka</string>
@@ -322,4 +322,9 @@ Kodi inaisha: %2$s</string>
     <string name="tenants_amount_paid_hint_required">Kiasi kilicholipwa (TSh)</string>
     <string name="past_payment_error_amount">Weka kiasi kilicholipwa.</string>
     <string name="past_payment_success_format">%1$s: malipo yamehifadhiwa · kodi inaisha %2$s</string>
+    <string name="tenants_leaving_toggle">Mpangaji ataondoka</string>
+    <string name="tenants_leaving_toggle_hint">Zima kama mpangaji atabaki</string>
+    <string name="tenants_leaving_on">%1$s ataondoka</string>
+    <string name="tenants_leaving_off">%1$s atabaki</string>
+    <string name="status_leaving">Ataondoka</string>
 </resources>

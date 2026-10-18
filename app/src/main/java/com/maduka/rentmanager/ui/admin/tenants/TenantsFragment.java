@@ -221,6 +221,23 @@ public class TenantsFragment extends Fragment {
                 .add(R.drawable.ic_payments, R.string.past_payment_action,
                         getString(R.string.past_payment_action_hint), () ->
                         PastPaymentDialog.show(requireActivity(), new com.maduka.rentmanager.data.PaymentRepository(), tenant))
+                .toggle(R.drawable.ic_ph_user_switch, R.string.tenants_leaving_toggle,
+                        getString(R.string.tenants_leaving_toggle_hint), tenant.isLeaving(), leaving ->
+                        tenantRepository.setLeaving(tenant.getUid(), leaving, new FirebaseManager.Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                if (!isAdded()) return;
+                                MadukaToast.show(requireActivity(), getString(leaving
+                                        ? R.string.tenants_leaving_on : R.string.tenants_leaving_off, tenant.getName()),
+                                        MadukaToast.Kind.OK);
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                if (!isAdded()) return;
+                                MadukaToast.show(requireActivity(), message, MadukaToast.Kind.BAD);
+                            }
+                        }))
                 .add(R.drawable.ic_sign_out, R.string.tenants_end_tenancy_action, () ->
                         com.maduka.rentmanager.ui.common.ConfirmDialog.danger(requireContext(),
                                 getString(R.string.tenants_end_tenancy_confirm_title),

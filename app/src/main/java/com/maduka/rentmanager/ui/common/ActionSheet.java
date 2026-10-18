@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
@@ -53,12 +55,29 @@ public final class ActionSheet {
         return addRow(icon, context.getString(label), hint, false, onClick);
     }
 
+    /** On/off row: tapping flips the switch and reports the new state; the sheet stays open so
+     * the new state is visible. */
+    public ActionSheet toggle(@DrawableRes int icon, @StringRes int label, CharSequence hint,
+                              boolean checked, java.util.function.Consumer<Boolean> onChange) {
+        View row = addRowView(icon, context.getString(label), hint, false);
+        SwitchCompat sw = row.findViewById(R.id.actionSwitch);
+        row.findViewById(R.id.actionChevron).setVisibility(View.GONE);
+        sw.setVisibility(View.VISIBLE);
+        sw.setChecked(checked);
+        row.setOnClickListener(v -> {
+            sw.toggle();
+            onChange.accept(sw.isChecked());
+        });
+        actions.addView(row);
+        return this;
+    }
+
     /** Destructive action: red row, red icon tile. */
     public ActionSheet danger(@DrawableRes int icon, @StringRes int label, Runnable onClick) {
         return addRow(icon, context.getString(label), null, true, onClick);
     }
 
-    private ActionSheet addRow(int icon, String label, CharSequence hint, boolean danger, Runnable onClick) {
+    private View addRowView(int icon, String label, CharSequence hint, boolean danger) {
         View row = LayoutInflater.from(context).inflate(R.layout.item_sheet_action, actions, false);
         ImageView iconView = row.findViewById(R.id.actionIcon);
         TextView labelView = row.findViewById(R.id.actionLabel);
@@ -83,6 +102,11 @@ public final class ActionSheet {
             ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) row.getLayoutParams();
             lp.topMargin = Math.round(context.getResources().getDisplayMetrics().density * 8);
         }
+        return row;
+    }
+
+    private ActionSheet addRow(int icon, String label, CharSequence hint, boolean danger, Runnable onClick) {
+        View row = addRowView(icon, label, hint, danger);
         row.setOnClickListener(v -> {
             dialog.dismiss();
             onClick.run();

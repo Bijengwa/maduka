@@ -10,6 +10,10 @@ public class Tenant {
     private long monthlyRent;
     private long moveInDate;       // epoch millis
     private PresenceStatus presenceStatus = PresenceStatus.YUPO;
+    /** Super Admin's note that this tenant has said they will move out (Ataondoka). The tenant
+     * keeps the shop and everything else until the shop is explicitly freed; switching it off
+     * means they are staying (Atabaki). */
+    private boolean leaving;
     private long lastPresenceCheckAt;
     private long lastPaymentDate;  // epoch millis
     private long dueDate;          // epoch millis
@@ -41,6 +45,8 @@ public class Tenant {
     public void setMoveInDate(long moveInDate) { this.moveInDate = moveInDate; }
     public PresenceStatus getPresenceStatus() { return presenceStatus; }
     public void setPresenceStatus(PresenceStatus presenceStatus) { this.presenceStatus = presenceStatus; }
+    public boolean isLeaving() { return leaving; }
+    public void setLeaving(boolean leaving) { this.leaving = leaving; }
     public long getLastPresenceCheckAt() { return lastPresenceCheckAt; }
     public void setLastPresenceCheckAt(long lastPresenceCheckAt) { this.lastPresenceCheckAt = lastPresenceCheckAt; }
     public long getLastPaymentDate() { return lastPaymentDate; }

@@ -148,6 +148,10 @@ public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.ViewHolder
             } else {
                 labelRes = R.string.status_yupo;
             }
+            if (tenant.isLeaving()) {
+                tone = StatusPresentation.Tone.WAIT;
+                labelRes = R.string.status_leaving;
+            }
             StatusPill.apply(tvStatus, tone, labelRes);
             StatusPill.accent(accentBar, tone);
 

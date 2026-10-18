@@ -106,10 +106,10 @@
 
     <string name="tenants_subtitle_format">%1$d tenant(s) · %2$d overdue</string>
     <string name="tenants_readonly_note">Only the Super Admin can register new tenants.</string>
-    <string name="tenants_end_tenancy_action">Tenant Ataondoka</string>
-    <string name="tenants_end_tenancy_confirm_title">Mark tenant as leaving?</string>
+    <string name="tenants_end_tenancy_action">Free the shop</string>
+    <string name="tenants_end_tenancy_confirm_title">Free the shop?</string>
     <string name="tenants_end_tenancy_confirm_message">%1$s will be removed from %2$s and the shop will become vacant. Their payment history is kept.</string>
-    <string name="tenants_end_tenancy_success">%1$s is leaving · %2$s is now vacant</string>
+    <string name="tenants_end_tenancy_success">%1$s moved out · %2$s is now vacant</string>
 
     <string name="tenant_dashboard_view_history">View payment history</string>
     <string name="tenant_dashboard_view_details">View shop details</string>
@@ -322,4 +322,9 @@ Rent runs out: %2$s</string>
     <string name="tenants_amount_paid_hint_required">Amount paid (TSh)</string>
     <string name="past_payment_error_amount">Enter the amount that was paid.</string>
     <string name="past_payment_success_format">%1$s: payment saved · rent ends %2$s</string>
+    <string name="tenants_leaving_toggle">Tenant ataondoka</string>
+    <string name="tenants_leaving_toggle_hint">Switch off if the tenant stays (atabaki)</string>
+    <string name="tenants_leaving_on">%1$s will move out (ataondoka)</string>
+    <string name="tenants_leaving_off">%1$s is staying (atabaki)</string>
+    <string name="status_leaving">Ataondoka</string>
 </resources>

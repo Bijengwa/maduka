@@ -269,6 +269,17 @@ public class TenantRepository {
                 .addOnFailureListener(e -> cb.onError(e.getMessage()));
     }
 
+    /** Super-Admin-only: flags whether the tenant will move out (Ataondoka, true) or stay
+     * (Atabaki, false). Nothing else changes - the tenant keeps their shop either way. */
+    public void setLeaving(String tenantUid, boolean leaving, FirebaseManager.Callback<Void> cb) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("leaving", leaving);
+        updates.put("updatedAt", System.currentTimeMillis());
+        fb.root().child(FirebaseSchema.TENANTS).child(tenantUid).updateChildren(updates)
+                .addOnSuccessListener(v -> cb.onSuccess(null))
+                .addOnFailureListener(e -> cb.onError(e.getMessage()));
+    }
+
     /** Super-Admin-only permanent delete: removes the tenant record and their login_index entry
      * (so they can no longer sign in) and frees their shop, in one atomic multi-path write.
      * Past PaymentRecords are deliberately kept so collection reports stay accurate. The

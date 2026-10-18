@@ -160,6 +160,10 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             int statusLabel = tone == StatusPresentation.Tone.WAIT
                     ? R.string.status_awaiting
                     : (tone == StatusPresentation.Tone.BAD ? R.string.status_hayupo : R.string.status_yupo);
+            if (tenant.isLeaving()) {
+                tone = StatusPresentation.Tone.WAIT;
+                statusLabel = R.string.status_leaving;
+            }
             StatusPill.apply(tvStatus, tone, statusLabel);
             StatusPill.accent(accentBar, tone);
 
