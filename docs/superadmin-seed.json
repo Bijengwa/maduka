@@ -1,0 +1,20 @@
+{
+  "super_admins": {
+    "PASTE_AUTH_UID_HERE": {
+      "uid": "PASTE_AUTH_UID_HERE",
+      "name": "Your Name",
+      "username": "yourname",
+      "email": "you@example.com",
+      "authEmail": "you@example.com",
+      "phone": "255700000000",
+      "lastLogin": 0,
+      "createdAt": 1760000000000,
+      "updatedAt": 1760000000000
+    }
+  },
+  "login_index": {
+    "super_admins": {
+      "you_example_com": "you@example.com"
+    }
+  }
+}
