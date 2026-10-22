@@ -167,10 +167,10 @@ public class TenantRepository {
      *
      * There is no approval workflow: this first payment, like every payment recorded via
      * {@link PaymentRepository#recordPayment}, is immediately a valid recorded payment. */
-    public void registerTenant(String name, String phone, String email, String password, Shop shop,
+    public void registerTenant(String name, String phone, String password, Shop shop,
                                 int monthsPaid, long paymentDateMillis, String paymentPhoneNumber,
                                 String recordedByUid, FirebaseManager.Callback<Void> cb) {
-        doRegister(name, phone, email, password, shop, monthsPaid, paymentDateMillis, paymentPhoneNumber,
+        doRegister(name, phone, password, shop, monthsPaid, paymentDateMillis, paymentPhoneNumber,
                 recordedByUid, 0, 0, PresenceStatus.YUPO, cb);
     }
 
@@ -182,18 +182,19 @@ public class TenantRepository {
      * amountPaid > 0 records that payment (monthsPaid is how many months it covered, so the
      * tenant gets a Start date and a payment history); amountPaid == 0 records no payment. The
      * due date is always dueDateMillis. */
-    public void registerExistingTenant(String name, String phone, String email, String password, Shop shop,
+    public void registerExistingTenant(String name, String phone, String password, Shop shop,
                                         long amountPaid, int monthsPaid, long lastPaymentDateMillis,
                                         String paymentPhoneNumber, long dueDateMillis, PresenceStatus presence,
                                         String recordedByUid, FirebaseManager.Callback<Void> cb) {
-        doRegister(name, phone, email, password, shop, amountPaid > 0 ? Math.max(1, monthsPaid) : 0,
+        doRegister(name, phone, password, shop, amountPaid > 0 ? Math.max(1, monthsPaid) : 0,
                 lastPaymentDateMillis, paymentPhoneNumber, recordedByUid, amountPaid, dueDateMillis, presence, cb);
     }
 
-    private void doRegister(String name, String phone, String email, String password, Shop shop,
+    private void doRegister(String name, String phone, String password, Shop shop,
                              int monthsPaid, long paymentDateMillis, String paymentPhoneNumber,
                              String recordedByUid, long amountOverride, long dueDateOverride,
                              PresenceStatus presence, FirebaseManager.Callback<Void> cb) {
+        String email = LoginKeyUtil.authEmailFor(phone);
         FirebaseAuth secondaryAuth = SecondaryAuthProvider.get();
         secondaryAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
@@ -211,7 +212,6 @@ public class TenantRepository {
                     tenant.setUid(uid);
                     tenant.setName(name);
                     tenant.setPhone(phone);
-                    tenant.setEmail(email);
                     tenant.setAuthEmail(email);
                     tenant.setShopId(shop.getShopId());
                     tenant.setMonthlyRent(shop.getMonthlyRent());
@@ -237,7 +237,7 @@ public class TenantRepository {
                     payment.setCreatedAt(now);
                     payment.setUpdatedAt(now);
 
-                    String loginKey = LoginKeyUtil.sanitize(email);
+                    String loginKey = LoginKeyUtil.sanitize(phone);
 
                     Map<String, Object> writes = new HashMap<>();
                     writes.put("/" + FirebaseSchema.TENANTS + "/" + uid, tenant);
@@ -287,10 +287,14 @@ public class TenantRepository {
     public void deleteTenant(Tenant tenant, FirebaseManager.Callback<Void> cb) {
         Map<String, Object> writes = new HashMap<>();
         writes.put("/" + FirebaseSchema.TENANTS + "/" + tenant.getUid(), null);
-        String loginEmail = tenant.getAuthEmail() != null ? tenant.getAuthEmail() : tenant.getEmail();
+        String loginEmail = tenant.getAuthEmail();
         if (loginEmail != null && !loginEmail.isEmpty()) {
             writes.put("/" + FirebaseSchema.LOGIN_INDEX + "/" + UserRole.TENANT.node + "/"
                     + LoginKeyUtil.sanitize(loginEmail), null);
+        }
+        if (tenant.getPhone() != null && !tenant.getPhone().isEmpty()) {
+            writes.put("/" + FirebaseSchema.LOGIN_INDEX + "/" + UserRole.TENANT.node + "/"
+                    + LoginKeyUtil.sanitize(tenant.getPhone()), null);
         }
         String shopId = tenant.getShopId();
         if (shopId != null && !shopId.isEmpty()) {

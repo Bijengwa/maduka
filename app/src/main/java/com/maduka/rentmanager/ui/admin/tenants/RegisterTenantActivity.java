@@ -61,7 +61,6 @@ public class RegisterTenantActivity extends AppCompatActivity {
 
     private TextInputEditText etName;
     private TextInputEditText etPhone;
-    private TextInputEditText etEmail;
     private TextInputEditText etPassword;
     private Spinner spinnerShop;
     private TextInputEditText etMonthsPaid;
@@ -108,7 +107,6 @@ public class RegisterTenantActivity extends AppCompatActivity {
 
         etName = findViewById(R.id.etName);
         etPhone = findViewById(R.id.etPhone);
-        etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         spinnerShop = findViewById(R.id.spinnerShop);
         etMonthsPaid = findViewById(R.id.etMonthsPaid);
@@ -280,7 +278,6 @@ public class RegisterTenantActivity extends AppCompatActivity {
     private void setFormEnabled(boolean enabled) {
         etName.setEnabled(enabled);
         etPhone.setEnabled(enabled);
-        etEmail.setEnabled(enabled);
         etPassword.setEnabled(enabled);
         spinnerShop.setEnabled(enabled);
         etMonthsPaid.setEnabled(enabled);
@@ -339,14 +336,18 @@ public class RegisterTenantActivity extends AppCompatActivity {
         if (vacantShops.isEmpty()) return;
 
         String name = textOf(etName);
-        String phone = textOf(etPhone);
-        String email = textOf(etEmail);
+        String phoneDigits = textOf(etPhone);
         String password = textOf(etPassword);
 
-        if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (name.isEmpty() || phoneDigits.isEmpty() || password.isEmpty()) {
             MadukaToast.show(this, getString(R.string.users_error_required), MadukaToast.Kind.BAD);
             return;
         }
+        if (!phoneDigits.matches("[1-9][0-9]{8}")) {
+            MadukaToast.show(this, getString(R.string.phone_error_invalid), MadukaToast.Kind.BAD);
+            return;
+        }
+        String phone = "255" + phoneDigits;
         if (password.length() < 6) {
             MadukaToast.show(this, getString(R.string.change_password_error_length), MadukaToast.Kind.BAD);
             return;
@@ -382,7 +383,7 @@ public class RegisterTenantActivity extends AppCompatActivity {
             }
             PresenceStatus presence = cbPresent.isChecked() ? PresenceStatus.YUPO : PresenceStatus.HAYUPO;
             setFormEnabled(false);
-            tenantRepository.registerExistingTenant(name, phone, email, password, selectedShop, amount, months,
+            tenantRepository.registerExistingTenant(name, phone, password, selectedShop, amount, months,
                     paymentDateMillis, paymentPhone, nextDateMillis, presence, recordedByUid, done);
             return;
         }
@@ -397,7 +398,7 @@ public class RegisterTenantActivity extends AppCompatActivity {
             return;
         }
         setFormEnabled(false);
-        tenantRepository.registerTenant(name, phone, email, password, selectedShop, months, paymentDateMillis,
+        tenantRepository.registerTenant(name, phone, password, selectedShop, months, paymentDateMillis,
                 paymentPhone, recordedByUid, done);
     }
 

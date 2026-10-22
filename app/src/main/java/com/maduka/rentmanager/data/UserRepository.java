@@ -93,8 +93,9 @@ public class UserRepository {
      * session is left completely undisturbed. The resulting Realtime Database writes
      * (admins/{uid} + login_index/admins/{key}) go through the PRIMARY FirebaseManager.root()
      * reference, i.e. as the Super Admin, who is the one actually authorized to write there. */
-    public void registerAdmin(String name, String phone, String email, String password,
+    public void registerAdmin(String name, String phone, String password,
                                FirebaseManager.Callback<Void> cb) {
+        String email = LoginKeyUtil.authEmailFor(phone);
         FirebaseAuth secondaryAuth = SecondaryAuthProvider.get();
         secondaryAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
@@ -106,13 +107,12 @@ public class UserRepository {
                     admin.setUid(uid);
                     admin.setName(name);
                     admin.setPhone(phone);
-                    admin.setEmail(email);
                     admin.setAuthEmail(email);
                     admin.setStatus(PresenceStatus.YUPO);
                     admin.setCreatedAt(now);
                     admin.setUpdatedAt(now);
 
-                    String loginKey = LoginKeyUtil.sanitize(email);
+                    String loginKey = LoginKeyUtil.sanitize(phone);
 
                     Map<String, Object> writes = new HashMap<>();
                     writes.put("/" + FirebaseSchema.ADMINS + "/" + uid, admin);
@@ -131,7 +131,7 @@ public class UserRepository {
     public void deleteAdmin(AdminUser admin, FirebaseManager.Callback<Void> cb) {
         Map<String, Object> writes = new HashMap<>();
         writes.put("/" + FirebaseSchema.ADMINS + "/" + admin.getUid(), null);
-        String loginEmail = admin.getAuthEmail() != null ? admin.getAuthEmail() : admin.getEmail();
+        String loginEmail = admin.getAuthEmail();
         if (loginEmail != null && !loginEmail.isEmpty()) {
             writes.put("/" + FirebaseSchema.LOGIN_INDEX + "/" + UserRole.ADMIN.node + "/"
                     + LoginKeyUtil.sanitize(loginEmail), null);

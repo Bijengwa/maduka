@@ -4,7 +4,6 @@ public class Tenant {
     private String uid;
     private String name;
     private String phone;
-    private String email;          // optional
     private String authEmail;      // Firebase Auth login email (always set)
     private String shopId;         // "A1".."A10"
     private long monthlyRent;
@@ -33,8 +32,6 @@ public class Tenant {
     public void setName(String name) { this.name = name; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
     public String getAuthEmail() { return authEmail; }
     public void setAuthEmail(String authEmail) { this.authEmail = authEmail; }
     public String getShopId() { return shopId; }

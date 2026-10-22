@@ -60,27 +60,30 @@ public class RegisterAdminActivity extends AppCompatActivity {
 
         TextInputEditText etName = findViewById(R.id.etName);
         TextInputEditText etPhone = findViewById(R.id.etPhone);
-        TextInputEditText etEmail = findViewById(R.id.etEmail);
         TextInputEditText etPassword = findViewById(R.id.etPassword);
         Button btnRegister = findViewById(R.id.btnRegister);
 
         btnRegister.setOnClickListener(v -> {
             String name = textOf(etName);
-            String phone = textOf(etPhone);
-            String email = textOf(etEmail);
+            String phoneDigits = textOf(etPhone);
             String password = textOf(etPassword);
 
-            if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            if (name.isEmpty() || phoneDigits.isEmpty() || password.isEmpty()) {
                 MadukaToast.show(this, getString(R.string.users_error_required), MadukaToast.Kind.BAD);
                 return;
             }
+            if (!phoneDigits.matches("[1-9][0-9]{8}")) {
+                MadukaToast.show(this, getString(R.string.phone_error_invalid), MadukaToast.Kind.BAD);
+                return;
+            }
+            String phone = "255" + phoneDigits;
             if (password.length() < 6) {
                 MadukaToast.show(this, getString(R.string.change_password_error_length), MadukaToast.Kind.BAD);
                 return;
             }
 
             btnRegister.setEnabled(false);
-            userRepository.registerAdmin(name, phone, email, password, new FirebaseManager.Callback<Void>() {
+            userRepository.registerAdmin(name, phone, password, new FirebaseManager.Callback<Void>() {
                 @Override
                 public void onSuccess(Void result) {
                     MadukaToast.show(RegisterAdminActivity.this, getString(R.string.users_register_success), MadukaToast.Kind.OK);

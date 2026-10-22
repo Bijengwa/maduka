@@ -31,7 +31,7 @@ public class TenantDetailsFragment extends Fragment {
     private final ShopRepository shopRepository = new ShopRepository();
 
     private TextView tvSubtitle;
-    private Row rowShop, rowPhone, rowEmail, rowRent, rowMoveIn, rowDueDate, rowStatus;
+    private Row rowShop, rowPhone, rowRent, rowMoveIn, rowDueDate, rowStatus;
     private String tenantUid, tenantShopId;
     private ValueEventListener tenantRegistration, shopRegistration;
 
@@ -59,7 +59,6 @@ public class TenantDetailsFragment extends Fragment {
         tvSubtitle = view.findViewById(R.id.tvSubtitle);
         rowShop = new Row(view.findViewById(R.id.rowShop));
         rowPhone = new Row(view.findViewById(R.id.rowPhone));
-        rowEmail = new Row(view.findViewById(R.id.rowEmail));
         rowRent = new Row(view.findViewById(R.id.rowRent));
         rowMoveIn = new Row(view.findViewById(R.id.rowMoveIn));
         rowDueDate = new Row(view.findViewById(R.id.rowDueDate));
@@ -104,7 +103,6 @@ public class TenantDetailsFragment extends Fragment {
         });
 
         rowPhone.set(getString(R.string.tenant_details_phone), tenant.getPhone() != null ? tenant.getPhone() : "—");
-        rowEmail.set(getString(R.string.tenant_details_email), tenant.getEmail() != null ? tenant.getEmail() : "—");
         rowRent.set(getString(R.string.tenant_details_monthly_rent),
                 String.format(Locale.US, "TSh %,d", tenant.getMonthlyRent()));
         rowMoveIn.set(getString(R.string.tenant_details_move_in_date), DateCalculator.formatDdMmYyyy(tenant.getMoveInDate()));

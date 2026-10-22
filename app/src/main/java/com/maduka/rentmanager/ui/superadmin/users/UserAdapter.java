@@ -70,8 +70,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         void bind(AdminUser admin) {
             tvName.setText(admin.getName());
             String phone = admin.getPhone() != null ? admin.getPhone() : "";
-            String email = admin.getEmail() != null ? admin.getEmail() : "";
-            tvContact.setText(phone.isEmpty() ? email : phone + "  ·  " + email);
+            tvContact.setText(phone);
 
             PresenceStatus status = admin.getStatus() != null ? admin.getStatus() : PresenceStatus.YUPO;
             StatusPresentation.Tone tone = StatusPresentation.toneFor(status);

@@ -7,13 +7,13 @@
     <string name="role_super_admin">Super Admin</string>
     <string name="role_admin">Admin</string>
     <string name="role_tenant">Tenant</string>
-    <string name="login_identifier_hint">Username, email or phone</string>
+    <string name="login_identifier_hint">Phone number</string>
     <string name="login_password_hint">Password</string>
     <string name="login_remember_me">Remember me</string>
     <string name="login_sign_in">Sign In</string>
     <string name="login_forgot_password">Forgot password? Contact admin</string>
     <string name="login_error_generic">Could not sign in — check your details and try again.</string>
-    <string name="login_error_identifier_required">Enter your username, email or phone.</string>
+    <string name="login_error_identifier_required">Enter your phone number.</string>
     <string name="login_error_password_required">Enter your password.</string>
 
     <string name="nav_dashboard">Home</string>
@@ -123,7 +123,7 @@
     <string name="tenant_details_move_in_date">Move-in date</string>
     <string name="tenant_details_status">Status</string>
     <string name="tenant_details_phone">Phone number</string>
-    <string name="tenant_details_email">Email</string>
+    <string name="phone_error_invalid">Enter 9 digits after +255 (e.g. 712345678).</string>
     <string name="tenant_payments_title">My payments</string>
     <string name="tenant_payments_subtitle_format">%1$s · TSh %2$s per month</string>
     <string name="tenant_payments_empty">No payments recorded yet</string>
@@ -222,7 +222,6 @@
     <string name="users_empty">No admins registered yet</string>
     <string name="users_name_hint">Full name</string>
     <string name="users_phone_hint">Phone number</string>
-    <string name="users_email_hint">Email</string>
     <string name="users_password_hint">Password (min 6 characters)</string>
     <string name="users_register_action">Register</string>
     <string name="users_error_required">Please fill in all fields.</string>

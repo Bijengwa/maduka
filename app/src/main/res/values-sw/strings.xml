@@ -123,7 +123,7 @@
     <string name="tenant_details_move_in_date">Tarehe ya kuingia</string>
     <string name="tenant_details_status">Hali</string>
     <string name="tenant_details_phone">Namba ya simu</string>
-    <string name="tenant_details_email">Barua pepe</string>
+    <string name="phone_error_invalid">Weka tarakimu 9 baada ya +255 (mfano 712345678).</string>
     <string name="tenant_payments_title">Malipo yangu</string>
     <string name="tenant_payments_subtitle_format">%1$s · TSh %2$s kwa mwezi</string>
     <string name="tenant_payments_empty">Hakuna malipo yaliyorekodiwa bado</string>
@@ -222,7 +222,6 @@
     <string name="users_empty">Hakuna wasimamizi waliosajiliwa bado</string>
     <string name="users_name_hint">Jina kamili</string>
     <string name="users_phone_hint">Namba ya simu</string>
-    <string name="users_email_hint">Barua pepe</string>
     <string name="users_password_hint">Neno la siri (herufi 6 au zaidi)</string>
     <string name="users_register_action">Sajili</string>
     <string name="users_error_required">Tafadhali jaza sehemu zote.</string>

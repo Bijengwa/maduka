@@ -19,7 +19,7 @@ public class AuthRepository {
     }
 
     /**
-     * Resolves the free-text identifier (username, email, or phone) against
+     * Resolves the free-text identifier (phone) against
      * the public login_index/{role} node to find the Firebase Auth email,
      * then signs in with that email + the entered password. The user no
      * longer picks a role up front: this tries each role's login_index in
